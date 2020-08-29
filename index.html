@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style type="text/css">
+
+ </style>
+<body>
+
+</body>
+
+<script>
+    function Father(lastName){
+        this.firstName="zhang",
+        this.lastName=lastName,
+        this.addr="肇庆"
+        run=function(){
+            console.log("ru1n");
+        }
+    }
+
+    // Father.prototype.run=function(){
+    //     console.log("run");
+    // }   
+
+    function Son(lastName){
+        Father.call(this);
+        this.lastName=lastName;
+    }
+
+    Son.prototype=Father.prototype;
+
+
+let father = new Father("dongshen")
+let son = new Son("ming")
+
+</script>
+</html>
