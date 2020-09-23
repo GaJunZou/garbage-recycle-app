@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>扫雷小游戏</title>
+    <title>.</title>
     <style>
     </style>
 </head>
@@ -13,7 +13,7 @@
     }
     div{
         float: left;
-        width: 280px;
+        width: 270px;
         margin: auto;
         margin-top: 20px;
     }
@@ -21,13 +21,12 @@
         float: left;
     }
     ul li{
-        width: 25px;
-        height: 25px;
+        width: 23px;
+        height: 23px;
         list-style: none;
         text-decoration: none;
-
         background-color: lightgrey;
-        border: 1px solid;
+        border: 2px solid;
         border-color: #ffffff #a1a1a1 #a1a1a1 #ffffff;
         float: left;
         text-align: center;
@@ -52,6 +51,9 @@
     ol li{
     margin: 10px;
     }
+    .boom{
+        border:3px solid black;
+    }
     </style>
     <body>
     <div class="wrapper">
@@ -75,7 +77,7 @@
     var ul = document.getElementsByTagName("ul");
     var btn = document.getElementsByTagName("button");
     var div = document.querySelector(".boom");
-    var demo = document.querySelector(".demo");
+    var myBoom = document.querySelector(".demo");
 
     var boomNum = 15;
     var get = 0;
@@ -86,7 +88,7 @@
     btn[0].onclick=function(){
         div.remove();
         div=document.createElement("div");
-        demo.appendChild(div);
+        myBoom.appendChild(div);
         div.setAttribute("class","boom");
         createTable(10,10);
         setBoom(boomNum,10);
@@ -98,9 +100,9 @@
     btn[1].onclick=function(){
         div.remove();
         div=document.createElement("div");
-        demo.appendChild(div);
+        myBoom.appendChild(div);
         div.setAttribute("class","boom");
-        div.style.width="480px";
+        div.style.width="433px";
         createTable(16,16);
         boomNum=40;
         setBoom(boomNum,16);
@@ -111,9 +113,9 @@
     btn[2].onclick=function(){
         div.remove();
         div=document.createElement("div");
-        demo.appendChild(div);
+        myBoom.appendChild(div);
         div.setAttribute("class","boom");
-        div.style.width="780px";
+        div.style.width="540px";
         createTable(20,20);
         boomNum=80;
         setBoom(boomNum,20);
@@ -179,6 +181,7 @@
             }(i))
         }
     }
+
     function searchZero(x,y,size){
         ul[x-1].children[y-1].innerText = "";//arr[x][y]
         var around=[];
@@ -207,7 +210,8 @@
             var a=around[i][0];
             var b=around[i][1];
             ul[a-1].children[b-1].className=arr[a][b];
-            ul[a-1].children[b-1].style.background="pink";
+            ul[a-1].children[b-1].style.background="lightgrey";
+            ul[a-1].children[b-1].style.border="2px solid lightgrey";
             if(arr[a][b]==0){
                 if (ul[a-1].children[b-1].getAttribute("flag")!="flag"){
                     ul[a-1].children[b-1].setAttribute("flag","flag");
@@ -310,5 +314,4 @@
             }
         }
     }
-
 </script>
