@@ -1,0 +1,424 @@
+<template name="basics">
+	<view>
+		<view class="page">
+			<view class="up-page" ref="page">
+				<!-- 搜索 -->
+				<view class="cu-bar bg-gradual-blue search" style="position: sticky;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px">
+					<view class="action">
+						<text>广州</text>
+						<text class="cuIcon-triangledownfill"></text>
+					</view>
+					<view class="search-form radius" style="border-radius: 20px;">
+						<text class="cuIcon-search"></text>
+						<input 
+							@click="showBackUp()"
+							v-model="searchValue"
+							:adjust-position="false" 
+							type="text" 
+							placeholder="搜索图片、文章、视频" 
+							confirm-type="search"></input>
+					</view>
+					<view class="action">
+						<text @click="getRublishData()">搜索</text>
+					</view>
+				</view>
+				<!-- 轮播图 -->
+				<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true"
+				 :autoplay="true" interval="5000" duration="500">
+					<swiper-item v-for="(item,index) in swiperList" :key="index">
+						<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
+						<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
+					</swiper-item>
+				</swiper>
+				<!-- 切换tab -->
+				<scroll-view scroll-x class="bg-white nav">
+					<view class="flex text-center">
+						<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in categories" :key="index" @tap="tabSelect" :data-id="index">
+							{{item}}
+						</view>
+					</view>
+				</scroll-view>
+				<!-- 商品 -->
+				<view class="flex justify-around box-content">
+					<view class="bg-white item radius" v-for="i in data">
+						<view>
+							<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
+						</view>
+						<p style="text-align: center;font-size: 16px;">塑料瓶</p>
+						<view>
+							<text style="float: left;margin:5px 10px;">2毛/个</text>
+							<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
+								<span class="cuIcon-add"></span>
+							</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 搜索页 -->
+			<view class="search-backup" @touchmove.prevent @mousewheel.prevent :class="isShowBackUp == true ? 'show-backup' : 'hide-backup'" @click.stop="hideBackUp()">
+				<p style="font-size: 18px;margin: 15px 10px;color: #ffffff;">热门搜索：</p>
+				<!-- 备选 -->
+				<view class="padding">
+					<view class="grid col-4 padding-sm">
+						<view class="margin-tb-sm text-center" v-for="(item,index) in buttonList" :key="index">
+							<button @click.stop="" class="cu-btn round" 
+							style="
+							background-color: #000000;
+							color: #ffffff;
+							width: 70px;
+							opacity: .5;
+							font-size: 14px;
+							margin: 10px 0;">123</button>
+						</view>
+					</view>
+				</view>
+				<view class="search-result" style="position: absolute;	">
+					<!-- 垃圾分类知识区 -->
+					<view class="knownledge" :class="load == 1 ? 'show-more' : 'hide-more'" @click.stop="" v-if="rublishData">
+						<view style="width: 22vw;height: 22vw;float: left;">
+							<image src="../../static/11.png" mode="" style="width: 100%;height: 100%;border-radius: 10px;"></image>
+						</view>
+						<view style="width: 55vw;height: 22vw;float: left;margin: 0 2vw;font-size: 15px;line-height: 11vw;"> 
+							<p><strong>名称：</strong>{{rublishData.name}}</p>
+							<p>
+								<strong>分类：</strong>
+								<span v-if="rublishData.type==0">可回收垃圾</span>
+								<span v-else-if="rublishData.type==1">有害垃圾</span>
+								<span v-else-if="rublishData.type==2">厨余垃圾(湿垃圾)</span>
+								<span v-else-if="rublishData.type==3">其他垃圾(干垃圾)</span>
+							</p>
+						</view>
+						<view>
+							<view>
+								<view style="width: 82vw;height: auto;font-size: 15px;color: #424242;" v-if="load==1">
+									<p>解释：{{rublishData.explain}}</p>
+									<p>详细：{{rublishData.contain}}</p>
+									<p>建议：{{rublishData.tip}}</p>
+								</view>
+								<p class="load-more" @click="loadAndHide()">{{text}}<span class="cuIcon" :class="load == 1 ? 'cuIcon-fold load-more' : 'cuIcon-unfold hide-more'" style="font-size: 15px;"></span></p>
+							</view>
+						</view>
+					</view>
+					<div style="position: relative;width: 100vw;height: 30vh;background-color: #DD514C;top: 30px;">
+						
+					</div>
+				</view>
+			</view>
+			<!-- cart -->
+			<div class="cart my-bg-gradual-blue">
+				<div @tap="showModal($event)" data-target="bottomModal" style="width: 60px;height: 42px;border-radius: 50%;position: absolute;z-index: 1;">
+					<view class="cu-tag badge" style="background-color: #f9484b;">99</view>
+					<image style="
+					width: 60px;
+					height: 60px;
+					margin-top:-10px;border-radius: 50%;" 
+					src="../../static/cart.png"></image>
+				</div>
+				<p @tap.stop="showModal($event)" data-target="bottomModal" style="float: left;margin-left: 100px;line-height: 42px;font-size: 16px;color: #000;">已选11件回收物</p>
+				<p style="float: right;margin-right: 10px;line-height: 42px;font-size: 14px;color: #fff;font-weight: 700;">去结算</p>
+			</div>
+			<!-- cart-modal -->
+			<view @click="hideModal($event)" @touchmove="isScroll($event)" @mousewheel="isScroll($event)" class="cu-modal bottom-modal my-bottom-modal" :class="modalName=='bottomModal'?'show':''">
+				<view @click.stop="" @touchmove.stop="" @mousewheel.stop="" class="cu-dialog" style="max-height: 500px;overflow: scroll;border-radius: 5px;">
+					<view class="cu-bar bg-white" style="position: sticky;top: 0;z-index: 10;">
+						<view class="action text-blue" @tap="hideModal">
+							<strong style="float: left;font-size: 14px;color: #ff5500;line-height: 40px;">取消</strong>
+						</view>
+					</view>
+					<view class="padding" style="text-align: left;overflow: hidden;">
+						<div v-for="i in data" style="padding: 5px 10px;height: 40px;">
+							<i class="cuIcon-close" style="float: left;font-size: 20px;color: red;line-height: 40px;"></i>
+							<div style="float: left;width: 40px;height: 40px;margin-right: 10px;margin-left: 5px;">
+								<image style="width: 100%;height: 100%;" src="../../static/11.png" mode=""></image>
+							</div>
+							<p style="float: left;line-height: 20px;">
+								<strong style="font-size: 14px;">塑料瓶</strong><br>
+								0.2元/个
+							</p>
+							<div style="float: right;line-height: 40px;font-size: 16px;font-weight: 700;text-align: center;">
+								<i class="cuIcon-move" style="color:  #fe0707;"></i>
+								<span style="margin: 0 10px;">4</span>
+								<i class="cuIcon-add" style="color:  #32ce7d;"></i>
+							</div>
+						</div>
+						<div style="height: 120px;"></div>
+					</view>
+				</view>
+			</view>
+			<view >
+				<navigator hover-class="none" :url="'/pages/basics/' + item.name" class="nav-li" navigateTo :class="'bg-'+item.color"
+				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
+					<view class="nav-title">{{item.title}}</view>
+					<view class="nav-name">{{item.name}}</view>
+					<text :class="'cuIcon-' + item.cuIcon"></text>
+				</navigator>
+			</view>
+			<view class="cu-tabbar-height"></view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		name: "basics",
+		data() {
+			return {
+				TabCur: 0,
+				scrollLeft: 0,
+				isShowBackUp:false,
+				searchValue:'塑料瓶',
+				rublishData:'',
+				modalName: null,
+				categories:["废纸","塑料","玻璃","金属","布料"],
+				data:[1,2,3,4,5,6,1,1,1,1],
+				load:2, //不显示
+				text:"更多",
+				swiperList: [
+				{
+					id: 0,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
+				}, {
+					id: 1,
+					type: 'image',
+					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
+				}],
+				elements: [{
+						title: '布局',
+						name: 'layout',
+						color: 'cyan',
+						cuIcon: 'newsfill'
+					},
+					{
+						title: '背景',
+						name: 'background',
+						color: 'blue',
+						cuIcon: 'colorlens'
+					},
+					{
+						title: '文本',
+						name: 'text',
+						color: 'purple',
+						cuIcon: 'font'
+					},
+					{
+						title: '图标 ',
+						name: 'icon',
+						color: 'mauve',
+						cuIcon: 'cuIcon'
+					},
+					{
+						title: '按钮',
+						name: 'button',
+						color: 'pink',
+						cuIcon: 'btn'
+					},
+					{
+						title: '标签',
+						name: 'tag',
+						color: 'brown',
+						cuIcon: 'tagfill'
+					},
+					{
+						title: '头像',
+						name: 'avatar',
+						color: 'red',
+						cuIcon: 'myfill'
+					},
+					{
+						title: '进度条',
+						name: 'progress',
+						color: 'orange',
+						cuIcon: 'icloading'
+					},
+					{
+						title: '边框阴影',
+						name: 'shadow',
+						color: 'olive',
+						cuIcon: 'copy'
+					},
+					{
+						title: '加载',
+						name: 'loading',
+						color: 'green',
+						cuIcon: 'loading2'
+					}
+				],
+				buttonList:[1,2,3,4,5,6,7,8]
+			};
+		},
+		onShow() {
+			console.log("success")
+		},
+		methods: {
+			isScroll(e){
+				console.log(this.$refs);
+			},
+			showModal(e) {
+				this.modalName = e.currentTarget.dataset.target;
+				console.log(this.modalName);
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
+			tabSelect(e) {
+				this.TabCur = e.currentTarget.dataset.id;
+				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+				
+			},
+			showBackUp(){
+				this.isShowBackUp = true;
+			},
+			hideBackUp(){
+				this.isShowBackUp = false;
+			},
+			getRublishData(){
+				uni.request({
+					url:"http://api.tianapi.com/txapi/lajifenlei/index?key=576ee9214b7242ea2e385dfbebbd85d9&mode=1&word="+this.searchValue,
+					success: (res) => {
+						if(res.data.newslist){
+							res.data.newslist.forEach((v)=>{
+								if(v.name.trim() == this.searchValue.trim()){
+									this.rublishData = v;
+									console.log(this.rublishData);
+								}
+							})
+						}
+						else{
+							this.rublishData = '';
+						}
+						
+					}
+				})
+			},
+			loadAndHide(){
+				if(this.load==2){
+					this.text="收起";
+					this.load=1;
+				}
+				else if(this.load==1){
+					this.text="更多";
+					this.load=2;
+				}
+			}
+		},
+	}
+</script>
+
+<style>
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	.page {
+		height: 100vh;
+	}
+	.item{
+		width: 45vw;
+		height: calc(45vw + 60px);
+		padding: 0;
+		margin: 8px 2vw;
+	}
+	.box-content{
+		width:100%;
+		padding: 1%;
+		display: flex;
+		padding-bottom: 70px;
+		align-content:space-between;
+		flex-wrap: wrap;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+	.search-backup{
+		position: fixed;
+		top: 80px;
+		width: 100%;
+		height: 100vh;
+		backdrop-filter:blur(1rem);
+		background: rgba(97, 97, 97, 0.7);
+		opacity: 0;
+		z-index: -1;
+	}
+	.show-backup{
+		display: block;
+		animation: showBackUp .5s forwards;
+	}
+	.hide-backup{
+		display: none;
+		animation: hideBackUp .5s forwards;
+	}
+	.show-more{
+		animation:showMore .5s forwards;
+	}
+	.hide-more{
+		animation: hideMore .5s forwards;
+	}
+	.knownledge{
+		position: relative;
+		/* left: calc(50vw - 42.5vw); */
+		width: 85vw;
+		max-height: 33vw;
+		background-color: white;
+		margin: 20px auto 10px;
+		border-radius: 10px;
+		padding: 2vw;
+		overflow: hidden;
+	}
+	.load-more{
+/* 		position: relative;
+		bottom: 0; */
+		margin: 2vw auto;
+		text-align: center;
+		font-size: 14px;
+		color: #6596c1;
+	}
+	.cart{
+		position: fixed;
+		/* bottom: 42px; */
+		left: 5vw;
+		bottom: 60px;
+		width: 90vw;
+		border-radius: 30px;
+		height: 42px;
+		z-index: 1024;
+	}
+	.my-bottom-modal{
+		z-index: 1020;
+	}
+	@keyframes showBackUp{
+		from{
+			opacity: 0;
+			z-index: 1040;
+		}
+		to{
+			opacity: 1;
+			z-index: 1050;
+		}
+	}
+	@keyframes hideBackUp{
+		from{
+			opacity: 1;
+			z-index: 1050;
+		}
+		to{
+			opacity: 0;
+			z-index: 1040;
+		}
+	}
+	@keyframes showMore{
+		from{
+			max-height: 33vw;
+		}
+		to{
+			max-height: 105vw;
+		}
+	}
+	@keyframes hideMore{
+		from{
+			max-height: 105vw;
+		}
+		to{
+			max-height: 33vw;
+		}
+	}
+</style>
