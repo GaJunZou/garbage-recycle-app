@@ -21,7 +21,7 @@
 					<view class="padding" @click="saveImg()">
 						保存图片
 					</view>
-					<hr class="hr">
+					<div class="hr" style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view @tap="hideModal" class="padding">
 						取消
 					</view>

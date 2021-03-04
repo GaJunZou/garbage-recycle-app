@@ -55,53 +55,56 @@
 				</view>
 			</view>
 			<!-- 搜索页 -->
-			<view class="search-backup" @touchmove.prevent @mousewheel.prevent :class="isShowBackUp == true ? 'show-backup' : 'hide-backup'" @click.stop="hideBackUp()">
-				<p style="font-size: 18px;margin: 15px 10px;color: #ffffff;">热门搜索：</p>
-				<!-- 备选 -->
-				<view class="padding">
-					<view class="grid col-4 padding-sm">
-						<view class="margin-tb-sm text-center" v-for="(item,index) in buttonList" :key="index">
-							<button @click.stop="" class="cu-btn round" 
-							style="
-							background-color: #000000;
-							color: #ffffff;
-							width: 70px;
-							opacity: .5;
-							font-size: 14px;
-							margin: 10px 0;">123</button>
-						</view>
-					</view>
-				</view>
-				<view class="search-result" style="position: absolute;	">
-					<!-- 垃圾分类知识区 -->
-					<view class="knownledge" :class="load == 1 ? 'show-more' : 'hide-more'" @click.stop="" v-if="rublishData">
-						<view style="width: 22vw;height: 22vw;float: left;">
-							<image src="../../static/11.png" mode="" style="width: 100%;height: 100%;border-radius: 10px;"></image>
-						</view>
-						<view style="width: 55vw;height: 22vw;float: left;margin: 0 2vw;font-size: 15px;line-height: 11vw;"> 
-							<p><strong>名称：</strong>{{rublishData.name}}</p>
-							<p>
-								<strong>分类：</strong>
-								<span v-if="rublishData.type==0">可回收垃圾</span>
-								<span v-else-if="rublishData.type==1">有害垃圾</span>
-								<span v-else-if="rublishData.type==2">厨余垃圾(湿垃圾)</span>
-								<span v-else-if="rublishData.type==3">其他垃圾(干垃圾)</span>
-							</p>
-						</view>
-						<view>
-							<view>
-								<view style="width: 82vw;height: auto;font-size: 15px;color: #424242;" v-if="load==1">
-									<p>解释：{{rublishData.explain}}</p>
-									<p>详细：{{rublishData.contain}}</p>
-									<p>建议：{{rublishData.tip}}</p>
-								</view>
-								<p class="load-more" @click="loadAndHide()">{{text}}<span class="cuIcon" :class="load == 1 ? 'cuIcon-fold load-more' : 'cuIcon-unfold hide-more'" style="font-size: 15px;"></span></p>
+			<view class="search-backup" :class="isShowBackUp == true ? 'show-backup' : 'hide-backup'" @click.stop="hideBackUp()">
+				<view style="width: 100vw;height: 100vh;overflow: scroll;">
+					<p style="font-size: 18px;margin: 15px 10px;color: #ffffff;">热门搜索：</p>
+					<!-- 备选 -->
+					<view class="padding">
+						<view class="grid col-4 padding-sm">
+							<view class="margin-tb-sm text-center" v-for="(item,index) in buttonList" :key="index">
+								<button @click.stop="" class="cu-btn round" 
+								style="
+								background-color: #000000;
+								color: #ffffff;
+								width: 70px;
+								opacity: .5;
+								font-size: 14px;
+								margin: 10px 0;">123</button>
 							</view>
 						</view>
 					</view>
-					<div style="position: relative;width: 100vw;height: 30vh;background-color: #DD514C;top: 30px;">
-						
-					</div>
+					<view class="search-result" style="position: absolute;">
+							<!-- 垃圾分类知识区 -->
+							<view class="knownledge" :class="load == 1 ? 'show-more' : 'hide-more'" @click.stop="" v-if="rublishData">
+								<view style="width: 22vw;height: 22vw;float: left;">
+									<image src="../../static/11.png" mode="" style="width: 100%;height: 100%;border-radius: 10px;"></image>
+								</view>
+								<view style="width: 55vw;height: 22vw;float: left;margin: 0 2vw;font-size: 15px;line-height: 11vw;"> 
+									<p><strong>名称：</strong>{{rublishData.name}}</p>
+									<p>
+										<strong>分类：</strong>
+										<span v-if="rublishData.type==0">可回收垃圾</span>
+										<span v-else-if="rublishData.type==1">有害垃圾</span>
+										<span v-else-if="rublishData.type==2">厨余垃圾(湿垃圾)</span>
+										<span v-else-if="rublishData.type==3">其他垃圾(干垃圾)</span>
+									</p>
+								</view>
+								<view>
+									<view>
+										<view style="width: 82vw;height: auto;font-size: 15px;color: #424242;" v-if="load==1">
+											<p>解释：{{rublishData.explain}}</p>
+											<p>详细：{{rublishData.contain}}</p>
+											<p>建议：{{rublishData.tip}}</p>
+										</view>
+										<p class="load-more" @click="loadAndHide()">{{text}}<span class="cuIcon" :class="load == 1 ? 'cuIcon-fold load-more' : 'cuIcon-unfold hide-more'" style="font-size: 15px;"></span></p>
+									</view>
+								</view>
+							</view>
+							<div style="position: relative;width: 100vw;height:50vh;background-color: #DD514C;top: 30px;">
+								
+							</div>
+						</view>
+					</view>
 				</view>
 			</view>
 			<!-- cart -->
@@ -118,14 +121,14 @@
 				<p style="float: right;margin-right: 10px;line-height: 42px;font-size: 14px;color: #fff;font-weight: 700;">去结算</p>
 			</div>
 			<!-- cart-modal -->
-			<view @click="hideModal($event)" @touchmove="isScroll($event)" @mousewheel="isScroll($event)" class="cu-modal bottom-modal my-bottom-modal" :class="modalName=='bottomModal'?'show':''">
-				<view @click.stop="" @touchmove.stop="" @mousewheel.stop="" class="cu-dialog" style="max-height: 500px;overflow: scroll;border-radius: 5px;">
+			<view @click="hideModal($event)" class="cu-modal bottom-modal my-bottom-modal" :class="modalName=='bottomModal'?'show':''">
+				<view @click.stop="" class="cu-dialog" style="max-height: 500px;overflow: scroll;border-radius: 5px;">
 					<view class="cu-bar bg-white" style="position: sticky;top: 0;z-index: 10;">
 						<view class="action text-blue" @tap="hideModal">
 							<strong style="float: left;font-size: 14px;color: #ff5500;line-height: 40px;">取消</strong>
 						</view>
 					</view>
-					<view class="padding" style="text-align: left;overflow: hidden;">
+					<view  @touchmove.stop="" class="padding" style="text-align: left;overflow: hidden;">
 						<div v-for="i in data" style="padding: 5px 10px;height: 40px;">
 							<i class="cuIcon-close" style="float: left;font-size: 20px;color: red;line-height: 40px;"></i>
 							<div style="float: left;width: 40px;height: 40px;margin-right: 10px;margin-left: 5px;">
@@ -168,6 +171,7 @@
 				isShowBackUp:false,
 				searchValue:'塑料瓶',
 				rublishData:'',
+				isScroll:true,
 				modalName: null,
 				categories:["废纸","塑料","玻璃","金属","布料"],
 				data:[1,2,3,4,5,6,1,1,1,1],
@@ -247,18 +251,27 @@
 				buttonList:[1,2,3,4,5,6,7,8]
 			};
 		},
-		onShow() {
-			console.log("success")
+		 mounted() {
+			document.addEventListener('touchmove',(e)=>{
+				if(this.isScroll == false){
+					e.stopPropagation();
+					e.preventDefault();
+				}else{
+					document.removeEventListener(e.type,arguments.callee,false);
+				}
+			},{passive:false})
 		},
 		methods: {
-			isScroll(e){
-				console.log(this.$refs);
+			log(e){
+				console.log(e);
 			},
 			showModal(e) {
+				this.isScroll=false;
 				this.modalName = e.currentTarget.dataset.target;
 				console.log(this.modalName);
 			},
 			hideModal(e) {
+				this.isScroll=true;
 				this.modalName = null
 			},
 			tabSelect(e) {
@@ -267,9 +280,11 @@
 				
 			},
 			showBackUp(){
+				this.isScroll=false;
 				this.isShowBackUp = true;
 			},
 			hideBackUp(){
+				this.isScroll=true;
 				this.isShowBackUp = false;
 			},
 			getRublishData(){
@@ -311,7 +326,7 @@
 		margin: 0;
 	}
 	.page {
-		height: 100vh;
+		height: auto;
 	}
 	.item{
 		width: 45vw;
@@ -333,7 +348,7 @@
 		position: fixed;
 		top: 80px;
 		width: 100%;
-		height: 100vh;
+		min-height: 100vh;
 		backdrop-filter:blur(1rem);
 		background: rgba(97, 97, 97, 0.7);
 		opacity: 0;

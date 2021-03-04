@@ -1,7 +1,7 @@
 <template name="components">
 	<view>
 		<scroll-view scroll-y class="page">
-			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 0 20px;font-weight: 700;color: #e2e2e2;">
+			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 40px 20px 0px;font-weight: 700;color: #e2e2e2;">
 				探索 <i class="cuIcon-discoverfill" style="color: #EB2;"></i> 发现
 			</div>
 			<swiper :style="tabStyle" class="screen-swiper square-dot" :indicator-dots="true" :circular="true"
@@ -34,7 +34,8 @@
 					height:''
 				},
 				tabStyle:{
-					minHeight:""
+					minHeight:"",
+					overflow:"hidden"
 				},
 				swiperList: [{
 					id: 0,
@@ -113,6 +114,7 @@
 			};
 		},
 		created(){
+			console.log(document.body);
 			this.tabStyle.minHeight = window.innerHeight-50-42 + 'px';
 			this.itemStyle.height = this.tabStyle.minHeight;
 		}
@@ -126,7 +128,7 @@
 	.tab-item-box{
 		width: 100%;
 		height: 100vh;
-		background-color: ##cdcdcd;
+		background-color: #9a9a9a;
 	}
 	.tab-item{
 		overflow: scroll;

@@ -29,7 +29,7 @@
 				</view>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view @tap="showModal" data-target="DialogModal1" class="cu-bar bg-white">
 			<view class="action">
 				<i style="font-size: 18px;font-weight: 400;margin-right: 10px;" 

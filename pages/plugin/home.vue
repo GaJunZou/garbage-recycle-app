@@ -1,7 +1,7 @@
 <template name="components">
 	<view>
 		 <scroll-view scroll-y="true" class="page">
-			 <view class="bg-gradual-green padding radius shadow-blur">
+			 <view style="padding-top: 40px;" class="bg-gradual-green padding radius shadow-blur">
 				 <view class="top-set" @click="setup()">
 				 	 <i class="iconfont icon-setting icon-set"></i>
 				  </view>
@@ -31,7 +31,7 @@
 			 <view style="margin-top: 50px;">
 			 	<view class="cu-bar bg-white" @click="openOrder">
 			 		<view class="action">
-			 			<text class="text-gray">我的订单</text> 
+			 			<text class="text-black">我的订单</text> 
 			 		</view>
 			 		<view class="content text-bold">
 			 			
@@ -42,10 +42,10 @@
 			 			</text>
 			 		</view>
 			 	</view>
-				<hr>
+				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 			 	<view class="cu-bar bg-white">
 			 		<view class="action">
-			 			<text class="text-gray">我的礼券</text> 
+			 			<text class="text-black">我的礼券</text> 
 			 		</view>
 			 		<view class="content text-bold">
 			 			
@@ -56,10 +56,10 @@
 			 			</text>
 			 		</view>
 			 	</view>
-				<hr>
+				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 			 	<view class="cu-bar bg-white">
 			 		<view class="action">
-			 			<text class="text-gray">使用帮助</text> 
+			 			<text class="text-black">使用帮助</text> 
 			 		</view>
 			 		<view class="content text-bold">
 			 			
@@ -70,10 +70,10 @@
 			 			</text>
 			 		</view>
 			 	</view>
-				<hr>
+				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 			 	<view class="cu-bar bg-white">
 			 		<view class="action">
-			 			<text class="text-gray">问题反馈</text> 
+			 			<text class="text-black">问题反馈</text> 
 			 		</view>
 			 		<view class="content text-bold">
 			 			
@@ -84,10 +84,10 @@
 			 			</text>
 			 		</view>
 			 	</view>
-				<hr>
+				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 			 	<view class="cu-bar bg-white">
 			 		<view class="action">
-			 			<text class="text-gray">关于易收购</text> 
+			 			<text class="text-black">关于易收购</text> 
 			 		</view>
 			 		<view class="content text-bold">
 			 			
@@ -141,7 +141,7 @@
 		position: relative;
 		width: 100vw;
 		height: 30px;
-		top: 0;
+		top: 40px;
 	}
 	.top-set .icon-set{
 		color: #333;

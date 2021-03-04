@@ -90,7 +90,7 @@
 				</text>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view class="cu-bar bg-white" @click="showModal" data-target="setName">
 			<view class="action">
 				<text class="text-black text-bold">昵称</text> 
@@ -102,7 +102,7 @@
 				</text>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view class="cu-bar bg-white" @click="showModal" data-target="setGender">
 			<view class="action">
 				<text class="text-black text-bold">性别</text> 
@@ -114,7 +114,7 @@
 				</text>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view class="cu-bar bg-white">
 			<view class="action">
 				<text class="text-black text-bold">ID</text> 
@@ -126,7 +126,7 @@
 				</text>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view class="cu-bar bg-white" @click="showModal" data-target="setSign">
 			<view class="action">
 				<text class="text-black text-bold">签名</text> 
@@ -142,7 +142,7 @@
 				</text>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view class="cu-bar bg-white"  @click="managerAddress">
 			<view class="action">
 				<text class="text-black text-bold">我的地址</text> 
@@ -154,7 +154,7 @@
 				</text>
 			</view>
 		</view>
-		<hr>
+		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 	</view>
 </template>
 

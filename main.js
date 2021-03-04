@@ -13,6 +13,9 @@ Vue.component('plugin',plugin)
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
 
+import line from './components/line/line.vue'
+Vue.component('line',line)
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'
