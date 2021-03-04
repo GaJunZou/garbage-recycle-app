@@ -1,7 +1,7 @@
 <template name="basics">
 	<view>
-		<view class="page">
-			<view class="up-page" ref="page">
+		<view :class="isScroll == true ? '' : 'isScroll'" class="page">
+			<!-- <view class="up-page"> -->
 				<!-- 搜索 -->
 				<view class="cu-bar bg-gradual-blue search" style="position: sticky;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px">
 					<view class="action">
@@ -53,7 +53,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			<!-- </view> -->
 			<!-- 搜索页 -->
 			<view class="search-backup" :class="isShowBackUp == true ? 'show-backup' : 'hide-backup'" @click.stop="hideBackUp()">
 				<view style="width: 100vw;height: 100vh;overflow: scroll;">
@@ -261,6 +261,9 @@
 				}
 			},{passive:false})
 		},
+		created(){
+			console.log(this.swiperList);
+		},
 		methods: {
 			log(e){
 				console.log(e);
@@ -327,6 +330,10 @@
 	}
 	.page {
 		height: auto;
+	}
+	.isScroll{
+		overflow: hidden;
+		height: 100%;
 	}
 	.item{
 		width: 45vw;

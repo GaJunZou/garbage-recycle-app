@@ -8,9 +8,14 @@
 			 interval="5000" duration="500">
 				<swiper-item v-for="(item,index) in swiperList" :key="index">
 					<div class="tab-item-box">
-						<div :style="itemStyle" class="tab-item">
-							
+						<div class="tab-item" v-for="(item,index) in titleList" :key="index">
+							<div class="content">
+								<div class="title">这款小程序UI太漂亮了</div>
+								<div class="words">大家好大家好大家好大家好，我是为广大程序员兄弟操碎了心的小编，每天推荐一个小工具，希望大家喜欢</div>
+							</div>
+							<div class="img"><image src="../../static/11.png" style="width: 100%;height: 100%;" mode=""></image></div>
 						</div>
+						<div style="height: 140px;text-align: center;">没有更多了~</div>
 					</div>
 				</swiper-item>
 			</swiper>
@@ -30,10 +35,13 @@
 	export default {
 		data() {
 			return {
+				titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
 				itemStyle:{
-					height:''
+					height:'',
 				},
 				tabStyle:{
+					position:'fixed',
+					width:'100%',
 					minHeight:"",
 					overflow:"hidden"
 				},
@@ -114,10 +122,13 @@
 			};
 		},
 		created(){
-			console.log(document.body);
-			this.tabStyle.minHeight = window.innerHeight-50-42 + 'px';
-			this.itemStyle.height = this.tabStyle.minHeight;
-		}
+			uni.getSystemInfo({
+				    success: (res)=> {
+						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 100 + 'px';
+						// this.itemStyle.height = this.tabStyle.minHeight;
+				    }
+				});
+			},
 	}
 </script>
 
@@ -128,12 +139,47 @@
 	.tab-item-box{
 		width: 100%;
 		height: 100vh;
-		background-color: #9a9a9a;
+		overflow: scroll;
+		background-color: #fdfdfd;
 	}
 	.tab-item{
 		overflow: scroll;
 		width: 90vw;
-		padding: 5vw;
+		padding:1vw 5vw;
 		height: auto;
+		border-bottom: 12px #eee solid;
+	}
+	.content{
+		float: left;
+		width: 58vw;
+		height: 22vw;
+		margin-right: 2vw;
+	}
+	.content .title{
+		font-size: 15px;
+		font-weight: 700;
+		margin-bottom: 1vw;
+	}
+	.content .words{
+		float: left;
+		font-size: 14px;
+		height: 60px;
+		width: 58vw;
+		overflow: hidden;
+		/* 3. 文字溢出的时候用省略号来显示 */
+		text-overflow: ellipsis;
+		 display: -webkit-box;
+		/* 限制在一个块元素显示的文本的行数 */
+		-webkit-line-clamp: 3;
+		/* 设置或检索伸缩盒对象的子元素的排列方式 */
+		-webkit-box-orient: vertical;
+	}
+	.img{
+		float: right;
+		width: 30vw;
+		height: 22vw;
+	}
+	.img > image{
+		border-radius: 5px;
 	}
 </style>

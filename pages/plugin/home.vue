@@ -1,7 +1,7 @@
 <template name="components">
 	<view>
 		 <scroll-view scroll-y="true" class="page">
-			 <view style="padding-top: 40px;" class="bg-gradual-green padding radius shadow-blur">
+			 <view style="padding-top: 20px;" class="bg-gradual-green padding radius shadow-blur">
 				 <view class="top-set" @click="setup()">
 				 	 <i class="iconfont icon-setting icon-set"></i>
 				  </view>

@@ -2534,7 +2534,7 @@ swiper[class*="-dot"] .uni-swiper-dots {
 swiper.square-dot .wx-swiper-dot,
 swiper.square-dot .a-swiper-dot,
 swiper.square-dot .uni-swiper-dot {
-	background-color: #ffffff;
+	background-color: #7fc62e;
 	opacity: 0.4;
 	width: 10upx;
 	height: 10upx;
