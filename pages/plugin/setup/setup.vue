@@ -5,8 +5,8 @@
 			<block slot="content"><span style="font-weight: 900;">个人信息</span></block>
 		</cu-custom>
 		
-		<view class="cu-modal" :class="modalName=='setName'?'show':''">
-			<view class="cu-dialog">
+		<view @click="hideModal" class="cu-modal" :class="modalName=='setName'?'show':''">
+			<view @click.stop="" class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">修改昵称</view>
 					<view class="action" @tap="hideModal">
@@ -14,7 +14,7 @@
 					</view>
 				</view>
 				<view class="padding bg-white">
-					<input class="uni-input" focus placeholder="输入新昵称" v-model="newName"/>
+					<input class="uni-input" placeholder="输入新昵称" v-model="newName"/>
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<view class="action">
@@ -24,8 +24,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="cu-modal" :class="modalName=='setGender'?'show':''">
-			<view class="cu-dialog">
+		<view @click="hideModal" class="cu-modal" :class="modalName=='setGender'?'show':''">
+			<view @click.stop="" class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">修改性别</view>
 					<view class="action" @tap="hideModal">
@@ -54,8 +54,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="cu-modal" :class="modalName=='setSign'?'show':''">
-			<view class="cu-dialog">
+		<view @click="hideModal" class="cu-modal" :class="modalName=='setSign'?'show':''">
+			<view  @click.stop="" class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<view class="content">修改签名</view>
 					<view class="action" @tap="hideModal">
@@ -65,8 +65,7 @@
 				<view class="padding bg-white">
 					 <textarea 
 					 style="height: 50px;"
-					 maxlength="30" 
-					 focus="true" 
+					 maxlength="30"
 					 placeholder="请输入..." 
 					 v-model="newSigh"/>
 				</view>
@@ -86,7 +85,7 @@
 			<view class="action">
 				<image style="width: 70px;height: 70px;margin: 8px;border-radius: 5px;" src="../../../static/11.png" mode=""></image>
 				<text class="text-grey text-bold">
-					<i class="icon-next iconfont icon-right"></i>
+					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -98,7 +97,7 @@
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>天才少年1984</span>
-					<i class="icon-next iconfont icon-right"></i>
+					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -110,19 +109,19 @@
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>男</span>
-					<i class="icon-next iconfont icon-right"></i>
+					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
 		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-		<view class="cu-bar bg-white">
+		<view class="cu-bar bg-white" @click="tip()">
 			<view class="action">
 				<text class="text-black text-bold">ID</text> 
 			</view>
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>30624700</span>
-					<i class="icon-next iconfont icon-right"></i>
+					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -131,14 +130,12 @@
 			<view class="action">
 				<text class="text-black text-bold">签名</text> 
 			</view>
-			<view class="content">
-				<p style="text-overflow: ellipsis;">
-					无人生哲理能急救你唯独这歌赠你，月光有人捞起有人瞧不起
-				</p>
-			</view>
 			<view class="action">
+				<p class="signture">
+					无人生哲理哲理能急救里唯独这歌赠你，月光有人捞起有人瞧不起,月光有人捞起有人瞧不起
+				</p>
 				<text class="text-grey text-bold">
-					<i class="icon-next iconfont icon-right"></i>
+					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -150,7 +147,7 @@
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>查看</span>
-					<i class="icon-next iconfont icon-right"></i>
+					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -210,6 +207,10 @@
 						console.log(err)
 					}
 				})
+			},
+			tip(){
+				plus.nativeUI.alert('id不支持修改');
+				plus.nativeUI.setUIStyle('dark');
 			}
 		}
 	}
@@ -219,5 +220,23 @@
 .choose-box{
 	display: inline-block;
 	float: left;
+}
+.signture{
+	width: 250px;
+	height: 30px;
+	margin: 8px;
+	border-radius: 5px;
+	line-height: 16px;
+	font-size: 15px;
+	float: right;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	/* 3. 文字溢出的时候用省略号来显示 */
+	text-overflow: ellipsis;
+	 display: -webkit-box;
+	/* 限制在一个块元素显示的文本的行数 */
+	-webkit-line-clamp: 2;
+	/* 设置或检索伸缩盒对象的子元素的排列方式 */
+	-webkit-box-orient: vertical;
 }
 </style>

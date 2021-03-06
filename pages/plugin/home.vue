@@ -1,34 +1,34 @@
 <template name="components">
 	<view>
 		 <scroll-view scroll-y="true" class="page">
-			 <view style="padding-top: 20px;" class="bg-gradual-green padding radius shadow-blur">
+			 <view style="padding-top: 0px;color: white;" class="padding radius shadow-blur bg">
 				 <view class="top-set" @click="setup()">
-				 	 <i class="iconfont icon-setting icon-set"></i>
+				 	 <i class="iconfont icon-setting icon-set" style="color: #FFFFFF;"></i>
 				  </view>
 				  <view class="header">
 				 	 <view class="head">
 				 		<image src="../../static/11.png" mode=""></image>
 				 	 </view>
 				 	 <view class="text">
-				 		<p style="font-size: 16px;font-weight: 700;margin: 10px 20px;color: #333;">这是用户名</p>
-				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;color:#333">这是用户ID</p>
+				 		<p style="font-size: 16px;font-weight: 700;margin: 10px 20px;">这是用户名</p>
+				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;">这是用户ID</p>
 				 	 </view>
 				  </view>
-				  <p style="margin: 15px 20px;font-size: 13px;color:#333">
+				  <p style="margin: 15px 20px;font-size: 13px;">
 				 	当你凝视深渊的时候，深渊也在凝视着你！当你凝视深渊的时候，深渊也在凝视着你！ 
 				  </p>
 				  <view class="honor">
-					 <view class="score ">
-						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 20px 0 0 10px;">我的积分</p>
+					 <view class="score">
+						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px 0 0 10px;">我的积分</p>
 						<p style="text-align: center;font-size: 22px;font-weight: 700;margin: 5px;">288</p>
 					 </view>
 					 <view class="title">
-						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 20px 0 0 10px;">我的称号</p>
-						<p style="text-align: center;font-size: 22px;font-weight: 700;margin: 5px;">环境卫士</p>
+						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px 0 0 10px;">我的称号</p>
+						<p style="text-align: center;font-size: 18px;font-weight: 700;margin: 5px;">环境卫士</p>
 					 </view>
 				  </view>
 			 </view>
-			 <view style="margin-top: 50px;">
+			 <view style="margin-top: 25px;">
 			 	<view class="cu-bar bg-white" @click="openOrder">
 			 		<view class="action">
 			 			<text class="text-black">我的订单</text> 
@@ -137,6 +137,11 @@
 	.page {
 		height: 100vh;
 	}
+	.bg{
+		background-image: url(../../static/sea.png);
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
 	.top-set{
 		position: relative;
 		width: 100vw;
@@ -174,12 +179,12 @@
 		padding: 10px;
 	}
 	.honor{
-		height: 100px;
+		height:70px;
 		width: 100vw;
 		margin: 0 5px;
-		margin-top: 40px;
+		margin-top: 20px;
 		position: relative;
-		top: 30px;
+		top: 15px;
 	}
 	.honor .score{
 		float: left;
@@ -187,8 +192,8 @@
 		background-image: linear-gradient(45deg, #ffc800, #ff5558);
 		/* color: #ffffff; */
 		height: 100%;
-		width: 48%;
-		margin: 1% 0 1%;
+		width: 41%;
+		margin-left: 3%;
 	}
 	.honor .title{
 		float: left;
@@ -196,8 +201,8 @@
 		/* background-color: #ffb205; */
 		background-image: linear-gradient(45deg, #0081ff, #1ec7da);
 		height: 100%;
-		width: 48%;
-		margin: 1% 1% 0;
+		width: 41%;
+		margin-left: 3%;
 	}
 	.icon-right{
 		font-weight: 900;

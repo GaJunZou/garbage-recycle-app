@@ -4,14 +4,18 @@
 			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 40px 20px 0px;font-weight: 700;color: #e2e2e2;">
 				探索 <i class="cuIcon-discoverfill" style="color: #EB2;"></i> 发现
 			</div>
-			<swiper :style="tabStyle" class="screen-swiper square-dot" :indicator-dots="true" :circular="true"
-			 interval="5000" duration="500">
+			<ul class="tab-title">
+				<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v}}</li>
+			</ul>
+			<swiper :style="tabStyle" class="screen-swiper" :circular="true"
+			 interval="5000" duration="500" :current="currentTab" @change="changeSwiper($event)">
 				<swiper-item v-for="(item,index) in swiperList" :key="index">
 					<div class="tab-item-box">
-						<div class="tab-item" v-for="(item,index) in titleList" :key="index">
+						<div class="tab-item" v-for="(v,i) in item.titleList" :key="i">
 							<div class="content">
-								<div class="title">这款小程序UI太漂亮了</div>
-								<div class="words">大家好大家好大家好大家好，我是为广大程序员兄弟操碎了心的小编，每天推荐一个小工具，希望大家喜欢</div>
+								<div class="title">这款小程序UI太漂亮了（{{index}}）</div>
+								<div class="words">大家好大家好大家好大家好大家好大家好大家好大家好，我是为广大程序员兄弟操碎了心的小编，每天推荐一个小工具，希望大家喜欢</div>
+								<div style="color: #8799A3;"><text class="cuIcon-time"></text>2020-10-19</div>
 							</div>
 							<div class="img"><image src="../../static/11.png" style="width: 100%;height: 100%;" mode=""></image></div>
 						</div>
@@ -19,14 +23,14 @@
 					</div>
 				</swiper-item>
 			</swiper>
-			<view class="nav-list">
+<!-- 			<view class="nav-list">
 				<navigator hover-class='none' :url="'/pages/component/' + item.name" class="nav-li" navigateTo :class="'bg-'+item.color"
 				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
 					<view class="nav-title">{{item.title}}</view>
 					<view class="nav-name">{{item.name}}</view>
 					<text :class="'cuIcon-' + item.cuIcon"></text>
 				</navigator>
-			</view>
+			</view> -->
 		</scroll-view>
 	</view>
 </template>
@@ -35,10 +39,11 @@
 	export default {
 		data() {
 			return {
-				titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
 				itemStyle:{
 					height:'',
 				},
+				tabTitle:['环保卫士','生活达人','探索更多'],
+				currentTab:0,
 				tabStyle:{
 					position:'fixed',
 					width:'100%',
@@ -46,17 +51,14 @@
 					overflow:"hidden"
 				},
 				swiperList: [{
-					id: 0,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
-				}, {
-					id: 1,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
-				}, {
-					id: 2,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
+					title: "环保动态",
+					titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+				},{
+					title: "环保百科",
+					titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+				},{
+					title: "生活达人",
+					titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
 				}],
 				elements: [{
 						title: '操作条',
@@ -129,6 +131,17 @@
 				    }
 				});
 			},
+		methods:{
+			tabChange:function(e){
+				var index = e.target.dataset.current || e.currentTarget.dataset.current;
+				this.currentTab=index;	
+			},
+			changeSwiper(e){
+				this.currentTab = e.detail.current;
+				e.detail.current = 2;
+				console.log(e);
+			}
+		}
 	}
 </script>
 
@@ -136,18 +149,42 @@
 	.page {
 		height: 100vh;
 	}
+	.tab-title{
+		height: 45px;		
+		width: 100vw;
+		font-size: 20px;
+		text-decoration: none;
+		list-style: none;
+		padding: 0;
+	}
+	.tab-title > li{
+		float: left;
+		text-align: center;
+		width: 30vw;
+		height: 40px;
+		line-height: 40px;
+		padding: 0;
+		margin-left:2.5vw;
+	}
+	.current-tab{
+		font-weight: 700;
+		border-bottom: 3px #f37b1d solid;
+	}
 	.tab-item-box{
-		width: 100%;
+		width: 96vw;
+		margin: 2vw;
 		height: 100vh;
 		overflow: scroll;
-		background-color: #fdfdfd;
 	}
 	.tab-item{
 		overflow: scroll;
 		width: 90vw;
-		padding:1vw 5vw;
+		padding:2.5vw 5vw;
+		margin: 12px 0;
 		height: auto;
-		border-bottom: 12px #eee solid;
+		border-radius: 10px;
+		background-color: #fdfdfd;
+		/* border-bottom: 12px #eee solid; */
 	}
 	.content{
 		float: left;
@@ -163,14 +200,14 @@
 	.content .words{
 		float: left;
 		font-size: 14px;
-		height: 60px;
+		height: 40px;
 		width: 58vw;
 		overflow: hidden;
 		/* 3. 文字溢出的时候用省略号来显示 */
 		text-overflow: ellipsis;
 		 display: -webkit-box;
 		/* 限制在一个块元素显示的文本的行数 */
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 2;
 		/* 设置或检索伸缩盒对象的子元素的排列方式 */
 		-webkit-box-orient: vertical;
 	}

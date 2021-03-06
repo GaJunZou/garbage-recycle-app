@@ -106,16 +106,32 @@
 			"style": {}
 		} ,{
             "path" : "pages/plugin/setup/setup",
-            "style" : {}
+            "style" : {
+				"app-plus": {  
+				    "bounce": "none"
+				} 
+				}
         },{
             "path" : "pages/plugin/setup/address",
-            "style" : {}
+            "style" : {
+				"app-plus": {  
+				    "bounce": "none"
+					} 
+				}
         },{
             "path" : "pages/plugin/setup/bigHead",
-            "style" : {}
+            "style" : {
+				"app-plus": {  
+				    "bounce": "none"
+					} 
+				}
         },{
             "path" : "pages/plugin/order/order",
-            "style" : {}
+            "style" : {
+				"app-plus": {  
+				    "bounce": "none"
+					} 
+				}
         }
     ],
 	"globalStyle": {

@@ -1,14 +1,14 @@
 <template name="basics">
-	<view>
-		<view :class="isScroll == true ? '' : 'isScroll'" class="page">
-			<!-- <view class="up-page"> -->
+	<view id="basics">
+		<view class="page">
+			<scroll-view :class="isScroll == true ? '' : 'isScroll'">
 				<!-- 搜索 -->
-				<view class="cu-bar bg-gradual-blue search" style="position: sticky;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px">
-					<view class="action">
-						<text>广州</text>
+				<view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px;width: 100vw;">
+					<view class="action" style="width: 70px;">
+						<text @click="getLocation()">{{site}}</text>
 						<text class="cuIcon-triangledownfill"></text>
 					</view>
-					<view class="search-form radius" style="border-radius: 20px;">
+					<view class="search-form radius" style="border-radius: 20px;margin-left: 0;">
 						<text class="cuIcon-search"></text>
 						<input 
 							@click="showBackUp()"
@@ -23,7 +23,7 @@
 					</view>
 				</view>
 				<!-- 轮播图 -->
-				<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true"
+				<swiper class="screen-swiper square-dot" style="margin-top: 83px;" :indicator-dots="true" :circular="true"
 				 :autoplay="true" interval="5000" duration="500">
 					<swiper-item v-for="(item,index) in swiperList" :key="index">
 						<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
@@ -53,24 +53,16 @@
 						</view>
 					</view>
 				</view>
-			<!-- </view> -->
+			</scroll-view>
 			<!-- 搜索页 -->
 			<view class="search-backup" :class="isShowBackUp == true ? 'show-backup' : 'hide-backup'" @click.stop="hideBackUp()">
-				<view style="width: 100vw;height: 100vh;overflow: scroll;">
+				<view style="width: 100vw;min-height: 100%;">
 					<p style="font-size: 18px;margin: 15px 10px;color: #ffffff;">热门搜索：</p>
 					<!-- 备选 -->
 					<view class="padding">
-						<view class="grid col-4 padding-sm">
-							<view class="margin-tb-sm text-center" v-for="(item,index) in buttonList" :key="index">
-								<button @click.stop="" class="cu-btn round" 
-								style="
-								background-color: #000000;
-								color: #ffffff;
-								width: 70px;
-								opacity: .5;
-								font-size: 14px;
-								margin: 10px 0;">123</button>
-							</view>
+						<view class="col-4 padding-sm">
+								<button v-for="(item,index) in elements" :key="index" 
+								@click.stop="" class="cu-btn round margin-tb-sm btn">{{item.title}}</button>
 						</view>
 					</view>
 					<view class="search-result" style="position: absolute;">
@@ -100,9 +92,20 @@
 									</view>
 								</view>
 							</view>
-							<div style="position: relative;width: 100vw;height:50vh;background-color: #DD514C;top: 30px;">
-								
-							</div>
+								<view @click.stop="" class="flex justify-around box-content">
+									<view class="bg-white item radius" v-for="i in data">
+										<view>
+											<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
+										</view>
+										<p style="text-align: center;font-size: 16px;">塑料瓶</p>
+										<view>
+											<text style="float: left;margin:5px 10px;">2毛/个</text>
+											<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
+												<span class="cuIcon-add"></span>
+											</text>
+										</view>
+									</view>
+								</view>
 						</view>
 					</view>
 				</view>
@@ -170,11 +173,12 @@
 				scrollLeft: 0,
 				isShowBackUp:false,
 				searchValue:'塑料瓶',
+				site:'未定位',
 				rublishData:'',
 				isScroll:true,
 				modalName: null,
 				categories:["废纸","塑料","玻璃","金属","布料"],
-				data:[1,2,3,4,5,6,1,1,1,1],
+				data:[1,2,3,4,5,6,1,1],
 				load:2, //不显示
 				text:"更多",
 				swiperList: [
@@ -252,21 +256,29 @@
 			};
 		},
 		 mounted() {
-			document.addEventListener('touchmove',(e)=>{
-				if(this.isScroll == false){
-					e.stopPropagation();
-					e.preventDefault();
-				}else{
-					document.removeEventListener(e.type,arguments.callee,false);
-				}
-			},{passive:false})
+			// document.addEventListener('touchmove',(e)=>{
+			// 	if(this.isScroll == false){
+			// 		e.stopPropagation();
+			// 		e.preventDefault();
+			// 	}else{
+			// 		document.removeEventListener(e.type,arguments.callee,false);
+			// 	}
+			// },{passive:false})
 		},
 		created(){
-			console.log(this.swiperList);
 		},
 		methods: {
-			log(e){
-				console.log(e);
+			getLocation(){
+				let value = null;
+				plus.nativeUI.showWaiting("定位中...",{background : "#272822",padlock:true});
+				uni.getLocation({
+				    type: 'wgs84',
+					geocode:true,
+				    success: (res) => {
+						this.site = res.address.street;
+						plus.nativeUI.closeWaiting("定位中...");
+				    }
+				});
 			},
 			showModal(e) {
 				this.isScroll=false;
@@ -341,6 +353,17 @@
 		padding: 0;
 		margin: 8px 2vw;
 	}
+	.btn{
+		text-align: text-center;
+		margin: 2px !important;
+		background-color: #000000;
+		color: #ffffff;
+		padding: 0px 15px;
+		/* width: 70px; */
+		opacity: .5;
+		font-size: 14px;
+		margin: 10px 0;
+	}
 	.box-content{
 		width:100%;
 		padding: 1%;
@@ -353,9 +376,10 @@
 	}
 	.search-backup{
 		position: fixed;
+		overflow: scroll;
 		top: 80px;
 		width: 100%;
-		min-height: 100vh;
+		min-height: 92vh;
 		backdrop-filter:blur(1rem);
 		background: rgba(97, 97, 97, 0.7);
 		opacity: 0;
