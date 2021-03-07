@@ -2,15 +2,15 @@
 	<view>
 		 <scroll-view scroll-y="true" class="page">
 			 <view style="padding-top: 0px;color: white;" class="padding radius shadow-blur bg">
-				 <view class="top-set" @click="setup()">
-				 	 <i class="iconfont icon-setting icon-set" style="color: #FFFFFF;"></i>
+				 <view class="top-set" >
+				 	 <i @click="setup()" class="iconfont icon-setting icon-set" style="color: #FFFFFF;"></i>
 				  </view>
 				  <view class="header">
 				 	 <view class="head">
 				 		<image src="../../static/11.png" mode=""></image>
 				 	 </view>
 				 	 <view class="text">
-				 		<p style="font-size: 16px;font-weight: 700;margin: 10px 20px;">这是用户名</p>
+				 		<p @click="gotoLogin" style="font-size: 16px;font-weight: 700;margin: 10px 20px;">这是用户名</p>
 				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;">这是用户ID</p>
 				 	 </view>
 				  </view>
@@ -125,7 +125,15 @@
 					}
 				})
 			},
-		},
+			gotoLogin(){
+				uni.navigateTo({
+					url: "/pages/index/login",
+					fail(err) {
+						console.log(err)
+					}
+				})
+			}
+		}
 }
 </script>
 

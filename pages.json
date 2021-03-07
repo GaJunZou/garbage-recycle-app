@@ -132,6 +132,10 @@
 				    "bounce": "none"
 					} 
 				}
+        },{
+            "path" : "pages/index/login",
+            "style" : {
+				}
         }
     ],
 	"globalStyle": {
