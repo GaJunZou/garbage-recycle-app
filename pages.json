@@ -135,8 +135,26 @@
         },{
             "path" : "pages/index/login",
             "style" : {
+				"app-plus": {
+				    "bounce": "none"
+					} 
 				}
-        }
+        },{
+            "path" : "pages/basics/settle",
+            "style" : {
+				"app-plus": {
+				    "bounce": "none"
+					} 
+				}
+        },
+		{
+		    "path" : "pages/index/regist",
+		    "style" : {
+				"app-plus": {
+				    "bounce": "none"
+					} 
+				}
+		}
     ],
 	"globalStyle": {
 		"mp-alipay": {
@@ -145,9 +163,9 @@
 			"allowsBounceVertical": "NO"
 		},
 		"navigationBarBackgroundColor": "#0081ff",
-		"navigationBarTitleText": "ColorUi for UniApp",
+		"navigationBarTitleText": "回收",
 		"navigationStyle": "custom",
-		"navigationBarTextStyle": "white"
+		"navigationBarTextStyle":"black"  //状态栏字体颜色
 	},
 	"usingComponts": true,
 		"condition": { //模式配置，仅开发期间生效

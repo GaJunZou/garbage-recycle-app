@@ -121,7 +121,7 @@
 					src="../../static/cart.png"></image>
 				</div>
 				<p @tap.stop="showModal($event)" data-target="bottomModal" style="float: left;margin-left: 100px;line-height: 42px;font-size: 16px;color: #000;">已选11件回收物</p>
-				<p style="float: right;margin-right: 10px;line-height: 42px;font-size: 14px;color: #fff;font-weight: 700;">去结算</p>
+				<p @click="settle" style="float: right;margin-right: 10px;line-height: 42px;font-size: 14px;color: #fff;font-weight: 700;">去结算</p>
 			</div>
 			<!-- cart-modal -->
 			<view @click="hideModal($event)" class="cu-modal bottom-modal my-bottom-modal" :class="modalName=='bottomModal'?'show':''">
@@ -330,6 +330,14 @@
 					this.text="更多";
 					this.load=2;
 				}
+			},
+			settle(){
+				uni.navigateTo({
+					url: "/pages/basics/settle",
+					fail(err) {
+						console.log(err)
+					}
+				})
 			}
 		},
 	}
