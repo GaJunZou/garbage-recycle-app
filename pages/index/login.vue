@@ -17,6 +17,17 @@
 				    <input class="uni-input" @input="valid2" type="password" name="input" v-model="password"/>
 					<text :class="valid_2 == false ? 'valid' : 'no-valid'">密码由8-16位数字或字母组成!</text>
 				</view>
+				<view class="role ">
+					<view class="title">你是:</view>
+					<radio-group class="radio-group" name="radio">
+						<button @click="chooseRole(1)" :class="role ==1 ? 'bg-blue' : ''" class="cu-btn round" style="width: 30vw;height:50px;margin-top: 10px;" >
+							<text class="my-icon" style="font-size: 25px;line-height: 50px;">&#xe6ed;</text>普通用户
+						</button>
+						<button @click="chooseRole(0)" :class="role ==0 ? 'bg-orange' : ''" class="cu-btn round"  style="width: 30vw;height:50px;margin-top: 10px;">
+							<text class="my-icon" style="font-size: 25px;line-height: 50px;">&#xe655;</text>回收员
+						</button>
+					</radio-group>
+				</view>
 		        <view class="uni-btn-v">
 		            <button :disabled="!valid" class="cu-btn round bg-gradual-green" style="width: 100%;height: 40px;margin-top: 20px;" form-type="submit">注册</button>
 		        </view>
@@ -33,6 +44,7 @@
 				phoneNumber:null,
 				password:null,
 				rePassword:null,
+				role:1,
 				valid:false,
 				valid_1:null,
 				valid_2:null
@@ -66,8 +78,8 @@
 					this.valid = false
 				}
 			},
-			chooseGender(value){
-				this.gender = value
+			chooseRole(value){
+				this.role = value
 			},
 			valid1(){
 				if(/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/.test(this.phoneNumber)==true){
@@ -95,9 +107,10 @@
 		margin: 20px auto;
 	}
 	.radio-group{
+		color: #c8c8c8;
 		display: flex;
 		justify-content: space-between;
-		font-weight: 700;
+		font-weight: 400;
 	}
 	.radio-group  label{
 		margin-top: 10px;

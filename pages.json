@@ -154,6 +154,14 @@
 				    "bounce": "none"
 					} 
 				}
+		},
+		{
+		    "path" : "pages/index/registNext",
+		    "style" : {
+				"app-plus": {
+				    "bounce": "none"
+					} 
+				}
 		}
     ],
 	"globalStyle": {
