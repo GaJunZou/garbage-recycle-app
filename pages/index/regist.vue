@@ -6,7 +6,7 @@
 		</cu-custom>
 		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;">注册</p>
 		<view class="form-log">
-            <form @submit="formSubmit" @reset="formReset">
+            <form @submit="formSubmit">
 				<view class="uni-form-item uni-column">
 				    <view class="title">手机号</view>
 				    <input name="input" class="uni-input" type="number" @input="valid1()" v-model="phoneNumber"/>

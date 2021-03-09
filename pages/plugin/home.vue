@@ -1,4 +1,4 @@
-<template name="components">
+<template name="plugin">
 	<view>
 		 <scroll-view scroll-y="true" class="page">
 			 <view style="padding-top: 0px;color: white;" class="padding radius shadow-blur bg">
@@ -105,7 +105,7 @@
 
 <script>
 	export default {
-		name: "components",
+		name: "plugin",
 		data() {
 			return {
 				

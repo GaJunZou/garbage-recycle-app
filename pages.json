@@ -162,6 +162,26 @@
 				    "bounce": "none"
 					} 
 				}
+		},
+		{
+		    "path" : "pages/collector/home",
+		    "style" : {
+				"app-plus": {
+				    "bounce": "none"
+					} 
+				}
+		},
+		{
+			"path": "pages/collector/finish",
+			"style": {}
+		},
+		{
+			"path": "pages/collector/ongoing",
+			"style": {}
+		},
+		{
+			"path": "pages/collector/waitingList",
+			"style": {}
 		}
     ],
 	"globalStyle": {

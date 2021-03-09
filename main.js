@@ -16,6 +16,15 @@ Vue.component('cu-custom',cuCustom)
 import line from './components/line/line.vue'
 Vue.component('line',line)
 
+import waitingList from './pages/collector/waitingList.vue'
+Vue.component('waitingList',waitingList);
+
+import ongoing from './pages/collector/ongoing.vue'
+Vue.component('ongoing',ongoing);
+
+import finish from './pages/collector/finish.vue'
+Vue.component('finish',finish);
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

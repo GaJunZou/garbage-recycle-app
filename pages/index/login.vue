@@ -6,7 +6,7 @@
 		</cu-custom>
 		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;">登录</p>
 		<view class="form-log">
-		    <form @submit="formSubmit" @reset="formReset">
+		    <form @submit="formSubmit">
 				<view class="uni-form-item uni-column">
 				    <view class="title">手机号</view>
 				    <input name="input" class="uni-input" type="number" @input="valid1()" v-model="phoneNumber"/>
@@ -33,6 +33,7 @@
 		        </view>
 		    </form>
 		</view>
+		<button type="default" @click="gotoCollect">go to collector</button>
 		<button @click="gotoRegist" style="position: fixed;bottom: 0;right: 0;font-size: 18px;margin: 30px 20px;" class="cu-btn">注册<text class="cuIcon-right"></text></button>
 	</view>
 </template>
@@ -59,17 +60,20 @@
 					}
 				})
 			},
+			gotoCollect(){
+				uni.navigateTo({
+					url: "/pages/collector/home",
+					fail(err) {
+						console.log(err)
+					}
+				})
+			},
 			formSubmit: function(e) {
 				if(this.validForm() == false){
 					plus.nativeUI.toast("请填写必填项！");
 					return;
 				}
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
-				var formdata = e.detail.value
-				uni.showModal({
-					content: '表单数据内容：' + JSON.stringify(formdata),
-					showCancel: false
-				});
+				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value));
 			},
 			validForm(){
 				if(this.valid_1 == this.valid_2 == true){

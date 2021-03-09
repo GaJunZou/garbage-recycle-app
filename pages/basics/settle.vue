@@ -21,23 +21,20 @@
 			<view style="float: left;width: 100%;margin-top: 10px;">
 				<p style="float: right;margin-right: 10px;">总计：<b class="text-orange" style="font-size: 22px;line-height: 16px;">15</b>元</p>
 			</view>
-				<p>
-					预约日期：<text @click="chooseDate">{{getDate}}</text>
-				</p>
+			<view class="time">
+				<p>预约日期：<text @click="chooseDate">{{getDate}}</text></p>
 				<p>
 					预约时间：
 					<text @click="chooseStart">{{getStartTime}}</text> 
-					~
+					<text> ~ </text>
 					<text @click="chooseEnd">{{getEndTime}}</text>
 				</p>
+			</view>
 			<view class="btn-group">
-				<button class="cu-btn round bg-orange">确认下单</button>
+				<button class="cu-btn round bg-orange" @click="submit">确认下单</button>
 				<button class="cu-btn round lines-grey">取消订单</button>
-				<button style="float: left;margin: 10px 0;" class="cu-btn round lines-grey" @click="sureTime()">修改时间</button>
 			</view>
 		</div>
-		
-		
 	</view>
 </template>
 
@@ -50,18 +47,10 @@
 				endTime:''
 			}
 		},
-		
 		created(){
 			this.startTime = new Date();
 			this.endTime = new Date(new Date().getTime()+60*60*1000);
-		},
-		watch:{
-			startTime(val,newVal){
-				this.date = new Date(newVal);
-			},
-			endTime(val,newVal){
-				newVal = new Date(this.endTime);
-			}
+			
 		},
 		computed:{
 			getDate(){
@@ -77,42 +66,39 @@
 		methods:{
 			chooseDate(){
 				var styles = {};
-				styles.title = "请选择上门日期";	//设置标题
-				
-				plus.nativeUI.pickDate(function(e){
-						this.startTime=e.date;
-					}, function(e){
-						console.log("未选择日期："+JSON.stringify(e));
-					});
+				styles.title = "请选择上门回收日期"
+				plus.nativeUI.pickDate((e)=>{
+					this.startTime=new Date(e.date);
+				}, (e)=>{
+					console.log( "未选择时间："+e.message );
+				},styles);
 			},
 			chooseStart(){
 				var styles = {};
-				styles.time = new Date();
 				styles.title = "请选择开始时间";	//设置标题
-				styles.is24Hour = true; //使用12小时制模式显示
-				plus.nativeUI.pickTime(function(e){
-					this.startTime=e.date;
-					console.log(d);
-				}, function(e){
-					console.log( "未选择时间："+e.message );
-				}, styles);
-			},
-			chooseEnd(){
-				let styles = {};
-				styles.time =new Date(new Date().getTime()+60*60*1000);
-				styles.title = "请选择截至时间";	//设置标题
-				styles.is24Hour = true; //使用12小时制模式显示
+				styles.time = new Date();//设置默认显示时间为早上6点
 				plus.nativeUI.pickTime((e)=>{
-					if(new Date(e.date) - new Date(this.startTime) < 60*60*1000){
-						plus.nativeUI.toast("选择的截至时间要晚于开始时间一小时以上！");
-					}
-					else{
-						this.endTime = e.date;
-					}
+					this.startTime=new Date(e.date);
 				}, (e)=>{
 					console.log( "未选择时间："+e.message );
-				}, styles);
-				
+				},styles);
+			},
+			chooseEnd(){
+				var styles = {};
+				styles.title = "请选择截至时间";	//设置标题
+				styles.time = new Date();//设置默认显示时间为早上6点
+				plus.nativeUI.pickTime((e)=>{
+					this.endTime=new Date(e.date);
+				}, (e)=>{
+					console.log( "未选择时间："+e.message );
+				},styles);
+			},
+			submit(){
+				if(new Date(this.endTime) - new Date(this.startTime) < 60*60*1000){
+					plus.nativeUI.toast("选择的时间段要在一小时以上！");
+					return false;
+				}
+				plus.nativeUI.toast("成功！");
 			}
 		}
 	}
@@ -136,5 +122,14 @@
 		float: right;
 		margin: 10px 0;
 		margin-left: 10px;
+	}
+	.time p{
+		font-size: 14px;
+		margin: 10px auto;
+	}
+	.time text{
+		font-weight: 700;
+		font-size: 16px;
+		color: #39B54A;
 	}
 </style>

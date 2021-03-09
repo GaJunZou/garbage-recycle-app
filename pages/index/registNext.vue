@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;margin: 90px auto;">还剩最后一步就可以注册成功了！</p>
+		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;margin: 60px auto;">还剩最后一步就可以注册成功了！</p>
 		<view class="form-log">
 		    <form @submit="formSubmit" @reset="formReset">
 				<view class="uni-form-item uni-column">
@@ -16,26 +16,22 @@
 				</view>
 				<view class="uni-form-item uni-column">
 				    <view class="title">写下你酷酷的签名吧！</view>
-					  <textarea class="uni-input" style="height: 100px;width: 100%;border:1rpx #999 solid;" v-model="sign"/>
+					  <textarea 
+					  maxlength="30"
+					  class="uni-input" 
+					  style="height: 70px;width: 100%;line-height: 25px;font-size: 15px;padding:10px 5px;background-color: #fff;" 
+					  v-model="sign"/>
 				</view>
 		        <view class="uni-form-item uni-column">
 		            <view class="title">上传一张帅气的图片作为头像！</view>
-					<view class="">
-						<view class="grid col-4 grid-square flex-sub">
-							<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
-							 <image :src="imgList[index]" mode="aspectFill"></image>
-								<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
-									<text class='cuIcon-close'></text>
-								</view>
-							</view>
-							<view class="solids" @tap="ChooseImage" v-if="imgList.length=1">
-								<text class='cuIcon-cameraadd'></text>
-							</view>
-						</view>
+					<view class="choose-img" @tap="ChooseImage(1)">
+						<text v-if="imgList.length==0" class='cuIcon-cameraadd'></text>
+						<image v-else style="width: 100%;height: 100%;" @tap="ViewImage" :data-url="imgList[0]" :src="imgList[0]" mode="aspectFill"></image>
 					</view>
+					<p style="text-align: center;color: #0091ff;font-weight: 700;" v-if="imgList.length==1" @tap.stop="DelImg" :data-index="index">换一张</p>
 		        </view>
 		        <view class="uni-btn-v">
-		            <button :disabled="!valid" class="cu-btn round bg-gradual-green" style="width: 100%;height: 40px;margin-top:20px;" form-type="submit">进入</button>
+		            <button class="cu-btn round bg-gradual-green" style="width: 100%;height: 40px;margin-top:20px" form-type="submit">进入</button>
 		        </view>
 		    </form>
 		</view>
@@ -46,9 +42,9 @@
 	export default{
 		data(){
 			return{
-				name:null,
-				gender:null,
-				sign:null,
+				name:'淘气的皮蛋',
+				gender:1,
+				sign:"无人生哲理能急救你唯独这歌赠你无人生哲理能急救你唯独这歌赠你",
 				imgList:[]
 			}
 		},
@@ -65,18 +61,11 @@
 					showCancel: false
 				});
 			},
-			validForm(){
-				if(this.valid_1 == this.valid_2 == this.valid_3 == true){
-					this.valid = true
-				}else{
-					this.valid = false
-				}
-			},
 			chooseGender(value){
 				this.gender = value
 			},
 			DelImg(e) {
-				this.imgList.splice(e.currentTarget.dataset.index, 1)
+				this.ChooseImage();
 			},
 			ChooseImage() {
 				uni.chooseImage({
@@ -84,11 +73,7 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
-						if (this.imgList.length != 0) {
-							this.imgList = this.imgList.concat(res.tempFilePaths)
-						} else {
-							this.imgList = res.tempFilePaths
-						}
+						this.imgList = res.tempFilePaths;
 					}
 				});
 			},
@@ -117,21 +102,28 @@
 		
 	}
 	.uni-btn-v{
-		margin-top: 60px;
+		margin-top: 30px;
 	}
 	.uni-input{
 		font-size:18px;
 		border-bottom: 1px #999 solid;
 	}
-	.input-valid{
-		color: #39B54A;
-		border-bottom: 1px #39B54A solid;
+	.choose-img{
+		position: static;
+		margin:30px auto;
+		margin-bottom: 5px;
+		width: 100px;
+		height: 100px;
+		font-size: 30px;
+		line-height: 100px;
+		text-align: center;
+		background-color: #FFFFFF;
+		border-radius: 10px;
 	}
-	.valid{
-		display: block;
-		color: #DD514C;
-	}
-	.no-valid{
-		display: none;
+	.choose-img .p{
+		width: 100%;
+		height: 20px;
+		font-size: 14px;
+		line-height: 20px;
 	}
 </style>
