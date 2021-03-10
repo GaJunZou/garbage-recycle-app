@@ -114,7 +114,6 @@
 
 	}
 </script>
-
 <style>
 	@import "colorui/main.css";
 	@import "colorui/icon.css";
@@ -247,4 +246,5 @@
 			transform: translateY(0px);
 		}
 	}
+	
 </style>

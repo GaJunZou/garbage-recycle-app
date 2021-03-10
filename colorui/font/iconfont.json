@@ -1,0 +1,107 @@
+{
+  "id": "1992011",
+  "name": "recycle",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "16063959",
+      "name": "应用",
+      "font_class": "ic_list_a",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "6401231",
+      "name": "二维码",
+      "font_class": "weibiaoti--",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "7165594",
+      "name": "应用",
+      "font_class": "yingyong",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "8084576",
+      "name": "路线",
+      "font_class": "luxian",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "3953600",
+      "name": "工作人员",
+      "font_class": "gongzuorenyuan",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "5782009",
+      "name": "普通人员",
+      "font_class": "putongrenyuan",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "122967",
+      "name": "司机",
+      "font_class": "mainicondriver",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "2205710",
+      "name": "快递箱，快递小哥",
+      "font_class": "courierboxshi",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "17408083",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "3633569",
+      "name": "钩",
+      "font_class": "gou",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "3395913",
+      "name": "笑脸",
+      "font_class": "ic-insert-emoticon-",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "5629333",
+      "name": "weibo",
+      "font_class": "weibo",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "9843517",
+      "name": "qq",
+      "font_class": "qq",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "13229261",
+      "name": "微信-hover",
+      "font_class": "xingzhuangbeifen",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 <template>
 	<view>
 		<view class="flex justify-between top-bar">
-			<view><text style="font-size: 22px;font-weight: 700;" class="cuIcon-apps"></text></view>
-			<view>between</view>
-			<view>between
+			<view><text class="my-icon" @tap="showModal" data-target="DrawerModalL">&#xe60d;</text></view>
+			<view style="text-align: center;font-size: 20px;font-weight: 700;">任务列表</view>
+			<view style="display: flex;justify-content: space-around;">
+				<text class="my-icon">&#xe626;</text>
+				<text class="my-icon">&#xe61a;</text>
 			</view>
 		</view>
 		<ul class="tab-title">
@@ -20,6 +22,59 @@
 				</div>
 			</swiper-item>
 		</swiper>
+		<view class="cu-modal drawer-modal justify-start" :class="modalName=='DrawerModalL'?'show':''">
+			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
+				<view class="cu-list menu text-left">
+					<view class="bg">
+						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;" @tap.stop="hideModal">
+							<text class="cuIcon-back"></text>收起
+						</p>
+						<view class="header">
+							 <view class="head">
+								<image @click="bigHead" src="../../static/11.png" mode=""></image>
+							 </view>
+							 <view class="text">
+								<p style="font-size: 20px;font-weight: 700;margin: 10px 20px;">这是用户名</p>
+								<p style="font-size: 17px;font-weight: 400;margin: 10px 20px;">19875814656
+									<button class="cu-btn lines-cyan round" style="padding: 0 20rpx;margin-left: 20px;height: 20px;">修改</button>
+								</p>
+							 </view>
+						</view>
+						<p style="text-align: center;margin: 10px;">保护环境，从废品回收做起！</p>
+					</view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action">我的二维码</view>
+						<view class="action"><text class="cuIcon-qr_code"></text></view>
+					</view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action">工作城市/地区</view>
+						<view class="action">广州/白云<text class="cuIcon-location"></text></view>
+					</view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action">账户余额</view>
+						<view class="action">39.82元</view>
+					</view>
+					<view class="cu-bar bg-white">
+						<view class="action">积分</view>
+						<view class="action">18223</view>
+					</view>
+					<view class="cu-bar bg-white">
+						<view class="action">详细资料</view>
+						<view class="action"><text class="cuIcon-right"></text></view>
+					</view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action">关于易回收</view>
+						<view class="action"></view>
+					</view>
+					<button class="cu-btn bg-gradual-red round" style="position: absolute;bottom: 40px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;">退出</button>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -27,6 +82,7 @@
 	export default{
 		data(){
 			return{
+				modalName:null,
 				tabTitle:['待接单','进行中','已完成'],
 				currentTab:0,
 				tabStyle:{
@@ -45,6 +101,14 @@
 				});
 		},
 		methods:{
+			bigHead(){
+				uni.navigateTo({
+					url: "/pages/plugin/setup/bigHead",
+					fail(err) {
+						console.log(err)
+					}
+				})
+			},
 			tabChange:function(e){
 				var index = e.target.dataset.current || e.currentTarget.dataset.current;
 				this.currentTab=index;	
@@ -53,7 +117,13 @@
 				this.currentTab = e.detail.current;
 				e.detail.current = 2;
 				console.log(e);
-			}
+			},
+			showModal(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
 		}
 	}
 </script>
@@ -67,8 +137,15 @@
 	margin: 0;
 	border: 0;
 	color: #eee;
-	background-color: #272822;
+	background-color: #3c3c3c;
 	border: 0;
+}
+.top-bar view{
+	width: 33vw;
+}
+.top-bar text{
+	font-size: 26px;
+	/* font-weight: 700; */
 }
 .tab-title{
 	height: 30px;		
@@ -77,7 +154,7 @@
 	text-decoration: none;
 	list-style: none;
 	padding: 10px 0;
-	background-color: #272822;
+	background-color: #3c3c3c;
 }
 .tab-title > li{
 	color: #eee;
@@ -90,7 +167,7 @@
 	margin-left:2.5vw;
 }
 .current-tab{
-	color: #F4584C !important;  
+	color: #f4a158 !important;  
 	font-weight: 700;	
 }
 .tab-item-box{
@@ -116,5 +193,34 @@
 	float: right;
 	margin: 10px 0;
 	margin-left: 10px;
+}
+.bg{
+	color: #EEEEEE;
+	background-image: url(../../static/wallhaven-zmkleg.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.header{
+	float: left;
+	width: 100vw;
+	height: 100px;
+}
+.header .head{
+	float: left;
+	width: 100px;
+	height: 100px;
+	padding: 10px;
+}
+.header .head > image{
+	width: 100%;
+	height: 100%;
+	margin-left: 20px;
+	border-radius: 50%;
+	border:1px #666 solid
+}
+.header .text{
+	float: left;
+	height: 100px;
+	padding: 10px;
 }
 </style>

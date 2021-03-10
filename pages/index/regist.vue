@@ -4,7 +4,7 @@
 			<block slot="backText">登录</block>
 			<block slot="content"><span style="font-weight: 900;"></span></block>
 		</cu-custom>
-		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;">注册</p>
+		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;margin-bottom: 100px;">注册</p>
 		<view class="form-log">
             <form @submit="formSubmit">
 				<view class="uni-form-item uni-column">
@@ -32,7 +32,9 @@
 					</radio-group>
                 </view>
                 <view class="uni-btn-v">
-                    <button :disabled="!valid" class="cu-btn round bg-gradual-green" style="width: 100%;height: 40px;margin-top: 20px;" form-type="submit">注册</button>
+                    <button :disabled="!valid" class="cu-btn round bg-gradual-green" 
+					style="position: fixed;bottom:100px;left: 15vw;width: 70vw;height: 40px;margin-top: 20px;" 
+					form-type="submit">注册</button>
                 </view>
             </form>
         </view>

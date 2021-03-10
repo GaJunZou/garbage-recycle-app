@@ -4,7 +4,7 @@
 			<block slot="backText">再看看</block>
 			<block slot="content"><span style="font-weight: 900;"></span></block>
 		</cu-custom>
-		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;">登录</p>
+		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;margin-bottom: 100px;">登录</p>
 		<view class="form-log">
 		    <form @submit="formSubmit">
 				<view class="uni-form-item uni-column">
@@ -21,7 +21,7 @@
 					<view class="title">你是:</view>
 					<radio-group class="radio-group" name="radio">
 						<button @click="chooseRole(1)" :class="role ==1 ? 'bg-blue' : ''" class="cu-btn round" style="width: 30vw;height:50px;margin-top: 10px;" >
-							<text class="my-icon" style="font-size: 25px;line-height: 50px;">&#xe6ed;</text>普通用户
+							<text class="my-icon" style="font-size: 25px;line-height: 50px;"></text>普通用户
 						</button>
 						<button @click="chooseRole(0)" :class="role ==0 ? 'bg-orange' : ''" class="cu-btn round"  style="width: 30vw;height:50px;margin-top: 10px;">
 							<text class="my-icon" style="font-size: 25px;line-height: 50px;">&#xe655;</text>回收员
@@ -29,7 +29,7 @@
 					</radio-group>
 				</view>
 		        <view class="uni-btn-v">
-		            <button :disabled="!valid" class="cu-btn round bg-gradual-green" style="width: 100%;height: 40px;margin-top: 20px;" form-type="submit">注册</button>
+		            <button :disabled="!valid" class="cu-btn round bg-gradual-green" style="position: fixed;bottom:100px;left: 15vw;width: 70vw;height: 40px;margin-top: 20px;" form-type="submit">登录</button>
 		        </view>
 		    </form>
 		</view>
