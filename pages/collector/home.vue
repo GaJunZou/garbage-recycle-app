@@ -3,9 +3,8 @@
 		<view class="flex justify-between top-bar">
 			<view><text class="my-icon" @tap="showModal" data-target="DrawerModalL">&#xe60d;</text></view>
 			<view style="text-align: center;font-size: 20px;font-weight: 700;">任务列表</view>
-			<view style="display: flex;justify-content: space-around;">
-				<text class="my-icon">&#xe626;</text>
-				<text class="my-icon">&#xe61a;</text>
+			<view>
+				<text style="float:right" class="my-icon">&#xe626;</text>
 			</view>
 		</view>
 		<ul class="tab-title">
@@ -15,14 +14,14 @@
 		 interval="5000" duration="500"  indicator-active-color="orange" :current="currentTab" @change="changeSwiper($event)">
 			<swiper-item v-for="(item,index) in 3" :key="index">
 				<div class="tab-item-box">
-					<waitingList v-if="currentTab==0"></waitingList>
-					<ongoing v-if="currentTab==1"></ongoing>
-					<finish v-if="currentTab==2"></finish>
+					<waitingList v-if="index==0"></waitingList>
+					<ongoing v-if="index==1"></ongoing>
+					<finish v-if="index==2"></finish>
 					<div style="height: 140px;text-align: center;">没有更多了~</div>
 				</div>
 			</swiper-item>
 		</swiper>
-		<view class="cu-modal drawer-modal justify-start" :class="modalName=='DrawerModalL'?'show':''">
+		<view @touchstart="snapStart($event)" @touchend="snapEnd($event)" class="cu-modal drawer-modal justify-start" :class="modalName=='DrawerModalL'?'show':''">
 			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
 				<view class="cu-list menu text-left">
 					<view class="bg">
@@ -36,15 +35,15 @@
 							 <view class="text">
 								<p style="font-size: 20px;font-weight: 700;margin: 10px 20px;">这是用户名</p>
 								<p style="font-size: 17px;font-weight: 400;margin: 10px 20px;">19875814656
-									<button class="cu-btn lines-cyan round" style="padding: 0 20rpx;margin-left: 20px;height: 20px;">修改</button>
+									<button class="cu-btn lines-orange round" style="padding: 0 20rpx;margin-left: 20px;height: 20px;">修改</button>
 								</p>
 							 </view>
 						</view>
-						<p style="text-align: center;margin: 10px;">保护环境，从废品回收做起！</p>
+						<p style="text-align: center;margin: 10px;padding-bottom: 50rpx;">保护环境，从废品回收做起！</p>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
-						<view class="action">我的二维码</view>
+						<view class="action">我的收款码</view>
 						<view class="action"><text class="cuIcon-qr_code"></text></view>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
@@ -69,7 +68,7 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action">关于易回收</view>
-						<view class="action"></view>
+						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<button class="cu-btn bg-gradual-red round" style="position: absolute;bottom: 40px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;">退出</button>
 				</view>
@@ -90,7 +89,8 @@
 					width:'100%',
 					minHeight:"",
 					overflow:"hidden"
-				}
+				},
+				start:null
 			}
 		},
 		created(){
@@ -124,6 +124,16 @@
 			hideModal(e) {
 				this.modalName = null
 			},
+			snapStart(e){
+				this.start = e.changedTouches[0];
+			},
+			snapEnd(e){
+				let end = e.changedTouches[0];
+				let start = this.start;
+				if(start.clientX - end.clientX > 100 && start.clientY - end.clientY < 100){
+					this.hideModal();
+				}
+			}
 		}
 	}
 </script>
@@ -167,7 +177,7 @@
 	margin-left:2.5vw;
 }
 .current-tab{
-	color: #f4a158 !important;  
+	color: #faa125 !important;  
 	font-weight: 700;	
 }
 .tab-item-box{
@@ -196,7 +206,7 @@
 }
 .bg{
 	color: #EEEEEE;
-	background-image: url(../../static/wallhaven-zmkleg.jpg);
+	background-image: url(../../static/123.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -204,6 +214,7 @@
 	float: left;
 	width: 100vw;
 	height: 100px;
+	text-shadow: black 0.1em 0.1em 0.2em
 }
 .header .head{
 	float: left;
@@ -216,7 +227,7 @@
 	height: 100%;
 	margin-left: 20px;
 	border-radius: 50%;
-	border:1px #666 solid
+	border:1px #CCCCCC solid
 }
 .header .text{
 	float: left;
