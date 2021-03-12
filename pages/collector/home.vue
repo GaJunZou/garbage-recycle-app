@@ -25,8 +25,8 @@
 			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
 				<view class="cu-list menu text-left">
 					<view class="bg">
-						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;" @tap.stop="hideModal">
-							<text class="cuIcon-back"></text>收起
+						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;">
+							<text @tap.stop="hideModal" class="cuIcon-back"></text>收起
 						</p>
 						<view class="header">
 							 <view class="head">

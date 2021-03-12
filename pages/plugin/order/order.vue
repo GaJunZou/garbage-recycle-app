@@ -108,6 +108,7 @@
 		text-decoration: none;
 		list-style: none;
 		padding: 0;
+		margin-bottom: 10px;
 	}
 	.tab-title > li{
 		float: left;
@@ -123,16 +124,15 @@
 		color: #f37b1d;
 	}
 	.tab-item-box{
-		width: 96vw;
-		margin: 2vw;
+		width: 100%;
 		height: 100vh;
 		overflow: scroll;
 	}
 	.tab-item{
 		overflow: scroll;
 		width: 90vw;
-		padding:1vw 5vw;
-		margin: 12px 0;
+		padding:1vw 3vw;
+		margin: 12px auto;
 		height: auto;
 		border-radius: 10px;
 		background-color: #fdfdfd;

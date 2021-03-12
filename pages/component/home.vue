@@ -9,13 +9,13 @@
 			</ul>
 			<swiper :style="tabStyle" class="screen-swiper" :circular="true"
 			 interval="5000" duration="500" :current="currentTab" @change="changeSwiper($event)">
-				<swiper-item v-for="(item,index) in swiperList" :key="index">
+				<swiper-item v-for="(item,index) in swiperList" :key="index" style="width: 100%;">
 					<div class="tab-item-box">
 						<div class="tab-item" v-for="(v,i) in item.titleList" :key="i">
 							<div class="content">
 								<div class="title">这款小程序UI太漂亮了（{{index}}）</div>
 								<div class="words">大家好大家好大家好大家好大家好大家好大家好大家好，我是为广大程序员兄弟操碎了心的小编，每天推荐一个小工具，希望大家喜欢</div>
-								<div style="color: #8799A3;"><text class="cuIcon-time"></text>2020-10-19</div>
+								<div style="color: #8799A3;"><text class="cuIcon-time" style="line-height: 30px;margin-right: 5px;"></text>2020-10-19</div>
 							</div>
 							<div class="img"><image src="../../static/11.png" style="width: 100%;height: 100%;" mode=""></image></div>
 						</div>
@@ -23,14 +23,14 @@
 					</div>
 				</swiper-item>
 			</swiper>
-			<view class="nav-list">
+<!-- 			<view class="nav-list">
 				<navigator hover-class='none' :url="'/pages/component/' + item.name" class="nav-li" navigateTo :class="'bg-'+item.color"
 				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
 					<view class="nav-title">{{item.title}}</view>
 					<view class="nav-name">{{item.name}}</view>
 					<text :class="'cuIcon-' + item.cuIcon"></text>
 				</navigator>
-			</view>
+			</view> -->
 		</scroll-view>
 	</view>
 </template>
@@ -172,16 +172,16 @@
 		border-bottom: 3px #f37b1d solid;
 	}
 	.tab-item-box{
-		width: 96vw;
-		margin: 2vw;
+		width: 100%;
+		/* padding: 2vw; */
 		height: 100vh;
 		overflow: scroll;
 	}
 	.tab-item{
 		overflow: scroll;
 		width: 90vw;
-		padding:2.5vw 5vw;
-		margin: 12px 0;
+		padding:2.5vw 3vw;
+		margin: 12px auto;
 		height: auto;
 		border-radius: 10px;
 		background-color: #fdfdfd;
