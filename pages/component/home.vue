@@ -185,6 +185,7 @@
 		height: auto;
 		border-radius: 10px;
 		background-color: #fdfdfd;
+		overflow: hidden;
 		/* border-bottom: 12px #eee solid; */
 	}
 	.content{

@@ -42,6 +42,10 @@
 							<p>合计：10</p>
 						</view>
 					</view>
+					<view>
+						<p>备注：</p>
+						<p>这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注</p>
+					</view>
 					<view @click="hideDetail()" style="font-weight: 700;color: #faa125;text-align: center;"  class="action">收起<text class="cuIcon-fold"></text></view>
 				</view>
 			</view>

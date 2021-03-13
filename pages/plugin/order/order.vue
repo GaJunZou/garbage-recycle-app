@@ -39,6 +39,16 @@
 							</p>
 							<p style="float: right;margin-right: 10px;">总计：<b class="text-orange" style="font-size: 22px;line-height: 16px;">15</b>元</p>
 						</view>
+						<view style="float: left;width: 100%;margin-top: 10px;font-size: 15px;">
+							<p> <text class="cuIcon-locationfill">地址:</text>
+								广州市白云区石塘路塘村2街301
+							</p>
+						</view>
+						<view style="float: left;width: 100%;margin-top: 10px;">
+							备注信息：
+							<textarea value="" style="height: 60px;background-color: #f1f1f1;width: 100%;padding: 5px;" :readonly="i!==0">
+							</textarea>
+						</view>	
 						<view class="btn-group">
 							<button v-if="index==2" class="cu-btn round bg-red">删除订单</button>
 							<button v-if="index==2" style="float: left;margin: 10px 0;" class="cu-btn round lines-green">查看评价</button>

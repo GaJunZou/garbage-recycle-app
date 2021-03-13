@@ -30,6 +30,9 @@
 					<text @click="chooseEnd">{{getEndTime}}</text>
 				</p>
 			</view>
+			<view class="note">
+				<textarea value="" placeholder="添加备注" style="height: 60px;background-color: #f1f1f1;width: 100%;padding: 5px;"/>
+			</view>
 			<view class="btn-group">
 				<button class="cu-btn round bg-orange" @click="submit">确认下单</button>
 				<button class="cu-btn round lines-grey">取消订单</button>
