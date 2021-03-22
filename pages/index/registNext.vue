@@ -45,21 +45,37 @@
 				name:'淘气的皮蛋',
 				gender:1,
 				sign:"无人生哲理能急救你唯独这歌赠你无人生哲理能急救你唯独这歌赠你",
-				imgList:[]
+				imgList:[],
+				phone:0
 			}
+		},
+		onLoad:function(option){
+			console.log(option);
+			this.phone = +option.phone;
 		},
 		methods:{
 			formSubmit: function(e) {
-				if(this.validForm() == false){
-					plus.nativeUI.toast("请填写必填项！");
-					return;
-				}
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
-				var formdata = e.detail.value
-				uni.showModal({
-					content: '表单数据内容：' + JSON.stringify(formdata),
-					showCancel: false
-				});
+					// plus.nativeUI.toast("请填写必填项！");
+				uni.request({
+					url:this.base+'/account/postDetailData',
+					method:'POST',
+					data:{
+						phone:this.phone,
+						name:this.name,
+						gender:this.gender,
+						sign:this.sign,
+						portrait_url:"头像"
+					},
+					success: (res) => {
+						uni.setStorageSync('phone',res.data.phone);
+						uni.navigateTo({
+							url: "/pages/index/index?phone="+res.data.phone,
+						})
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
 			},
 			chooseGender(value){
 				this.gender = value

@@ -61,13 +61,37 @@
 					plus.nativeUI.toast("请填写必填项！");
 					return;
 				}
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
-				var formdata = e.detail.value
-				uni.showModal({
-					content: '表单数据内容：' + JSON.stringify(formdata),
-					showCancel: false
-				});
-				this.toNext();
+				uni.showToast({
+					title:"正在注册，请稍等~"
+				})
+				uni.request({
+					url:this.base+'/account/postRegist',
+					method:'POST',
+					data:{
+						phone: +this.phoneNumber,
+						password: this.password,
+						role: this.role == 1 ? 'user' : 'collector'
+					},
+					success: (res) => {
+						if(res.data.role == 'user'){
+							this.toNext(res.data.phone);
+						}else if(res.data.role == 'collector'){
+						uni.setStorageSync('phone',res.data.phone);
+							uni.navigateTo({
+								url: "/pages/collector/home?phone="+res.data.phone,
+							})
+						}
+						
+					},
+					fail: (err) => {
+						console.log(err);
+						uni.hideToast();
+						uni.showToast({
+							title:"注册失败~",
+							duration:1000
+						})
+					}
+				})
 			},
 			validForm(){
 				if(this.valid_1 == this.valid_2 == this.valid_3 == true){
@@ -103,9 +127,9 @@
 				}
 				this.validForm();
 			},
-			toNext(){
+			toNext(value){
 				uni.navigateTo({
-					url: "/pages/index/registNext",
+					url: "/pages/index/registNext?phone="+value,
 					fail(err) {
 						console.log(err)
 					}

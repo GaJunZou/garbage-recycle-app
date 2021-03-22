@@ -81,6 +81,7 @@
 	export default{
 		data(){
 			return{
+				phone:0,
 				modalName:null,
 				tabTitle:['待接单','进行中','已完成'],
 				currentTab:0,
@@ -94,6 +95,8 @@
 			}
 		},
 		created(){
+			this.phone = uni.getStorageSync('phone');
+			console.log(this.phone);
 			uni.getSystemInfo({
 				    success: (res)=> {
 						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';

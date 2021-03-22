@@ -48,7 +48,11 @@ Date.prototype.format = function(fmt) {
          }
      }
     return fmt; 
-}        
+}
+
+Vue.prototype.base = 'http://localhost:3000';
+
+
 
 const app = new Vue({
     ...App

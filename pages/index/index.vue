@@ -31,17 +31,17 @@
 	export default {
 		data() {
 		return {
+				phone: 0,
 				PageCur: 'basics'
 			}
 		},
 		created() {
-			uni.request({
-				url:"http://127.0.0.1:8081/b",
-				method:"POST",
-			  success: (res) => {
-					console.log(res);
-				}
-			})
+			this.phone = uni.getStorageSync('phone');
+			console.log(this.phone);
+		},
+		onLoad:function(option){
+			console.log(1);
+			console.log(option.phone);
 		},
 		methods: {
 			NavChange: function(e) {

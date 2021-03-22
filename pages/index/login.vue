@@ -52,9 +52,9 @@
 			}
 		},
 		methods:{
-			gotoRegist(){
+			gotoRegist(value){
 				uni.navigateTo({
-					url: "/pages/index/regist",
+					url: "/pages/index/regist?phone="+value,
 					fail(err) {
 						console.log(err)
 					}
@@ -73,7 +73,35 @@
 					plus.nativeUI.toast("请填写必填项！");
 					return;
 				}
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value));
+				uni.request({
+					url:this.base+'/account/postLogin',
+					method:'POST',
+					data:{
+						phone: this.phoneNumber,
+						password: this.password,
+						role: this.role == 1 ? 'user' : 'collector'
+					},
+					success: (res) => {
+						if(res.data === false){
+							uni.showToast({
+								title:"密码错误或账号不存在。",
+								duration:1000
+							})
+						return;
+						}
+						uni.setStorage('phone',res.data.phone)
+						if(res.data.role == 'user'){
+							uni.navigateTo({
+								url: "/pages/index/index",
+							})
+						}else if(res.data.role == 'collector'){
+							this.gotoCollect(res.data.phone);
+						}
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
 			},
 			validForm(){
 				if(this.valid_1 == this.valid_2 == true){
