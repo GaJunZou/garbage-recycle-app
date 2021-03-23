@@ -73,15 +73,14 @@
 						role: this.role == 1 ? 'user' : 'collector'
 					},
 					success: (res) => {
+						uni.setStorageSync('phone',res.data.phone);
 						if(res.data.role == 'user'){
 							this.toNext(res.data.phone);
 						}else if(res.data.role == 'collector'){
-						uni.setStorageSync('phone',res.data.phone);
 							uni.navigateTo({
 								url: "/pages/collector/home?phone="+res.data.phone,
 							})
 						}
-						
 					},
 					fail: (err) => {
 						console.log(err);

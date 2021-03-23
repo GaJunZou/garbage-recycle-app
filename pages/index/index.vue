@@ -2,7 +2,7 @@
 	<view>
 		<basics v-if="PageCur=='basics'"></basics>
 		<components v-if="PageCur=='component'"></components>
-		<plugin v-if="PageCur=='plugin'"></plugin>
+		<plugin v-if="PageCur=='plugin'" :user="user"></plugin>
 		<view class="cu-bar tabbar bg-white shadow foot">
 			<view class="action" @click="NavChange" data-cur="basics">
 				<view class='cuIcon-cu-image'>
@@ -32,21 +32,32 @@
 		data() {
 		return {
 				phone: 0,
-				PageCur: 'basics'
+				PageCur: 'basics',
+				user:null,
+				article:null,
+				main:null
 			}
 		},
 		created() {
 			this.phone = uni.getStorageSync('phone');
-			console.log(this.phone);
 		},
-		onLoad:function(option){
-			console.log(1);
-			console.log(option.phone);
+		onShow() {
+			this.phone = uni.getStorageSync('phone');
 		},
 		methods: {
 			NavChange: function(e) {
 				console.log(e)
-				this.PageCur = e.currentTarget.dataset.cur
+				this.PageCur = e.currentTarget.dataset.cur;
+				if(this.PageCur == 'plugin' && this.user == null){
+					uni.request({
+						url:this.base+"/account/getAllInfomation/"+this.phone,
+						method:"GET",
+						success: (res) => {
+							this.user = res.data;
+							uni.setStorageSync('user',this.user);
+						}
+					})
+				}
 			}
 		}
 	}

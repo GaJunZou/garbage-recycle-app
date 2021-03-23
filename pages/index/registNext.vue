@@ -49,9 +49,9 @@
 				phone:0
 			}
 		},
-		onLoad:function(option){
-			console.log(option);
-			this.phone = +option.phone;
+		created() {
+			this.phone = uni.getStorageSync('phone');
+			console.log(this.phone);
 		},
 		methods:{
 			formSubmit: function(e) {
@@ -64,15 +64,25 @@
 						name:this.name,
 						gender:this.gender,
 						sign:this.sign,
-						portrait_url:"头像"
 					},
 					success: (res) => {
-						uni.setStorageSync('phone',res.data.phone);
 						uni.navigateTo({
-							url: "/pages/index/index?phone="+res.data.phone,
+							url: "/pages/index/index"
 						})
 					},
 					fail: (err) => {
+						console.log(err);
+					}
+				});
+				uni.uploadFile({
+					url:this.base+'/account/uploadImg/'+this.phone,
+					filePath:this.imgList[0],
+					name:'portrait_url',
+					'content-type':"multipart/form-data",
+					success:(res)=> {
+						console.log(res);
+					},
+					fail:(err)=>{
 						console.log(err);
 					}
 				})

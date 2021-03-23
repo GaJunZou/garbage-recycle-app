@@ -7,15 +7,15 @@
 				  </view>
 				  <view class="header">
 				 	 <view class="head">
-				 		<image src="../../static/11.png" mode=""></image>
+				 		<image src="F:\毕设\exp_recycle\static\8b5RLQjnLu65hvnLT3W9DnjN.png" mode=""></image>
 				 	 </view>
 				 	 <view class="text">
-				 		<p @click="gotoLogin" style="font-size: 16px;font-weight: 700;margin: 10px 20px;">这是用户名</p>
-				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;">这是用户ID</p>
+				 		<p @click="gotoLogin" style="font-size: 16px;font-weight: 700;margin: 10px 20px;">{{user.name}}</p>
+				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;">{{user.phone}}</p>
 				 	 </view>
 				  </view>
 				  <p style="margin: 15px 20px;font-size: 13px;">
-				 	当你凝视深渊的时候，深渊也在凝视着你！当你凝视深渊的时候，深渊也在凝视着你！ 
+				 	{{user.user.sign}}
 				  </p>
 				  <view class="honor">
 					 <view class="score">
@@ -106,13 +106,17 @@
 <script>
 	export default {
 		name: "plugin",
+		props:{
+			user:{}
+		},
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
 			openOrder() {
+				console.log(this.user);
 				uni.navigateTo({
 					url: "/pages/plugin/order/order"
 				})

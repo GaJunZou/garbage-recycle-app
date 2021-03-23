@@ -12,10 +12,7 @@
 		<view @click="closeByMask" class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
 			<view class="cu-dialog" @click.stop="">
 				<view class="bg-white" style="color: #222;">
-					<view class="padding">
-						拍照上传
-					</view>
-					<view class="padding" @click="chooseImg()">
+					<view class="padding" @click="ChooseImage()">
 						从相册中选择
 					</view>
 					<view class="padding" @click="saveImg()">
@@ -36,7 +33,8 @@
 	export default {
 		data() {
 			return {
-				modalName: null
+				modalName: null,
+				imgList:[]
 			}
 		},
 		methods: {
@@ -52,19 +50,33 @@
 			closeByMask(e){
 				this.hideModal(e);
 			},
-			chooseImg(){
+			ChooseImage() {
 				uni.chooseImage({
-				    count: 1, //默认9
-				    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				    sourceType: ['album'], //从相册选择
-				    success: function (res) {
-				        console.log(JSON.stringify(res.tempFilePaths));
-				    }
+					count: 1, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: (res) => {
+						this.imgList = res.tempFilePaths;
+						this.saveImg();
+					}
 				});
 			},
 			saveImg(){
-
-				}
+				let phone = uni.getStorageSync('phone');
+				console.log(phone);
+				uni.uploadFile({
+					url:this.base+'/account/uploadImg/'+phone,
+					filePath:this.imgList[0],
+					name:'portrait_url',
+					'content-type':"multipart/form-data",
+					success:(res)=> {
+						console.log(res);
+					},
+					fail:(err)=>{
+						console.log(err);
+					}
+				})
+			}
 		}
 	}
 </script>

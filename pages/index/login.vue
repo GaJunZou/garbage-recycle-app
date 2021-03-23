@@ -89,13 +89,14 @@
 							})
 						return;
 						}
-						uni.setStorage('phone',res.data.phone)
 						if(res.data.role == 'user'){
+							uni.setStorageSync('phone',res.data.phone);
 							uni.navigateTo({
 								url: "/pages/index/index",
 							})
 						}else if(res.data.role == 'collector'){
-							this.gotoCollect(res.data.phone);
+							uni.setStorageSync('phone',res.data.phone);
+							this.gotoCollect();
 						}
 					},
 					fail: (err) => {

@@ -96,7 +96,6 @@
 		},
 		created(){
 			this.phone = uni.getStorageSync('phone');
-			console.log(this.phone);
 			uni.getSystemInfo({
 				    success: (res)=> {
 						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';
