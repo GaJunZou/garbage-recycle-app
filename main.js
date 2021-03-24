@@ -52,14 +52,10 @@ Date.prototype.format = function(fmt) {
 
 Vue.prototype.base = 'http://localhost:3000';
 
-
-
 const app = new Vue({
-    ...App
+    ...App,
+	data:{
+		a:1
+	}
 })
 app.$mount()
-
- 
-
-
-

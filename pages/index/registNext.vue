@@ -55,25 +55,6 @@
 		},
 		methods:{
 			formSubmit: function(e) {
-					// plus.nativeUI.toast("请填写必填项！");
-				uni.request({
-					url:this.base+'/account/postDetailData',
-					method:'POST',
-					data:{
-						phone:this.phone,
-						name:this.name,
-						gender:this.gender,
-						sign:this.sign,
-					},
-					success: (res) => {
-						uni.navigateTo({
-							url: "/pages/index/index"
-						})
-					},
-					fail: (err) => {
-						console.log(err);
-					}
-				});
 				uni.uploadFile({
 					url:this.base+'/account/uploadImg/'+this.phone,
 					filePath:this.imgList[0],
@@ -85,7 +66,27 @@
 					fail:(err)=>{
 						console.log(err);
 					}
-				})
+				});
+					// plus.nativeUI.toast("请填写必填项！");
+				uni.request({
+					url:this.base+'/account/postDetailData',
+					method:'POST',
+					data:{
+						phone:this.phone,
+						name:this.name,
+						gender:this.gender,
+						sign:this.sign,
+					},
+					success: (res) => {
+						this.$root.globalUser = res.data;
+						uni.navigateTo({
+							url: "/pages/index/index"
+						})
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				});
 			},
 			chooseGender(value){
 				this.gender = value

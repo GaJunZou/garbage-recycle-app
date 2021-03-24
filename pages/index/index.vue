@@ -2,7 +2,7 @@
 	<view>
 		<basics v-if="PageCur=='basics'"></basics>
 		<components v-if="PageCur=='component'"></components>
-		<plugin v-if="PageCur=='plugin'" :user="user"></plugin>
+		<plugin v-if="PageCur=='plugin'"></plugin>
 		<view class="cu-bar tabbar bg-white shadow foot">
 			<view class="action" @click="NavChange" data-cur="basics">
 				<view class='cuIcon-cu-image'>
@@ -31,6 +31,8 @@
 	export default {
 		data() {
 		return {
+				globalUser: {},
+				globalCollector:{},
 				phone: 0,
 				PageCur: 'basics',
 				user:null,
@@ -53,8 +55,7 @@
 						url:this.base+"/account/getAllInfomation/"+this.phone,
 						method:"GET",
 						success: (res) => {
-							this.user = res.data;
-							uni.setStorageSync('user',this.user);
+							console.log(res.data);
 						}
 					})
 				}

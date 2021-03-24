@@ -7,24 +7,24 @@
 				  </view>
 				  <view class="header">
 				 	 <view class="head">
-				 		<image src="F:\毕设\exp_recycle\static\8b5RLQjnLu65hvnLT3W9DnjN.png" mode=""></image>
+				 		<image :src="require('F://毕设//img//' + url)" mode=""></image>
 				 	 </view>
 				 	 <view class="text">
-				 		<p @click="gotoLogin" style="font-size: 16px;font-weight: 700;margin: 10px 20px;">{{user.name}}</p>
-				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;">{{user.phone}}</p>
+				 		<p @click="gotoLogin" style="font-size: 16px;font-weight: 700;margin: 10px 20px;">{{globalUser.name || "点击登录"}}</p>
+				 		<p style="font-size: 14px;font-weight: 400;margin: 10px 20px;">{{globalUser.phone || "未登录"}}</p>
 				 	 </view>
 				  </view>
 				  <p style="margin: 15px 20px;font-size: 13px;">
-				 	{{user.user.sign}}
+				 	{{globalUser.sign || "qwertyuiop"}}
 				  </p>
 				  <view class="honor">
 					 <view class="score">
 						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px 0 0 10px;">我的积分</p>
-						<p style="text-align: center;font-size: 22px;font-weight: 700;margin: 5px;">288</p>
+						<p style="text-align: center;font-size: 22px;font-weight: 700;margin: 5px;">{{globalUser.credits || 0}}</p>
 					 </view>
 					 <view class="title">
 						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px 0 0 10px;">我的称号</p>
-						<p style="text-align: center;font-size: 18px;font-weight: 700;margin: 5px;">环境卫士</p>
+						<p style="text-align: center;font-size: 18px;font-weight: 700;margin: 5px;">{{globalUser.data || "未拥有"}}</p>
 					 </view>
 				  </view>
 			 </view>
@@ -106,17 +106,24 @@
 <script>
 	export default {
 		name: "plugin",
-		props:{
-			user:{}
-		},
 		data() {
 			return {
-
+				globalUser:{},
+				url:"123.jpg"
+			}
+		},
+		created() {
+			console.log(this);
+			console.log(this.$root.globalUser);
+			// console.log(this.$root.globalUser);
+			// this.globalUser = this.$root.globalUser;
+			if(this.$root.globalUser.portrait_url){
+				this.url = this.$root.globalUser.portrait_url
 			}
 		},
 		methods: {
 			openOrder() {
-				console.log(this.user);
+				console.log(this.$root.globalUser);
 				uni.navigateTo({
 					url: "/pages/plugin/order/order"
 				})

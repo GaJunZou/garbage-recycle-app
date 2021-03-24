@@ -26,7 +26,7 @@
 					// #endif
 				}
 			})
-
+			
 			Vue.prototype.ColorList = [{
 					title: '嫣红',
 					name: 'red',
@@ -111,7 +111,6 @@
 		onHide: function() {
 			console.log('App Hide')
 		}
-
 	}
 </script>
 <style>
