@@ -7,7 +7,7 @@
 			</block>
 		</cu-custom>
 		<view class="img-box">
-			<image src="../../../static/11.png" mode="" class="img"></image>
+			<image :src="require('F://毕设//img//' + img)" mode="" class="img"></image>
 		</view>
 		<view @click="closeByMask" class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
 			<view class="cu-dialog" @click.stop="">
@@ -34,7 +34,8 @@
 		data() {
 			return {
 				modalName: null,
-				imgList:[]
+				imgList:[],
+				img:getApp().globalData.globalUser.portrait_url
 			}
 		},
 		methods: {
@@ -63,19 +64,32 @@
 			},
 			saveImg(){
 				let phone = uni.getStorageSync('phone');
-				console.log(phone);
 				uni.uploadFile({
-					url:this.base+'/account/uploadImg/'+phone,
+					url:this.base+'/account/uploadImg/'+ phone,
 					filePath:this.imgList[0],
 					name:'portrait_url',
 					'content-type':"multipart/form-data",
 					success:(res)=> {
 						console.log(res);
+						getApp().globalData.globalUser.portrait_url = res.data;
+						this.img = res.data;
+						uni.showToast({
+							title:"上传成功！",
+							duration:1000
+						});
 					},
 					fail:(err)=>{
 						console.log(err);
+						uni.showToast({
+							title:"上传失败！",
+							duration:1000
+						})
+					},
+					complete: () => {
+						this.hideModal();
 					}
-				})
+				});
+				
 			}
 		}
 	}

@@ -41,6 +41,10 @@
 			}
 		},
 		created() {
+			
+			console.log(this.$store);
+			
+			
 			this.globalUser = getApp().globalData.globalUser || {};
 			this.phone = uni.getStorageSync('phone');
 		},
@@ -56,7 +60,7 @@
 						url:this.base+"/account/getAllInfomation/"+this.phone,
 						method:"GET",
 						success: (res) => {
-							console.log(res.data);
+							getApp().globalData.globalUser = res.data;
 						}
 					})
 				}

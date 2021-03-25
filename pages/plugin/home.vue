@@ -109,23 +109,36 @@
 		data() {
 			return {
 				globalUser:{},
-				url:"123.jpg"
+				url:'123.jpg'
 			}
 		},
 		created() {
-			this.globalUser = getApp().globalData.globalUser || {};
-			if(this.globalUser.portrait_url){
+			this.globalUser = getApp().globalData.globalUser == null ? {} : getApp().globalData.globalUser;
+			if(this.globalUser == null){
 				this.url = this.globalUser.portrait_url
 			}
 		},
 		methods: {
 			openOrder() {
-				console.log(this.globalUser);
+				if(JSON.stringify(this.globalUser) == "{}"){
+					uni.showToast({
+						title:"请登录！",
+						duration:"2000"
+					})
+					return;
+				}
 				uni.navigateTo({
 					url: "/pages/plugin/order/order"
 				})
 			},
 			setup(){
+				if(JSON.stringify(this.globalUser) == "{}"){
+					uni.showToast({
+						title:"请登录！",
+						duration:"2000"
+					})
+					return;
+				}
 				uni.navigateTo({
 					url: "/pages/plugin/setup/setup",
 					fail(err) {

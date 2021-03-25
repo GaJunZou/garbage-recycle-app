@@ -1,5 +1,18 @@
 import Vue from 'vue'
 import App from './App'
+import Vuex from 'vuex'
+Vue.use(Vuex);
+const store = new Vuex.Store({
+    state: {
+		globalUser:{},
+		globalCollector:{}
+	},
+    mutations: {
+
+	},
+    actions: {}
+})
+
 
 import basics from './pages/basics/home.vue'
 Vue.component('basics',basics)
@@ -51,8 +64,9 @@ Date.prototype.format = function(fmt) {
 }
 
 Vue.prototype.base = 'http://localhost:3000';
-
+Vue.prototype.$store = store;  
 const app = new Vue({
-    ...App
+    ...App,
+	store
 })
 app.$mount()

@@ -1,9 +1,18 @@
 <script>
 	import Vue from 'vue'
 	export default {
+		data:{
+			test:1
+		},
 		globalData:{
 			globalUser:{},
 			globalCollector:{}
+		},
+		watch: {
+			// 如果 `question` 发生改变，这个函数就会运行
+			test: function () {
+				console.log("变了");
+			},
 		},
 		onLaunch: function() {
 			uni.getSystemInfo({

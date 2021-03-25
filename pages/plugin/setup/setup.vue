@@ -67,7 +67,7 @@
 					 style="height: 50px;"
 					 maxlength="30"
 					 placeholder="请输入..." 
-					 v-model="newSigh"/>
+					 v-model="newSign"/>
 				</view>
 				<view class="cu-bar bg-white justify-end">
 					<view class="action">
@@ -83,7 +83,7 @@
 				<text class="text-black text-bold">头像</text> 
 			</view>
 			<view class="action">
-				<image style="width: 70px;height: 70px;margin: 8px;border-radius: 5px;" src="../../../static/11.png" mode=""></image>
+				<image style="width: 70px;height: 70px;margin: 8px;border-radius: 5px;" :src="require('F://毕设//img//' + url)" mode=""></image>
 				<text class="text-grey text-bold">
 					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
@@ -96,7 +96,7 @@
 			</view>
 			<view class="action">
 				<text class="text-grey text-bold">
-					<span>天才少年1984</span>
+					<span>{{globalUser.name}}</span>
 					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
@@ -108,7 +108,8 @@
 			</view>
 			<view class="action">
 				<text class="text-grey text-bold">
-					<span>男</span>
+					<span v-if="globalUser.user.gender == 1">男</span>
+					<span v-if="globalUser.user.gender != 1">女</span>
 					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
@@ -116,11 +117,11 @@
 		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		<view class="cu-bar bg-white" @click="tip()">
 			<view class="action">
-				<text class="text-black text-bold">ID</text> 
+				<text class="text-black text-bold">手机号/ID</text> 
 			</view>
 			<view class="action">
 				<text class="text-grey text-bold">
-					<span>30624700</span>
+					<span>{{globalUser.phone}}</span>
 					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
 			</view>
@@ -132,7 +133,7 @@
 			</view>
 			<view class="action">
 				<p class="signture">
-					无人生哲理哲理能急救里唯独这歌赠你，月光有人捞起有人瞧不起,月光有人捞起有人瞧不起
+					{{globalUser.sign}}
 				</p>
 				<text class="text-grey text-bold">
 					<i class="icon-next iconfont cuIcon-right"></i>
@@ -162,18 +163,22 @@
 				modalName: null,
 				visible: false,
 				newName: '',
-				newSigh: '',
+				newSign: '',
 				currentGender: 1,
 				gender:[
 					{key:"男",value:"1"},
 					{key:"女",value:"0"}
 				],
-				
+				globalUser:getApp().globalData.globalUser,
+				url:getApp().globalData.globalUser.portrait_url
 			}
+		},
+		onShow(){
+			this.globalUser = getApp().globalData.globalUser;
+			this.url = getApp().globalData.globalUser.portrait_url;
 		},
 		methods: {
 			bigHead(){
-				console.log(123);
 				uni.navigateTo({
 					url: "/pages/plugin/setup/bigHead",
 					fail(err) {
@@ -192,13 +197,36 @@
 				console.log(this.currentGender)
 			},
 			setName(){
-				this.hideModal()
+				this.updateData();
+				this.hideModal();
 			},
 			setGender(){
+				this.updateData();
 				this.hideModal()
 			},
 			setSign(){
+				this.updateData();
 				this.hideModal()
+			},
+			updateData(){
+				uni.request({
+					url:this.base+'/account/postUserUpdateData',
+					method:'POST',
+					data:{
+						phone:uni.getStorageSync("phone"),
+						name:this.newName == '' ? null : this.newName,
+						gender:this.currentGender,
+						sign:this.sign == "" ? null : this.newSign,
+					},
+					success: (res) => {
+						console.log(res);
+						getApp().globalData.globalUser = res.data;
+						this.globalUser = getApp().globalData.globalUser;
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				});
 			},
 			managerAddress(){
 				uni.navigateTo({
