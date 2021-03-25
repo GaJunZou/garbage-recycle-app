@@ -78,7 +78,7 @@
 						sign:this.sign,
 					},
 					success: (res) => {
-						this.$root.globalUser = res.data;
+						getApp().globalData.globalUser = res.data;
 						uni.navigateTo({
 							url: "/pages/index/index"
 						})

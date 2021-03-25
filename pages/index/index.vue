@@ -41,6 +41,7 @@
 			}
 		},
 		created() {
+			this.globalUser = getApp().globalData.globalUser || {};
 			this.phone = uni.getStorageSync('phone');
 		},
 		onShow() {

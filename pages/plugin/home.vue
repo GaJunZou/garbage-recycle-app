@@ -113,17 +113,14 @@
 			}
 		},
 		created() {
-			console.log(this);
-			console.log(this.$root.globalUser);
-			// console.log(this.$root.globalUser);
-			// this.globalUser = this.$root.globalUser;
-			if(this.$root.globalUser.portrait_url){
-				this.url = this.$root.globalUser.portrait_url
+			this.globalUser = getApp().globalData.globalUser || {};
+			if(this.globalUser.portrait_url){
+				this.url = this.globalUser.portrait_url
 			}
 		},
 		methods: {
 			openOrder() {
-				console.log(this.$root.globalUser);
+				console.log(this.globalUser);
 				uni.navigateTo({
 					url: "/pages/plugin/order/order"
 				})

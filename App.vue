@@ -1,6 +1,10 @@
 <script>
 	import Vue from 'vue'
 	export default {
+		globalData:{
+			globalUser:{},
+			globalCollector:{}
+		},
 		onLaunch: function() {
 			uni.getSystemInfo({
 				success: function(e) {
