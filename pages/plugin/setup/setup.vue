@@ -169,13 +169,13 @@
 					{key:"男",value:"1"},
 					{key:"女",value:"0"}
 				],
-				globalUser:getApp().globalData.globalUser,
-				url:getApp().globalData.globalUser.portrait_url
+				globalUser:this.$store.state.globalUser,
+				url:this.$store.state.globalUser.portrait_url
 			}
 		},
 		onShow(){
-			this.globalUser = getApp().globalData.globalUser;
-			this.url = getApp().globalData.globalUser.portrait_url;
+			this.globalUser = this.$store.state.globalUser;
+			this.url = this.$store.state.globalUser.portrait_url;
 		},
 		methods: {
 			bigHead(){
@@ -220,8 +220,8 @@
 					},
 					success: (res) => {
 						console.log(res);
-						getApp().globalData.globalUser = res.data;
-						this.globalUser = getApp().globalData.globalUser;
+						this.$store.commit("saveUser",res.data);
+						this.globalUser = this.$store.state.globalUser;
 					},
 					fail: (err) => {
 						console.log(err);

@@ -14,7 +14,7 @@
 			<swiper-item v-for="(item,index) in swiperList" :key="index">
 				<div class="tab-item-box">
 					<div class="tab-item" v-for="(v,i) in item.titleList" :key="i">
-						<view style="float: left;width: 100%;margin: 5px auto;" v-for="ii in 2">
+						<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in 2" :key="vv">
 							<view style="float: left;width: 81px;height: 81px;">
 								<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../../static/11.png" mode=""></image>
 							</view>

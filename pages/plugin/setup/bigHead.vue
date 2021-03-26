@@ -35,7 +35,7 @@
 			return {
 				modalName: null,
 				imgList:[],
-				img:getApp().globalData.globalUser.portrait_url
+				img:this.$store.state.globalUser.portrait_url
 			}
 		},
 		methods: {
@@ -71,7 +71,7 @@
 					'content-type':"multipart/form-data",
 					success:(res)=> {
 						console.log(res);
-						getApp().globalData.globalUser.portrait_url = res.data;
+						this.$store.commit('saveImg',res.data);
 						this.img = res.data;
 						uni.showToast({
 							title:"上传成功！",

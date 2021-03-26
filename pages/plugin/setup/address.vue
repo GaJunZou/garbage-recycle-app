@@ -130,8 +130,7 @@
 			}
 		},
 		onShow(){
-			console.log(getApp().globalData.globalUser);
-			this.address = getApp().globalData.globalUser.user.address;
+			this.address = this.$store.state.globalUser.user.address;
 		},
 		methods: {
 			async openPicker(){
@@ -160,7 +159,7 @@
 					url:this.base+"/account/deleteAddress/"+id+'/'+uni.getStorageSync('phone'),
 					method:"GET",
 					success:(res)=> {
-						getApp().globalData.globalUser = res.data;
+						this.$store.commit("saveUser",res.data);
 						this.address = res.data.user.address;
 						uni.showToast({
 							title:"删除成功！",
@@ -181,7 +180,7 @@
 					url:this.base+"/account/setDefaultAddress/"+id+'/'+uni.getStorageSync('phone'),
 					method:"GET",
 					success:(res)=> {
-						getApp().globalData.globalUser = res.data;
+						this.$store.commit("saveUser",res.data);
 						this.address = res.data.user.address;
 						uni.showToast({
 							title:"设置成功！",
@@ -205,7 +204,7 @@
 						phone:uni.getStorageSync('phone')
 					},
 					success:(res)=> {
-						getApp().globalData.globalUser = res.data;
+						this.$store.commit("saveUser",res.data);
 						this.address = res.data.user.address;
 						uni.showToast({
 							title:"设置成功！",

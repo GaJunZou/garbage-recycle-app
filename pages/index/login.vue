@@ -91,12 +91,12 @@
 						}
 						if(res.data.role == 'user'){
 							uni.setStorageSync('phone',res.data.phone);
-							getApp().globalData.globalUser = res.data;
+							this.$store.commit('saveUser',res.data);
 							uni.navigateTo({
 								url: "/pages/index/index",
 							})
 						}else if(res.data.role == 'collector'){
-							getApp().globalData.globalCollector = res.data;
+							this.$store.commit('saveCollector',res.data);
 							uni.setStorageSync('phone',res.data.phone);
 							this.gotoCollect();
 						}

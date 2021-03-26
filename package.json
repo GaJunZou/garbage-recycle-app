@@ -4,8 +4,8 @@
   "description": "<p style=\"text-align: center;\"><img src=\"https://image.weilanwl.com/uni/UniAppReadme.jpg\" alt=\"ColorUI简介\"></img></p>",
   "main": "main.js",
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.2.11",
-    "prettier": "^1.12.1"
+    "@dcloudio/uni-ui": "^1.2.12",
+    "prettier": "^1.19.1"
   },
   "devDependencies": {
     "sass": "^1.32.8",

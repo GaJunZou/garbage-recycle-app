@@ -5,7 +5,7 @@
 			<block slot="content"><span style="font-weight: 900;">下单</span></block>
 		</cu-custom>
 		<div class="tab-item">
-			<view style="float: left;width: 100%;margin: 5px auto;" v-for="i in 2">
+			<view style="float: left;width: 100%;margin: 5px auto;" v-for="(i,v) in 2" :key="v">
 				<view style="float: left;width: 81px;height: 81px;">
 					<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../static/11.png" mode=""></image>
 				</view>

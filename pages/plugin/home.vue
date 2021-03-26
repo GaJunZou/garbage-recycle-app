@@ -113,13 +113,14 @@
 			}
 		},
 		created() {
-			this.globalUser = getApp().globalData.globalUser == null ? {} : getApp().globalData.globalUser;
+			this.globalUser = this.$store.state.globalUser == null ? {} : this.$store.state.globalUser;
 			if(this.globalUser == null){
 				this.url = this.globalUser.portrait_url
 			}
 		},
 		methods: {
 			openOrder() {
+				console.log(this.$store.state.globalUser);
 				if(JSON.stringify(this.globalUser) == "{}"){
 					uni.showToast({
 						title:"请登录！",
@@ -147,7 +148,7 @@
 				})
 			},
 			gotoLogin(){
-				uni.navigateTo({
+				uni.reLaunch({
 					url: "/pages/index/login",
 					fail(err) {
 						console.log(err)

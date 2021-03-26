@@ -78,7 +78,7 @@
 						sign:this.sign,
 					},
 					success: (res) => {
-						getApp().globalData.globalUser = res.data;
+						this.$store.commit('saveUser',res.data);
 						uni.navigateTo({
 							url: "/pages/index/index"
 						})

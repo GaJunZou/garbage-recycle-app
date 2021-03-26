@@ -8,9 +8,20 @@ const store = new Vuex.Store({
 		globalCollector:{}
 	},
     mutations: {
-
+		// 修改state值(同步)
+		saveUser(state,user) {
+			state.globalUser = user 
+		},
+		saveImg(state,img) {
+			state.globalUser.portrait_url = img;
+		},
+		saveCollector(state,collector) {
+			state.globalUser = collector 
+		}
 	},
-    actions: {}
+    actions: {
+		// 修改state值(异步)
+	}
 })
 
 
@@ -64,6 +75,9 @@ Date.prototype.format = function(fmt) {
 }
 
 Vue.prototype.base = 'http://localhost:3000';
+Vue.prototype.syncData = function(store,data){
+	store = data;
+}
 Vue.prototype.$store = store;  
 const app = new Vue({
     ...App,

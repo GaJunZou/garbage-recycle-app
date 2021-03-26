@@ -31,8 +31,6 @@
 	export default {
 		data() {
 		return {
-				globalUser: {},
-				globalCollector:{},
 				phone: 0,
 				PageCur: 'basics',
 				user:null,
@@ -40,12 +38,7 @@
 				main:null
 			}
 		},
-		created() {
-			
-			console.log(this.$store);
-			
-			
-			this.globalUser = getApp().globalData.globalUser || {};
+		created() {	
 			this.phone = uni.getStorageSync('phone');
 		},
 		onShow() {
@@ -60,7 +53,7 @@
 						url:this.base+"/account/getAllInfomation/"+this.phone,
 						method:"GET",
 						success: (res) => {
-							getApp().globalData.globalUser = res.data;
+							this.$store.commit('saveUser',res.data)
 						}
 					})
 				}

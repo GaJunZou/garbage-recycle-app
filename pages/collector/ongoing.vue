@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="box" v-for="i in 4">
+		<view class="box" v-for="(i,v) in 4" :key="v">
 			<view :class="show == i ? 'show-detail' : 'hide-detail'">
 				<view style="margin-bottom: 15px;height: 25px;">
 					<p style="float: left;">拨号:
@@ -29,7 +29,7 @@
 					<view @click="showDetail(i)" style="font-weight: 700;color: #faa125;"  class="action">详情<text class="cuIcon-unfold"></text></view>
 				</view>
 				<view :class="detailBox == i ? 'show-detail-box' : 'hide-detail-box'">
-					<view style="float: left;width: 100%;margin: 5px auto;" v-for="ii in 2">
+					<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in 2" :key="vv">
 						<view style="float: left;width: 81px;height: 81px;">
 							<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../static/11.png" mode=""></image>
 						</view>

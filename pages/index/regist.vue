@@ -75,10 +75,10 @@
 					success: (res) => {
 						uni.setStorageSync('phone',res.data.phone);
 						if(res.data.role == 'user'){
-							getApp().globalData.globalUser = res.data;
+							this.$store.commit('saveUser',res.data);
 							this.toNext(res.data.phone);
 						}else if(res.data.role == 'collector'){
-							getApp().globalData.globalCollector = res.data;
+							this.$store.commit('saveCollector',res.data);
 							uni.navigateTo({
 								url: "/pages/collector/home?phone="+res.data.phone,
 							})
