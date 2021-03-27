@@ -46,7 +46,8 @@
 				gender:1,
 				sign:"无人生哲理能急救你唯独这歌赠你无人生哲理能急救你唯独这歌赠你",
 				imgList:[],
-				phone:0
+				phone:0,
+				img:''
 			}
 		},
 		created() {
@@ -56,37 +57,51 @@
 		methods:{
 			formSubmit: function(e) {
 				uni.uploadFile({
-					url:this.base+'/account/uploadImg/'+this.phone,
-					filePath:this.imgList[0],
-					name:'portrait_url',
+					url:"http://127.0.0.1:8002/aliyun-service/upload-image",
+					filePath: this.imgList[0],
+					name: 'file',
 					'content-type':"multipart/form-data",
 					success:(res)=> {
-						console.log(res);
+						this.img = JSON.parse(res.data).data.url;
 					},
 					fail:(err)=>{
 						console.log(err);
+						uni.showToast({
+							title:"头像上传失败！",
+							duration:1000
+						});
+					},
+					complete: () => {
+						// plus.nativeUI.toast("请填写必填项！");
+						uni.request({
+							url:this.base+'/account/postDetailData',
+							method:'POST',
+							data:{
+								phone:this.phone,
+								name:this.name,
+								gender:this.gender,
+								sign:this.sign,
+								portrait_url:this.img
+							},
+							success: (res) => {
+								this.$store.commit('save',res.data);
+								uni.showToast({
+									title:"上传成功！",
+									duration:1000,
+									success: () => {
+										uni.reLaunch({
+											url: "/pages/index/index"
+										})
+									}
+								});
+							},
+							fail: (err) => {
+								console.log(err);
+							}
+						});
 					}
 				});
-					// plus.nativeUI.toast("请填写必填项！");
-				uni.request({
-					url:this.base+'/account/postDetailData',
-					method:'POST',
-					data:{
-						phone:this.phone,
-						name:this.name,
-						gender:this.gender,
-						sign:this.sign,
-					},
-					success: (res) => {
-						this.$store.commit('saveUser',res.data);
-						uni.navigateTo({
-							url: "/pages/index/index"
-						})
-					},
-					fail: (err) => {
-						console.log(err);
-					}
-				});
+
 			},
 			chooseGender(value){
 				this.gender = value

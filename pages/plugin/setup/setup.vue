@@ -24,6 +24,25 @@
 				</view>
 			</view>
 		</view>
+		<view @click="hideModal" class="cu-modal" :class="modalName=='setPhone'?'show':''">
+			<view @click.stop="" class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">修改手机/ID</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding bg-white">
+					<input class="uni-input" placeholder="输入新手机号" v-model="modify_phone"/>
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action">
+						<button class="cu-btn line-green text-green" @tap="hideModal">取消</button>
+						<button class="cu-btn bg-green margin-left" @tap="modifyPhone">确定</button>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view @click="hideModal" class="cu-modal" :class="modalName=='setGender'?'show':''">
 			<view @click.stop="" class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
@@ -83,7 +102,7 @@
 				<text class="text-black text-bold">头像</text> 
 			</view>
 			<view class="action">
-				<image style="width: 70px;height: 70px;margin: 8px;border-radius: 5px;" :src="require('F://毕设//img//' + url)" mode=""></image>
+				<image style="width: 70px;height: 70px;margin: 8px;border-radius: 5px;" :src="url" mode=""></image>
 				<text class="text-grey text-bold">
 					<i class="icon-next iconfont cuIcon-right"></i>
 				</text>
@@ -115,7 +134,7 @@
 			</view>
 		</view>
 		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-		<view class="cu-bar bg-white" @click="tip()">
+		<view class="cu-bar bg-white" @click="showModal" data-target="setPhone">
 			<view class="action">
 				<text class="text-black text-bold">手机号/ID</text> 
 			</view>
@@ -153,6 +172,39 @@
 			</view>
 		</view>
 		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+		
+		<view class="quit">
+			<view class="cu-bar bg-blue">
+				<view class="action">
+					<text class="text-black text-bold"></text> 
+				</view>
+				<view class="action">
+					<text class="text-white text-bold">修改密码</text> 
+				</view>
+				<view class="action">
+					<text class="text-grey text-bold">
+						<span></span>
+						<i></i>
+					</text>
+				</view>
+			</view>
+			<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+			<view class="cu-bar bg-red"  @click="quit()">
+				<view class="action">
+					<text class="text-black text-bold"></text> 
+				</view>
+				<view class="action">
+					<text class="text-white text-bold">退出登录</text> 
+				</view>
+				<view class="action">
+					<text class="text-grey text-bold">
+						<span></span>
+						<i></i>
+					</text>
+				</view>
+			</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -169,13 +221,14 @@
 					{key:"男",value:"1"},
 					{key:"女",value:"0"}
 				],
-				globalUser:this.$store.state.globalUser,
-				url:this.$store.state.globalUser.portrait_url
+				modify_phone:'',
+				globalUser:this.$store.state.role,
+				url:this.$store.state.role.portrait_url
 			}
 		},
 		onShow(){
-			this.globalUser = this.$store.state.globalUser;
-			this.url = this.$store.state.globalUser.portrait_url;
+			this.globalUser = this.$store.state.role;
+			this.url = this.$store.state.role.portrait_url;
 		},
 		methods: {
 			bigHead(){
@@ -220,8 +273,8 @@
 					},
 					success: (res) => {
 						console.log(res);
-						this.$store.commit("saveUser",res.data);
-						this.globalUser = this.$store.state.globalUser;
+						this.$store.commit("save",res.data);
+						this.globalUser = this.$store.state.role;
 					},
 					fail: (err) => {
 						console.log(err);
@@ -236,9 +289,36 @@
 					}
 				})
 			},
-			tip(){
-				plus.nativeUI.alert('id不支持修改');
-				plus.nativeUI.setUIStyle('dark');
+			modifyPhone(){
+				uni.request({
+					url:this.base + '/account/modifyPhone',
+					method:"POST",
+					data:{
+						phone:uni.getStorageSync("phone"),
+						modify_phone:this.modify_phone
+					},
+					success:(res)=> {
+						if(res.data != false){
+							this.$store.commit("save",res.data);
+							this.globalUser = this.$store.state.role;
+						} else {
+							plus.nativeUI.alert('该手机号已被注册！');
+						}
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
+				this.hideModal();
+			},
+			quit(){
+				uni.reLaunch({
+					url:'../../index/login',
+					success() {
+						uni.setStorageSync('phone',null);
+						this.$store.commit('clean');
+					}
+				})
 			}
 		}
 	}
@@ -257,6 +337,7 @@
 	line-height: 16px;
 	font-size: 15px;
 	float: right;
+	text-align: right;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	/* 3. 文字溢出的时候用省略号来显示 */
@@ -266,5 +347,10 @@
 	-webkit-line-clamp: 2;
 	/* 设置或检索伸缩盒对象的子元素的排列方式 */
 	-webkit-box-orient: vertical;
+}
+.quit{
+	position: absolute;
+	bottom: 50px;
+	width: 100%;
 }
 </style>

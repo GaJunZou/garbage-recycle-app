@@ -53,7 +53,7 @@
 						url:this.base+"/account/getAllInfomation/"+this.phone,
 						method:"GET",
 						success: (res) => {
-							this.$store.commit('saveUser',res.data)
+							this.$store.commit('save',res.data)
 						}
 					})
 				}

@@ -7,7 +7,7 @@
 			</block>
 		</cu-custom>
 		<view class="img-box">
-			<image :src="require('F://毕设//img//' + img)" mode="" class="img"></image>
+			<image :src="img" mode="" class="img"></image>
 		</view>
 		<view @click="closeByMask" class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
 			<view class="cu-dialog" @click.stop="">
@@ -35,7 +35,7 @@
 			return {
 				modalName: null,
 				imgList:[],
-				img:this.$store.state.globalUser.portrait_url
+				img:this.$store.state.role.portrait_url
 			}
 		},
 		methods: {
@@ -65,17 +65,33 @@
 			saveImg(){
 				let phone = uni.getStorageSync('phone');
 				uni.uploadFile({
-					url:this.base+'/account/uploadImg/'+ phone,
-					filePath:this.imgList[0],
-					name:'portrait_url',
+					url:"http://127.0.0.1:8002/aliyun-service/upload-image",
+					filePath: this.imgList[0],
+					name: 'file',
 					'content-type':"multipart/form-data",
 					success:(res)=> {
-						console.log(res);
-						this.$store.commit('saveImg',res.data);
-						this.img = res.data;
-						uni.showToast({
-							title:"上传成功！",
-							duration:1000
+						this.img = JSON.parse(res.data).data.url;
+						uni.request({
+							url:this.base+'/account/postDetailData',
+							method:'POST',
+							data:{
+								phone:phone,
+								portrait_url:this.img
+							},
+							success: (res) => {
+								this.$store.commit('save',res.data);
+								uni.showToast({
+									title:"上传成功！",
+									duration:1000
+								});
+							},
+							fail: (err) => {
+								console.log(err);
+								uni.showToast({
+									title:"上传成功！",
+									duration:1000
+								});
+							}
 						});
 					},
 					fail:(err)=>{
@@ -89,7 +105,6 @@
 						this.hideModal();
 					}
 				});
-				
 			}
 		}
 	}

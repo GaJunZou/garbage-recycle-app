@@ -51,6 +51,10 @@
 				valid_2:null
 			}
 		},
+		onShow() {
+			console.log(uni.getStorageSync('phone'));
+			console.log(this.$store.state);
+		},
 		methods:{
 			gotoRegist(value){
 				uni.navigateTo({
@@ -61,7 +65,7 @@
 				})
 			},
 			gotoCollect(){
-				uni.navigateTo({
+				uni.reLaunch({
 					url: "/pages/collector/home",
 					fail(err) {
 						console.log(err)
@@ -91,12 +95,12 @@
 						}
 						if(res.data.role == 'user'){
 							uni.setStorageSync('phone',res.data.phone);
-							this.$store.commit('saveUser',res.data);
-							uni.navigateTo({
+							this.$store.commit('save',res.data);
+							uni.reLaunch({
 								url: "/pages/index/index",
 							})
 						}else if(res.data.role == 'collector'){
-							this.$store.commit('saveCollector',res.data);
+							this.$store.commit('save',res.data);
 							uni.setStorageSync('phone',res.data.phone);
 							this.gotoCollect();
 						}

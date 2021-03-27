@@ -7,7 +7,7 @@
 				  </view>
 				  <view class="header">
 				 	 <view class="head">
-				 		<image :src="require('F://毕设//img//' + url)" mode=""></image>
+				 		<image :src="url" mode=""></image>
 				 	 </view>
 				 	 <view class="text">
 				 		<p @click="gotoLogin" style="font-size: 16px;font-weight: 700;margin: 10px 20px;">{{globalUser.name || "点击登录"}}</p>
@@ -113,14 +113,14 @@
 			}
 		},
 		created() {
-			this.globalUser = this.$store.state.globalUser == null ? {} : this.$store.state.globalUser;
-			if(this.globalUser == null){
+			this.globalUser = this.$store.state.role == null ? {} : this.$store.state.role;
+			if(this.globalUser != null){
 				this.url = this.globalUser.portrait_url
 			}
 		},
 		methods: {
 			openOrder() {
-				console.log(this.$store.state.globalUser);
+				console.log(this.$store.state.role);
 				if(JSON.stringify(this.globalUser) == "{}"){
 					uni.showToast({
 						title:"请登录！",

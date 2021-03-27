@@ -4,19 +4,18 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
-		globalUser:{},
-		globalCollector:{}
+		role:{}
 	},
     mutations: {
 		// 修改state值(同步)
-		saveUser(state,user) {
-			state.globalUser = user 
+		save(state,user) {
+			state.role = user 
 		},
 		saveImg(state,img) {
-			state.globalUser.portrait_url = img;
+			state.role.portrait_url = img;
 		},
-		saveCollector(state,collector) {
-			state.globalUser = collector 
+		clean(state){
+			state.role = {}
 		}
 	},
     actions: {
@@ -74,7 +73,7 @@ Date.prototype.format = function(fmt) {
     return fmt; 
 }
 
-Vue.prototype.base = 'http://localhost:3000';
+Vue.prototype.base = 'http://192.168.0.105:3000';
 Vue.prototype.syncData = function(store,data){
 	store = data;
 }

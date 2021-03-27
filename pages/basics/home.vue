@@ -30,23 +30,20 @@
 						<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
 					</swiper-item>
 				</swiper>
-				<!-- 切换tab -->
-				<scroll-view scroll-x class="bg-white nav">
-					<view class="flex text-center">
-						<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in categories" :key="index" @tap="tabSelect" :data-id="index">
-							{{item}}
-						</view>
-					</view>
-				</scroll-view>
+				<p style="width: 100%;height: 40px;text-align: center;line-height: 60px;font-size: 20px;">
+					<text style="color: orange;font-size: 40px;font-weight: 700;">·.</text>
+					<text>可回收物品列表</text>
+					<text style="color: orange;font-size: 40px;font-weight: 700;">.·</text>
+				</p>
 				<!-- 商品 -->
 				<view class="flex justify-around box-content">
-					<view class="bg-white item radius" v-for="i in data">
+					<view class="bg-white item radius" v-for="(v,i) in data" :key="i">
 						<view>
 							<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
 						</view>
-						<p style="text-align: center;font-size: 16px;">塑料瓶</p>
+						<p style="text-align: center;font-size: 16px;">{{v.waste_name}}</p>
 						<view>
-							<text style="float: left;margin:5px 10px;">2毛/个</text>
+							<text style="float: left;margin:5px 10px;">{{v.price}}/个</text>
 							<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
 								<span class="cuIcon-add"></span>
 							</text>
@@ -61,7 +58,7 @@
 					<!-- 备选 -->
 					<view class="padding">
 						<view class="col-4 padding-sm">
-								<button v-for="(item,index) in elements" :key="index" 
+								<button v-for="(item,index) in 5" :key="index" 
 								@click.stop="" class="cu-btn round margin-tb-sm btn">{{item.title}}</button>
 						</view>
 					</view>
@@ -152,12 +149,6 @@
 				</view>
 			</view>
 			<view >
-				<navigator hover-class="none" :url="'/pages/basics/' + item.name" class="nav-li" navigateTo :class="'bg-'+item.color"
-				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
-					<view class="nav-title">{{item.title}}</view>
-					<view class="nav-name">{{item.name}}</view>
-					<text :class="'cuIcon-' + item.cuIcon"></text>
-				</navigator>
 			</view>
 			<view class="cu-tabbar-height"></view>
 		</view>
@@ -177,7 +168,6 @@
 				rublishData:'',
 				isScroll:true,
 				modalName: null,
-				categories:["废纸","塑料","玻璃","金属","布料"],
 				data:[1,2,3,4,5,6,1,1],
 				load:2, //不显示
 				text:"更多",
@@ -191,67 +181,6 @@
 					type: 'image',
 					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
 				}],
-				elements: [{
-						title: '布局',
-						name: 'layout',
-						color: 'cyan',
-						cuIcon: 'newsfill'
-					},
-					{
-						title: '背景',
-						name: 'background',
-						color: 'blue',
-						cuIcon: 'colorlens'
-					},
-					{
-						title: '文本',
-						name: 'text',
-						color: 'purple',
-						cuIcon: 'font'
-					},
-					{
-						title: '图标 ',
-						name: 'icon',
-						color: 'mauve',
-						cuIcon: 'cuIcon'
-					},
-					{
-						title: '按钮',
-						name: 'button',
-						color: 'pink',
-						cuIcon: 'btn'
-					},
-					{
-						title: '标签',
-						name: 'tag',
-						color: 'brown',
-						cuIcon: 'tagfill'
-					},
-					{
-						title: '头像',
-						name: 'avatar',
-						color: 'red',
-						cuIcon: 'myfill'
-					},
-					{
-						title: '进度条',
-						name: 'progress',
-						color: 'orange',
-						cuIcon: 'icloading'
-					},
-					{
-						title: '边框阴影',
-						name: 'shadow',
-						color: 'olive',
-						cuIcon: 'copy'
-					},
-					{
-						title: '加载',
-						name: 'loading',
-						color: 'green',
-						cuIcon: 'loading2'
-					}
-				],
 				buttonList:[1,2,3,4,5,6,7,8]
 			};
 		},
@@ -266,6 +195,14 @@
 			// },{passive:false})
 		},
 		created(){
+			uni.request({
+				url:this.base + "/waste/getAllWaste",
+				method:"GET",
+				success: (res) => {
+					console.log(res);
+					this.data = res.data;
+				}
+			})
 		},
 		methods: {
 			getLocation(){

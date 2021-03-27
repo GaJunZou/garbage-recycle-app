@@ -1232,7 +1232,7 @@ button.cuIcon.lg {
 .cu-list.menu-avatar>.cu-item .content {
 	position: absolute;
 	left: 30upx;
-	width: calc(100% - 96upx - 120upx + 30upx);
+	width: 80vw;
 	line-height: 1.6em;
 }
 
@@ -2349,6 +2349,10 @@ button.cuIcon.lg {
 	text-align: left;
 	color: #555;
 	padding-right: 20upx;
+}
+
+.cu-form-group input::-webkit-input-placeholder{
+	color: #39B54A !important;
 }
 
 .cu-form-group>text[class*="cuIcon-"] {
