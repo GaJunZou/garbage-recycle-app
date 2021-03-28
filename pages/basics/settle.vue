@@ -5,33 +5,49 @@
 			<block slot="content"><span style="font-weight: 900;">下单</span></block>
 		</cu-custom>
 		<div class="tab-item">
-			<view style="float: left;width: 100%;margin: 5px auto;" v-for="(i,v) in 2" :key="v">
+			<view style="float: left;width: 100%;margin: 5px auto;" v-for="(v,i) in order" :key="i">
 				<view style="float: left;width: 81px;height: 81px;">
 					<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../static/11.png" mode=""></image>
 				</view>
 				<view style="float: left;height: 66px;margin-left: 10px;">
-					<big><strong>名称</strong></big>
-					<p>价格： <text>0.2/个</text></p>
-					<p>数量 X <text>7</text></p>
+					<big><strong>{{v.waste_name}}</strong></big>
+					<p>价格： <text>{{v.price}}/个</text></p>
+					<p>数量 X <text>{{v.number}}</text></p>
 				</view>
 				<view style="float: right;margin-right: 10px;">
-					<p>合计：10</p>
+					<p>合计：{{((v.number*v.price)*100).toFixed(2)/100}}</p>
 				</view>
 			</view>
 			<view style="float: left;width: 100%;margin-top: 10px;">
-				<p style="float: right;margin-right: 10px;">总计：<b class="text-orange" style="font-size: 22px;line-height: 16px;">15</b>元</p>
+				<p style="float: right;margin-right: 10px;">总计：<b class="text-orange" style="font-size: 22px;line-height: 16px;">{{(price_all*100).toFixed(2)/100}}</b>元</p>
 			</view>
 			<view class="time">
 				<p>预约日期：<text @click="chooseDate">{{getDate}}</text></p>
 				<p>
-					预约时间：
+					预约上门：
 					<text @click="chooseStart">{{getStartTime}}</text> 
 					<text> ~ </text>
 					<text @click="chooseEnd">{{getEndTime}}</text>
 				</p>
 			</view>
+			<view style="margin: 10px auto;">
+				<p style="height: 25px;">
+					<text>地址：</text>
+					<text @click="chooseAddress" style="border: 2px;float: right;padding: 0 10px;"class="lines-orange cuIcon-writefill">
+						{{JSON.stringify(address) == '{}' ? '添加' : '修改'}}
+					</text>
+				</p>
+				<p style="color: #424242">
+					<text v-if="JSON.stringify(address) !== '{}'">
+						{{address.province}}{{address.city}}{{address.area}}{{address.town}}{{address.street}}{{address.detail}}
+					</text>
+					<text v-else>
+						暂无地址
+					</text>
+				</p>
+			</view>
 			<view class="note">
-				<textarea value="" placeholder="添加备注" style="height: 60px;background-color: #f1f1f1;width: 100%;padding: 5px;"/>
+				<textarea value="" placeholder="添加备注" v-model="note" style="height: 60px;background-color: #f1f1f1;width: 100%;padding: 5px;"/>
 			</view>
 			<view class="btn-group">
 				<button class="cu-btn round bg-orange" @click="submit">确认下单</button>
@@ -47,13 +63,39 @@
 			return{
 				date:'',
 				startTime:'',
-				endTime:''
+				endTime:'',
+				order:[],
+				price_all:0,
+				note:'',
+				address:{}
 			}
+		},
+		onShow() {
+			this.order = this.$store.state.orderList;
+			this.price_all = 0;
+			this.order.forEach((v,i)=>{
+				this.price_all = this.price_all + v.price*v.number;
+			})
+			let id = uni.getStorageSync('choose_id');
+			if(id == null){
+				this.$store.state.role.user.address.forEach((v)=>{
+					if(v.default == true){
+						this.address = v;
+					}
+				});
+			} else {
+				this.$store.state.role.user.address.forEach((v)=>{
+					if(v._id == id){
+						this.address = v;
+					}
+				});
+			}
+			uni.setStorageSync('choose_id',null);
 		},
 		created(){
 			this.startTime = new Date();
 			this.endTime = new Date(new Date().getTime()+60*60*1000);
-			
+			console.log(this.startTime);
 		},
 		computed:{
 			getDate(){
@@ -96,12 +138,45 @@
 					console.log( "未选择时间："+e.message );
 				},styles);
 			},
+			chooseAddress(){
+				uni.navigateTo({
+					url: '/pages/plugin/setup/address?choose=choose&id='+this.address._id,
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
 			submit(){
 				if(new Date(this.endTime) - new Date(this.startTime) < 60*60*1000){
 					plus.nativeUI.toast("选择的时间段要在一小时以上！");
 					return false;
 				}
-				plus.nativeUI.toast("成功！");
+				uni.request({
+					url:this.base+'/order/user/add',
+					method:"POST",
+					data:{
+						    belong_phone: uni.getStorageSync('phone'),
+						    belong_name: this.$store.state.role.name,
+						    wastes: this.order,
+						    waste_price_all: (this.price_all*100).toFixed(2)/100,
+						    release_time:  new Date(),
+						    address:this.address,
+						    // address_crood: ".。。。。。。。。。。。",
+						    note: this.note,
+						    start_time: this.startTime,
+						    end_time: this.endTime
+					},
+					success: (res) => {
+						console.log(res.data);
+						uni.navigateTo({
+							url: '/pages/basics/success'
+						});
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
+				// plus.nativeUI.toast("成功！");
 			}
 		}
 	}
@@ -136,3 +211,4 @@
 		color: #39B54A;
 	}
 </style>
+

@@ -45,7 +45,7 @@
 						<view>
 							<text style="float: left;margin:5px 10px;">{{v.price}}/个</text>
 							<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
-								<span class="cuIcon-add"></span>
+								<span class="cuIcon-add" @click="addList(v)"></span>
 							</text>
 						</view>
 					</view>
@@ -110,14 +110,14 @@
 			<!-- cart -->
 			<div class="cart my-bg-gradual-blue">
 				<div @tap="showModal($event)" data-target="bottomModal" style="width: 60px;height: 42px;border-radius: 50%;position: absolute;z-index: 1;">
-					<view class="cu-tag badge" style="background-color: #f9484b;">99</view>
+					<view class="cu-tag badge" style="background-color: #f9484b;">{{orderList.length}}</view>
 					<image style="
 					width: 60px;
 					height: 60px;
 					margin-top:-10px;border-radius: 50%;" 
 					src="../../static/cart.png"></image>
 				</div>
-				<p @tap.stop="showModal($event)" data-target="bottomModal" style="float: left;margin-left: 100px;line-height: 42px;font-size: 16px;color: #000;">已选11件回收物</p>
+				<p @tap.stop="showModal($event)" data-target="bottomModal" style="float: left;margin-left: 100px;line-height: 42px;font-size: 16px;color: #000;">已选{{orderList.length}}件回收物</p>
 				<p @click="settle" style="float: right;margin-right: 10px;line-height: 42px;font-size: 14px;color: #fff;font-weight: 700;">去结算</p>
 			</div>
 			<!-- cart-modal -->
@@ -129,19 +129,19 @@
 						</view>
 					</view>
 					<view  @touchmove.stop="" class="padding" style="text-align: left;overflow: hidden;">
-						<div v-for="i in data" style="padding: 5px 10px;height: 40px;">
+						<div v-for="v in orderList" style="padding: 5px 10px;height: 40px;">
 							<i class="cuIcon-close" style="float: left;font-size: 20px;color: red;line-height: 40px;"></i>
 							<div style="float: left;width: 40px;height: 40px;margin-right: 10px;margin-left: 5px;">
 								<image style="width: 100%;height: 100%;" src="../../static/11.png" mode=""></image>
 							</div>
 							<p style="float: left;line-height: 20px;">
-								<strong style="font-size: 14px;">塑料瓶</strong><br>
-								0.2元/个
+								<strong style="font-size: 14px;">{{v.waste_name}}</strong><br>
+								{{v.price}}元/个
 							</p>
 							<div style="float: right;line-height: 40px;font-size: 16px;font-weight: 700;text-align: center;">
-								<i class="cuIcon-move" style="color:  #fe0707;"></i>
-								<span style="margin: 0 10px;">4</span>
-								<i class="cuIcon-add" style="color:  #32ce7d;"></i>
+								<i class="cuIcon-move" style="color:  #fe0707;" @click="sub(v._id)"></i>
+								<span style="margin: 0 10px;">{{v.number}}</span>
+								<i class="cuIcon-add" style="color:  #32ce7d;" @click="add(v._id)"></i>
 							</div>
 						</div>
 						<div style="height: 120px;"></div>
@@ -169,6 +169,7 @@
 				isScroll:true,
 				modalName: null,
 				data:[1,2,3,4,5,6,1,1],
+				orderList:[],
 				load:2, //不显示
 				text:"更多",
 				swiperList: [
@@ -195,6 +196,7 @@
 			// },{passive:false})
 		},
 		created(){
+			console.log("created");
 			uni.request({
 				url:this.base + "/waste/getAllWaste",
 				method:"GET",
@@ -216,6 +218,39 @@
 						plus.nativeUI.closeWaiting("定位中...");
 				    }
 				});
+			},
+			addList(item){
+				let flag = false;
+				for(let i=0;i<this.orderList.length;i++){
+					if(this.orderList[i]._id == item._id){
+						this.orderList[i].number++;
+						flag = true;
+						break;
+					}
+				}
+				if(flag == false){
+					this.orderList.push({
+						...item,
+						number:1
+					})
+				}
+			},
+			add(id){
+				this.orderList.forEach((v,i)=>{
+					if(v._id == id){
+						v.number++;
+					}
+				})
+			},
+			sub(id){
+				this.orderList.forEach((v,i)=>{
+					if(v._id == id){
+						v.number--;
+						if(v.number==0){
+							this.orderList.splice(i,1);
+						}
+					}
+				})
 			},
 			showModal(e) {
 				this.isScroll=false;
@@ -271,7 +306,10 @@
 			settle(){
 				uni.navigateTo({
 					url: "/pages/basics/settle",
-					fail(err) {
+					success:(res)=> {
+						this.$store.commit("seedOrderList",this.orderList);
+					},
+					fail:(err)=> {
 						console.log(err)
 					}
 				})

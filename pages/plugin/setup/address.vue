@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<cu-custom :isBack="true">
-			<block slot="backText"></block>
+			<block slot="backText"><text v-if="choose == 'choose'">确定</text></block>
 			<block slot="content"><span style="font-weight: 900;">我的地址</span></block>
 		</cu-custom>
 		
@@ -9,13 +9,17 @@
 			<view class="cu-item" 
 			:class="modalName=='move-box-'+ index?'move-cur':''" 
 			v-for="(item,index) in address" :key="index"
+			@click="chooseAddress(item._id)"
 			 @touchstart="ListTouchStart" 
 			 @touchmove="ListTouchMove" 
 			 @touchend="ListTouchEnd" 
 			 :data-target="'move-box-' + index">
 				<!-- <view class="cu-avatar round lg" :style="[{backgroundImage:'url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100'+ (index+2) +'.jpg)'}]"></view> -->
 				<view class="content">
-					<view class="text-black text-bold">{{item.name}}</view>
+					<view class="text-black text-bold">
+						{{item.name}}
+						<text v-if="choose=='choose' && item._id == choose_id" class="cuIcon-check" style="font-weight: 900;font-size: 16px;color: #0081FF;"></text>
+					</view>
 					<view class="text-gray text-overhidden">
 						<text>{{item.province}}</text>
 						<text>{{item.city}}</text>
@@ -29,7 +33,7 @@
 					</view>
 				</view>
 				<view class="action">
-					<view  v-if="item.default" style="border: 2px;" class='text-xs cu-tag line-blue round'>默认</view>
+					<view v-if="item.default" style="border: 2px;" class='text-xs cu-tag line-blue round'>默认</view>
 					<!-- <i style="font-size: 24px;font-weight: 700;"  class="lg text-blue cuIcon-info" @click="setDefault(item._id)></i> -->
 				</view>
 				<view class="move">
@@ -131,7 +135,15 @@
 					detail:'',
 					id:null
 				},
-				opt:''
+				opt:'',
+				choose:false,
+				choose_id:null
+			}
+		},
+		onLoad(opt) {
+			if(opt.choose){
+				this.choose = opt.choose;
+				this.choose_id = opt.id;
 			}
 		},
 		onShow(){
@@ -221,6 +233,14 @@
 						})
 					}
 				})
+			},
+			chooseAddress(id){
+				if(this.choose != 'choose'){
+					
+				}else{
+					this.choose_id = id;
+					uni.setStorageSync('choose_id',id);
+				}
 			},
 			updateAddress(url){
 				uni.request({

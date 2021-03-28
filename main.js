@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
-		role:{}
+		role:{},
+		orderList:[]
 	},
     mutations: {
 		// 修改state值(同步)
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
 		},
 		clean(state){
 			state.role = {}
+		},
+		seedOrderList(state,data){
+			state.orderList = data
 		}
 	},
     actions: {

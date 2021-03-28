@@ -182,6 +182,10 @@
 		{
 			"path": "pages/collector/waitingList",
 			"style": {}
+		},
+		{
+			"path": "pages/basics/success",
+			"style": {}
 		}
     ],
 	"globalStyle": {
