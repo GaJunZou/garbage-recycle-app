@@ -46,7 +46,7 @@
 						</view>
 						<view class="btn-group">
 							<button v-if="index==2" @click="removeOrder(v)" class="cu-btn round bg-red">删除订单</button>
-							<button v-if="index==0" @click="sureComplete(v)" class="cu-btn round bg-green">确认完成</button>
+							<button v-if="index==0" @click="sureComplete(v)" :disabled="!v.collector_phone" class="cu-btn round bg-gradual-green">确认完成</button>
 							<button v-if="index==1" @click="toEvaluate(v)" class="cu-btn round bg-green">去评价</button>
 							<button v-if="index==0 && v.collector_phone == ''" @click="cancelOrder(v)" class="cu-btn round lines-red">取消订单</button>
 							<button @click="moreInfo(v,index)" style="float: left;margin: 10px 0;" class="cu-btn round lines-grey">更多信息</button>
@@ -68,7 +68,9 @@
 						<text v-if="more.status == 1">待评价</text>
 						<text v-if="more.status == 2">已完成</text>
 					</view>
-					<view class="action text-blue" @tap="hideModal"><text class="cuIcon-close text-red text-blod"></text></view>
+					<view v-if="more.status == 0 && more.collector_phone == ''" class="action text-blue">
+						<button @tap="modifyOrder" style="margin: auto 10px;" class="cu-btn bg-blue">提交修改</button>
+					</view>
 				</view>
 				<view class="padding-sm">
 					<form class="form">
@@ -78,11 +80,11 @@
 						</view>
 						<view class="cu-form-group">
 							<view class="title">上门时间</view>
-							<input style="color: #39B54A;" name="name" v-model="more.start_time"></input>
+							<input disabled style="color: #39B54A;" name="name" @click="modifyTime('start_time',more)" v-model="more.start_time"></input>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">截止时间</view>
-							<input style="color: #39B54A;" name="name" v-model="more.end_time"></input>
+							<input disabled style="color: #39B54A;" name="name" @click="modifyTime('end_time',more)" v-model="more.end_time"></input>
 						</view>
 						<view v-if="more.collector_name != ''" class="cu-form-group">
 							<view class="title">接单人</view>
@@ -91,38 +93,36 @@
 						<view v-if="more.collector_name != ''" class="cu-form-group">
 							<view class="title" >手机号码</view>
 							<input disabled name="name" v-model="more.collector_phone"></input>
-							<text @click="autoLocation" class='cuIcon-dianhua text-green'></text>
 						</view>
-						<view v-if="more.collector_name != ''" class="cu-form-group">
+						<view class="cu-form-group">
 							<view class="title">留言</view>
-							 <textarea style="text-align: left;height: 50px;" v-model="more.note" />
+							 <textarea :disabled="more.status == '1' || more.status == '2'" style="text-align: left;height: 50px;" v-model="more.note" />
 						</view>
 						<view v-if="more.status==2 || more.status==1" class="cu-form-group">
-							<view class="title" >完成时间</view>
-							<input disabled name="name" v-model="more.complete_time"></input>
+							<view class="title">完成时间</view>
+							<input disabled name="name" style="color: #39B54A;" v-model="more.complete_time"></input>
 						</view>
 						 <view v-if="more.status==2" class="cu-form-group">
 							 <view class="title">服务态度</view>
 							 <view class="title" style="width: 200px;">
-								 <slider style="margin: 0;" :value="more.evaluate_attitude" step="1" block-size="16" block-color="#007aff" show-value/>
+								 <slider :disabled="more.status == '2'" style="margin: 0;" :value="more.evaluate_attitude" step="1" block-size="16" block-color="#007aff" show-value/>
 							 </view>
 						 </view>
 						 <view v-if="more.status==2" class="cu-form-group">
 							 <view class="title">上门速度</view>
 							 <view class="title" style="width: 200px;">
-								 <slider style="margin: 0;" :value="more.evaluate_speed" step="1" block-size="16" block-color="#007aff" show-value/>
+								 <slider :disabled="more.status == '2'" style="margin: 0;" :value="more.evaluate_speed" step="1" block-size="16" block-color="#007aff" show-value/>
 							 </view>
 						 </view>
 						<view v-if="more.status==2" class="cu-form-group">
 							<view class="title">评价内容</view>
-							<textarea style="text-align: left;height: 50px;" v-model="more.evaluate_content" />
+							<textarea :disabled="more.status == '2'" style="text-align: left;height: 50px;" v-model="more.evaluate_content" />
 						</view>
 						<view v-if="more.status==2" class="cu-form-group">
 							<view class="title">评价时间</view>
-							<input style="color: #39B54A;" name="name" v-model="more.evaluate_time"></input>
+							<input disabled style="color: #39B54A;" name="name" v-model="more.evaluate_time"></input>
 						</view>
 					</form>
-					
 					<p style="height: 30px;"></p>
 				</view>
 			</view>
@@ -152,7 +152,7 @@
 						 </view>
 						<view class="cu-form-group">
 							<view class="title">评价</view>
-							<textarea v-model="evaluate.evaluate_content" style="text-align: left;height: 50px;" />
+							<textarea v-model="evaluate.evaluate_content" placeholder="写点什么吧..." style="text-align: left;height: 50px;" />
 						</view>
 					</form>
 				</view>
@@ -200,10 +200,10 @@
 		},
 		computed:{
 			start(){
-				return new Date(this.more.start_time).format('MM-dd  hh:mm')
+				return new Date(this.more.start_time).format('MM-dd hh:mm')
 			},
 			end(){
-				return new Date(this.more.end_time).format('MM-dd  hh:mm')
+				return new Date(this.more.end_time).format('MM-dd hh:mm')
 			}
 		},
 		created(){
@@ -290,8 +290,7 @@
 				this.evaluate.order_id = v._id;
 			},
 			async sureEvaluate(){
-				console.log(this.evaluate);
-				this.evaluate.evaluate_time = new Date();
+				this.evaluate.evaluate_time = new Date().format('yyyy-MM-dd hh:mm:ss');
 				await this.updateOrder(this.evaluate);
 				uni.showToast({
 					title:"评论成功！",
@@ -305,12 +304,41 @@
 				await this.updateOrder({
 					order_id:v._id,
 					status:1,
-					complete_time:new Date()
+					complete_time:new Date().format('yyyy-MM-dd hh:mm:ss')
 				})
 				uni.showToast({
 					title:"已流转！",
 					duration:1000,
 				})
+			},
+			modifyTime(str,order){
+				if(order.status == 0 ){
+					var styles = {};
+					styles.time = this.more[str];
+					styles.title = "修改上门回收时间"
+					plus.nativeUI.pickDate((e)=>{
+						this.more[str] = new Date(e.date).format('yyyy-MM-dd hh:mm:ss');
+						plus.nativeUI.pickTime((e)=>{
+							this.more[str] = new Date(e.date).format('yyyy-MM-dd hh:mm:ss');
+						}, (e)=>{
+							console.log( "未选择时间："+e.message );
+						},styles);
+					}, (e)=>{
+						console.log( "未选择时间："+e.message );
+					},styles);
+
+				}else{
+					console.log('此订单已经完成了，不能再修改了');
+				}
+			},
+			modifyOrder(){
+				// 未结单时可修改时间和留言
+				this.updateOrder({
+					order_id:this.more._id,
+					note: this.more.note,
+					start_time: this.more.start_time,
+					end_time: this.more.end_time
+				});
 			},
 			sliderChange(e,i){
 				if(i == 0){
@@ -330,6 +358,11 @@
 					},
 					success: (res) => {
 						this.getData();
+						uni.showToast({
+							title:'成功！',
+							duration:1000
+						});
+						this.hideModal();
 					}
 				})
 			},

@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<basics v-show="PageCur=='basics'"></basics>
-		<components v-show="PageCur=='component'"></components>
-		<plugin v-show="PageCur=='plugin'"></plugin>
+		<basics v-if="PageCur=='basics'"></basics>
+		<components v-if="PageCur=='component'"></components>
+		<plugin v-if="PageCur=='plugin'"></plugin>
 		<view class="cu-bar tabbar bg-white shadow foot">
 			<view class="action" @click="NavChange" data-cur="basics">
 				<view class='cuIcon-cu-image'>

@@ -84,7 +84,7 @@
 				<view class="padding bg-white">
 					 <textarea 
 					 style="height: 50px;"
-					 maxlength="30"
+					 maxlength="60"
 					 placeholder="请输入..." 
 					 v-model="newSign"/>
 				</view>
@@ -331,7 +331,7 @@
 }
 .signture{
 	width: 250px;
-	height: 30px;
+	height: 32px;
 	margin: 8px;
 	border-radius: 5px;
 	line-height: 16px;

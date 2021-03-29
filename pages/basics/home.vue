@@ -90,7 +90,7 @@
 								</view>
 							</view>
 								<view @click.stop="" class="flex justify-around box-content">
-									<view class="bg-white item radius" v-for="i in data">
+									<view class="bg-white item radius" v-for="(v,i) in data" :key="i">
 										<view>
 											<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
 										</view>
@@ -185,18 +185,10 @@
 				buttonList:[1,2,3,4,5,6,7,8]
 			};
 		},
-		 mounted() {
-			// document.addEventListener('touchmove',(e)=>{
-			// 	if(this.isScroll == false){
-			// 		e.stopPropagation();
-			// 		e.preventDefault();
-			// 	}else{
-			// 		document.removeEventListener(e.type,arguments.callee,false);
-			// 	}
-			// },{passive:false})
+		onShow() {
+
 		},
 		created(){
-			console.log("created");
 			uni.request({
 				url:this.base + "/waste/getAllWaste",
 				method:"GET",
@@ -205,6 +197,17 @@
 					this.data = res.data;
 				}
 			})
+			if(JSON.stringify(this.$store.state.role)=='{}'){
+				if(uni.getStorageSync('phone') != null) {
+					uni.request({
+						url:this.base+"/account/getAllInfomation/"+uni.getStorageSync('phone'),
+						method:"GET",
+						success: (res) => {
+							this.$store.commit('save',res.data);
+						}
+					})
+				}
+			}
 		},
 		methods: {
 			getLocation(){
@@ -304,14 +307,10 @@
 				}
 			},
 			settle(){
+				// 未登录跳转，提示登录
+				this.$store.commit("seedOrderList",this.orderList);
 				uni.navigateTo({
-					url: "/pages/basics/settle",
-					success:(res)=> {
-						this.$store.commit("seedOrderList",this.orderList);
-					},
-					fail:(err)=> {
-						console.log(err)
-					}
+					url: "/pages/basics/settle"
 				})
 			}
 		},

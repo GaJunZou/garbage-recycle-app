@@ -8,19 +8,57 @@
 			</view>
 		</view>
 		<ul class="tab-title">
-			<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v}}</li>
+			<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v.title}}</li>
 		</ul>
 		<swiper :style="tabStyle" class="screen-swiper square-dot" :indicator-dots="true" :circular="true"
 		 interval="5000" duration="500"  indicator-active-color="orange" :current="currentTab" @change="changeSwiper($event)">
-			<swiper-item v-for="(item,index) in 3" :key="index">
+			<swiper-item v-for="(item,index) in tabTitle" :key="index">
 				<div class="tab-item-box">
-					<waitingList v-if="index==0"></waitingList>
-					<ongoing v-if="index==1"></ongoing>
-					<finish v-if="index==2"></finish>
+					<waitingList v-if="index==0" :list="item.titleList" @waitingChange="waitingChange"></waitingList>
+					<ongoing v-if="index==1" :list="item.titleList" @showOperate="showOperate"></ongoing>
+					<finish v-if="index==2" :list="item.titleList"></finish>
 					<div style="height: 140px;text-align: center;">没有更多了~</div>
 				</div>
 			</swiper-item>
 		</swiper>
+		
+		<view @click="hideModal()" class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
+			<view @click.stop="" class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-green">
+						<text>操作</text>
+					</view>
+					<view class="action text-blue">
+						<text @click="hideModal()" class="cuIcon-close text-red text-bold"></text>
+					</view>
+				</view>
+				<view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action"></view>
+						<view @click="phoneCall(operate.belong_phone)" class="action text-bold text-blue">电话通知</view>
+						<view class="action"></view>
+					</view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action"></view>
+						<view @click="seedMessage(operate.belong_phone)" class="action text-bold text-blue">短信通知</view>
+						<view class="action">
+							<text class="text-blue text-bold"></text>
+						</view>
+					</view>
+					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
+					<view class="cu-bar bg-white">
+						<view class="action"></view>
+						<view @click="appNotice" class="action text-bold text-blue">app通知</view>
+						<view class="action">
+							<text class="text-blue text-bold"></text>
+						</view>
+					</view>
+					<p style="height: 30px;"></p>
+				</view>
+			</view>
+		</view>
 		<view @touchstart="snapStart($event)" @touchend="snapEnd($event)" class="cu-modal drawer-modal justify-start" :class="modalName=='DrawerModalL'?'show':''">
 			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
 				<view class="cu-list menu text-left">
@@ -85,7 +123,17 @@
 			return{
 				phone:0,
 				modalName:null,
-				tabTitle:['待接单','进行中','已完成'],
+				tabTitle:[
+					{
+					title:'待接单',
+					titleList:[],
+					},{
+					title:'进行中',
+					titleList:[],
+					},{
+					title:'已完成',
+					titleList:[],
+					}],
 				currentTab:0,
 				tabStyle:{
 					position:'fixed',
@@ -94,10 +142,15 @@
 					overflow:"hidden"
 				},
 				start:null,
-				collector:{}
+				collector:{},
+				operate:{}
+				
 			}
 		},
 		onShow() {
+		},
+		created(){
+			this.phone = uni.getStorageSync('phone');
 			uni.request({
 				url:this.base+"/account/getAllInfomation/"+this.phone,
 				method:"GET",
@@ -106,14 +159,24 @@
 				}
 			})
 			this.collector = this.$store.state.role;
-		},
-		created(){
+			uni.request({
+				url:this.base+"/order/user/getAllOrder",
+				method:"GET",
+				success: (res) => {
+					this.tabTitle[0].titleList = res.data[0];
+					this.tabTitle[1].titleList = res.data[1];
+					this.tabTitle[2].titleList = res.data[2];
+					this.$store.commit('saveWaitingList',res.data[0]);
+					this.$store.commit('saveOngoingList',res.data[1]);
+					this.$store.commit('saveFinishList',res.data[2]);
+					// this.$store.commit('save',res.data)
+				}
+			})
 			uni.getSystemInfo({
 				    success: (res)=> {
 						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';
 				    }
 				});
-			this.phone = uni.getStorageSync('phone');
 		},
 		methods:{
 			bigHead(){
@@ -122,6 +185,13 @@
 					fail(err) {
 						console.log(err)
 					}
+				})
+			},
+			waitingChange(e){
+				let res = this.tabTitle[0].titleList.splice(e,1);
+				this.tabTitle[1].titleList.push(res[0]);
+				uni.showToast({
+					title:"签单成功！请尽快处理。"
 				})
 			},
 			quit(){
@@ -142,6 +212,23 @@
 				e.detail.current = 2;
 				console.log(e);
 			},
+			showOperate(e){	
+				console.log(e);
+				this.operate = this.tabTitle[1].titleList[e];
+				this.modalName = 'bottomModal';
+			},
+			phoneCall(number){
+				uni.makePhoneCall({
+				    phoneNumber: number 
+				});
+			},
+			seedMessage(number){
+				let msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
+				msg.to = [number];
+				msg.body = '你好，我已到达';
+				plus.messaging.sendMessage(msg);
+			},
+			appNotice(){},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},

@@ -113,10 +113,19 @@
 			}
 		},
 		created() {
-			this.globalUser = this.$store.state.role == null ? {} : this.$store.state.role;
-			if(this.globalUser != null){
-				this.url = this.globalUser.portrait_url
-			}
+			if(JSON.stringify(this.globalUser)=="{}"){
+				if(uni.getStorageSync('phone') != null) {
+					uni.request({
+						url:this.base+"/account/getAllInfomation/"+uni.getStorageSync('phone'),
+						method:"GET",
+						success: (res) => {
+							this.$store.commit('save',res.data);
+						}
+					})
+					this.globalUser = this.$store.state.role == null ? {} : this.$store.state.role;
+					this.url = this.globalUser.portrait_url
+				}
+			}	
 		},
 		methods: {
 			openOrder() {

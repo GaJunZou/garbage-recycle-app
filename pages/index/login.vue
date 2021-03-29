@@ -51,10 +51,6 @@
 				valid_2:null
 			}
 		},
-		onShow() {
-			console.log(uni.getStorageSync('phone'));
-			console.log(this.$store.state);
-		},
 		methods:{
 			gotoRegist(value){
 				uni.navigateTo({

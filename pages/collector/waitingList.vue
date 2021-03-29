@@ -1,10 +1,12 @@
 <template>
 	<view>
-		<view class="box" v-for="(i,v) in 4" :key="v">
+		<view class="box" v-for="(i,v) in list" :key="v">
 			<view :class="show == i ? 'show-detail' : 'hide-detail'">
 				<view style="margin-bottom: 15px;height: 25px;">
 					<p style="float: right;">上门时间:
-					<text style="color: #39B54A;font-weight: 700;font-size: 15px">18:00 - 19:00</text>
+					<text style="color: #39B54A;font-weight: 700;font-size: 15px">
+						{{new Date(i.start_time).format("hh:mm")}} - {{new Date(i.end_time).format("hh:mm")}}
+					</text>
 				
 					</p>
 					<p style="float: left;">
@@ -14,7 +16,7 @@
 					</p>
 					
 				</view>
-				<p style="font-size: 22px;font-weight: 700;margin-bottom: 15px;">白云区石差路潭村86号</p>
+				<p style="font-size: 22px;font-weight: 700;margin-bottom: 15px;">{{i.address.area}}{{i.address.town}}{{i.address.street}}{{i.address.detail}}</p>
 				<view class="cu-bar bg-white">
 					<view class="action">
 						距离现在位置约<text style="color: #DD514C;font-weight: 700;font-size: 22px;">1.5km</text>
@@ -24,31 +26,31 @@
 				<view class="cu-bar bg-white">
 					<view class="action">
 						<text class="cuIcon-moneybag" style="color: #faa125;font-weight: 700;margin-right: 10rpx;"></text>预估总金额
-						<text style="color: #faa125;font-weight: 700;font-size: 15px">4.92元</text>
+						<text style="color: #faa125;font-weight: 700;font-size: 15px">{{i.waste_price_all}}元</text>
 					</view>
 					<view @click="showDetail(i)" style="font-weight: 700;color: #faa125;"  class="action">详情<text class="cuIcon-unfold"></text></view>
 				</view>
 				<view :class="detailBox == i ? 'show-detail-box' : 'hide-detail-box'">
 					<!-- <div style="width: 100%;height: 1rpx;padding: 0;margin:3px auto;border: 0px;background-color: #a5a5a5;"></div> -->
-					<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in 2" :key="vv">
+					<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in i.wastes" :key="vv">
 						<view style="float: left;width: 81px;height: 81px;">
 							<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../static/11.png" mode=""></image>
 						</view>
 						<view style="float: left;height: 66px;margin-left: 10px;">
-							<big><strong>名称</strong></big>
-							<p>价格： <text>0.2/个</text></p>
-							<p>数量 X <text>7</text></p>
+							<big><strong>{{ii.name}}</strong></big>
+							<p>价格： <text>{{ii.price}}/个</text></p>
+							<p>数量 X <text>{{ii.number}}</text></p>
 						</view>
 						<view style="float: right;margin-right: 10px;">
-							<p>合计：10</p>
+							<p>合计：{{(ii.price*ii.number*100).toFixed(2)/100}}</p>
 						</view>
 					</view>
 					<p>备注：</p>
-					<p>这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注</p>
+					<p>{{i.note || '暂无备注~'}}</p>
 					<view @click="hideDetail()" style="font-weight: 700;color: #faa125;text-align: center;"  class="action">收起<text class="cuIcon-fold"></text></view>
 				</view>
 			</view>
-			<button class="cuIcon bg-gradual-blue round" style="width: 250px;font-weight: 700;margin-top: 20px;">接单</button>
+			<button @click="collectorAdd(i,v)" class="cuIcon bg-gradual-blue round" style="width: 250px;font-weight: 700;margin-top: 20px;">接单</button>
 		</view>
 		<view style="margin-bottom: 50px;">
 			
@@ -61,10 +63,38 @@
 		data(){
 			return{
 				show:null,
-				detailBox:null
+				detailBox:null,
+				collector:{},
+			}
+		},
+		props:{
+			list:{
+				default:[]
 			}
 		},
 		methods:{
+			collectorAdd(value,index){
+				uni.request({
+					url: this.base+'/order/collector/add',
+					method: 'POST',
+					data: {
+						collector_phone:uni.getStorageSync('phone'),
+						collector_name:this.collector.name,
+						belong_phone:value.belong_phone,
+						belong_name:value.belong_name,
+						select_time:new Date().format('yyyy-MM-dd hh:mm:ss'),
+						order_id:value._id,	
+						status:0
+					},
+					success: res => {
+						this.$store.commit('saveWaitingList',this.list);
+						this.$emit("waitingChange",index);
+						// 然后想办法 同步数据到ongoingList
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
 			showDetail(index){
 				this.show = index;
 				this.detailBox = index;
@@ -91,29 +121,29 @@
 		display: none;
 	}
 	.show-detail{
-		max-height: 183px;
+		max-height: 212px;
 		overflow: hidden;
 		animation: showDetail .5s cubic-bezier(0.4, 0, 1, 1) forwards;
 	}
 	.hide-detail{
-		max-height: 183px;
+		max-height: 212px;
 		overflow: hidden;
 		animation: hideetail .5s ease forwards;
 	}
 	@keyframes showDetail{
 		from{
-			max-height: 183px;
+			max-height: 212px;
 		}
 		to{
-			max-height: 1000px;
+			max-height: 2000px;
 		}
 	}
 	@keyframes hideDetail{
 		from{
-			max-height: 1000px;
+			max-height: 2000px;
 		}
 		to{
-			max-height: 183px;
+			max-height: 212px;
 		}
 	}
 </style>

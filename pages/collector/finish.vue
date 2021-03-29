@@ -1,18 +1,20 @@
 <template>
 	<view>
-		<view class="box" v-for="(i,v) in 4" :key="v">
+		<view class="box" v-for="(i,v) in list" :key="v">
 			<view>
 				<view style="margin-bottom: 15px;height: 25px;">
 					<p style="float: left;">电话:
-						<text style="color: #14adff;font-weight: 700;font-size: 15px">19875814656</text>			
+						<text style="color: #14adff;font-weight: 700;font-size: 15px">{{i.collector_phone}}</text>			
 					</p>
 					<p style="float: right;">订单号：
-						<text style="color: #14adff;font-weight: 700;font-size: 15px">4856125487</text>
+						<text style="color: #14adff;font-weight: 700;font-size: 15px">{{i._id}}</text>
 					</p>
 				</view>
-				<p style="font-size: 22px;font-weight: 700;margin-bottom: 15px;">白云区石差路潭村86号</p>
+				<p style="font-size: 22px;font-weight: 700;margin-bottom: 15px;">{{i.address.area}}{{i.address.town}}{{i.address.street}}{{i.address.detail}}</p>
 				<p style="margin-bottom: 15px;">完成时间：
-					<text style="color: #39B54A;font-weight: 700;font-size: 15px">2021-9-19 18:30:26</text>
+					<text style="color: #39B54A;font-weight: 700;font-size: 15px">
+						{{i.complete_time}}
+					</text>
 				</p>
 				<view class="cu-bar bg-white">
 					<view class="action">
@@ -21,21 +23,21 @@
 					</view>
 				</view>
 				<view>
-					<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in 2" :key="vv">
+					<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in i.wastes" :key="vv">
 						<view style="float: left;width: 81px;height: 81px;">
 							<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../static/11.png" mode=""></image>
 						</view>
 						<view style="float: left;height: 66px;margin-left: 10px;">
-							<big><strong>名称</strong></big>
-							<p>价格： <text>0.2/个</text></p>
-							<p>数量 X <text>7</text></p>
+							<big><strong>{{ii.waste_name}}</strong></big>
+							<p>价格： <text>{{ii.price}}/个</text></p>
+							<p>数量 X <text>{{ii.number}}</text></p>
 						</view>
 						<view style="float: right;margin-right: 10px;">
-							<p>合计：10</p>
+							<p>合计：{{(ii.price*ii.number*100).toFixed(2)/100}}</p>
 						</view>
 					</view>
 					<p>备注：</p>
-					<p>这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注这是备注</p>
+					<p>{{i.note || '暂无备注~'}}</p>
 					<!-- <view @click="hideDetail()" style="font-weight: 700;color: #faa125;text-align: center;margin-bottom: 20px;"  class="action">收起<text class="cuIcon-fold"></text></view> -->
 				</view>
 			</view>
@@ -54,6 +56,11 @@
 		data(){
 			return{
 
+			}
+		},
+		props:{
+			list:{
+				default:[]
 			}
 		},
 		methods:{

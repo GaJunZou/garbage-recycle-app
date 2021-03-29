@@ -64,6 +64,7 @@
 				date:'',
 				startTime:'',
 				endTime:'',
+				startDate:'',
 				order:[],
 				price_all:0,
 				note:'',
@@ -72,6 +73,7 @@
 		},
 		onShow() {
 			this.order = this.$store.state.orderList;
+			console.log(this.order);
 			this.price_all = 0;
 			this.order.forEach((v,i)=>{
 				this.price_all = this.price_all + v.price*v.number;
@@ -93,13 +95,13 @@
 			uni.setStorageSync('choose_id',null);
 		},
 		created(){
+			this.startDate = new Date();
 			this.startTime = new Date();
 			this.endTime = new Date(new Date().getTime()+60*60*1000);
-			console.log(this.startTime);
 		},
 		computed:{
 			getDate(){
-				return this.startTime.format('yyyy-MM-dd');
+				return this.startDate.format('yyyy-MM-dd');
 			},
 			getStartTime(){
 				return this.startTime.format('hh:mm');
@@ -113,7 +115,7 @@
 				var styles = {};
 				styles.title = "请选择上门回收日期"
 				plus.nativeUI.pickDate((e)=>{
-					this.startTime=new Date(e.date);
+					this.startDate=new Date(e.date);
 				}, (e)=>{
 					console.log( "未选择时间："+e.message );
 				},styles);
@@ -159,12 +161,12 @@
 						    belong_name: this.$store.state.role.name,
 						    wastes: this.order,
 						    waste_price_all: (this.price_all*100).toFixed(2)/100,
-						    release_time:  new Date(),
+						    release_time: new Date().format('yyyy-MM-dd hh:mm:ss'),
 						    address:this.address,
 						    // address_crood: ".。。。。。。。。。。。",
 						    note: this.note,
-						    start_time: this.startTime,
-						    end_time: this.endTime
+						    start_time: this.startDate.format('yyyy-MM-dd') + " " + this.startTime.format('hh:mm:ss'),
+						    end_time: this.startDate.format('yyyy-MM-dd') + " " + this.endTime.format('hh:mm:ss')
 					},
 					success: (res) => {
 						console.log(res.data);
