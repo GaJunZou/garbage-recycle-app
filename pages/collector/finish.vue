@@ -3,9 +3,6 @@
 		<view class="box" v-for="(i,v) in list" :key="v">
 			<view>
 				<view style="margin-bottom: 15px;height: 25px;">
-					<p style="float: left;">电话:
-						<text style="color: #14adff;font-weight: 700;font-size: 15px">{{i.collector_phone}}</text>			
-					</p>
 					<p style="float: right;">订单号：
 						<text style="color: #14adff;font-weight: 700;font-size: 15px">{{i._id}}</text>
 					</p>
@@ -19,7 +16,7 @@
 				<view class="cu-bar bg-white">
 					<view class="action">
 						<text class="cuIcon-moneybag" style="color: #faa125;font-weight: 700;margin-right: 10rpx;"></text>收入
-						<text style="color: #faa125;font-weight: 700;font-size: 15px">4.92元</text>
+						<text style="color: #faa125;font-weight: 700;font-size: 15px">{{i.waste_price_all}}元</text>
 					</view>
 				</view>
 				<view>
@@ -42,7 +39,7 @@
 				</view>
 			</view>
 			<view style="text-align: right;">
-				<a style="display: inline;font-weight: 700;background-color: none;color: #faa125;">
+				<a @click="checkEvaluate(v)" style="display: inline;font-weight: 700;background-color: none;color: #faa125;">
 				查看评价<text class="cuIcon-right"></text></a>
 			</view>
 		</view>
@@ -64,7 +61,9 @@
 			}
 		},
 		methods:{
-
+			checkEvaluate(e){
+				this.$emit('checkEvaluate',e);
+			}
 		}
 	}
 </script>

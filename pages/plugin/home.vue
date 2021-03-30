@@ -126,6 +126,17 @@
 					this.url = this.globalUser.portrait_url
 				}
 			}	
+			if(uni.getStorageSync('role') == 'collector'){
+				uni.redirectTo({
+					url:'/pages/collector/home',
+					success: (res) => {
+						console.log(res);
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
+			}
 		},
 		methods: {
 			openOrder() {

@@ -186,6 +186,10 @@
 		{
 			"path": "pages/basics/success",
 			"style": {}
+		},
+		{
+			"path": "pages/component/article",
+			"style": {}
 		}
     ],
 	"globalStyle": {

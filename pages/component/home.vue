@@ -2,7 +2,8 @@
 	<view>
 		<scroll-view scroll-y class="page">
 			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 40px 20px 0px;font-weight: 700;color: #e2e2e2;">
-				探索 <i class="cuIcon-discoverfill" style="color: #EB2;"></i> 发现
+				<p style="float: left;">探索 <i class="cuIcon-discoverfill" style="color: #EB2;"></i> 发现</p> 
+				<p style="float: right;padding-right: 40px;"><button @click="publish" class="cu-btn round">添加</button></p>
 			</div>
 			<ul class="tab-title">
 				<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v}}</li>
@@ -23,14 +24,14 @@
 					</div>
 				</swiper-item>
 			</swiper>
-			<view class="nav-list">
+<!-- 			<view class="nav-list">
 				<navigator hover-class='none' :url="'/pages/component/' + item.name" class="nav-li" navigateTo :class="'bg-'+item.color"
 				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
 					<view class="nav-title">{{item.title}}</view>
 					<view class="nav-name">{{item.name}}</view>
 					<text :class="'cuIcon-' + item.cuIcon"></text>
 				</navigator>
-			</view>
+			</view> -->
 		</scroll-view>
 	</view>
 </template>
@@ -141,6 +142,11 @@
 				this.currentTab = e.detail.current;
 				e.detail.current = 2;
 				console.log(e);
+			},
+			publish(){
+				uni.navigateTo({
+					url:'/pages/component/article'
+				})
 			}
 		}
 	}

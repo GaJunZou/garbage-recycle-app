@@ -105,13 +105,13 @@
 						 <view v-if="more.status==2" class="cu-form-group">
 							 <view class="title">服务态度</view>
 							 <view class="title" style="width: 200px;">
-								 <slider :disabled="more.status == '2'" style="margin: 0;" :value="more.evaluate_attitude" step="1" block-size="16" block-color="#007aff" show-value/>
+								 <slider :disabled="more.status == '2'" style="margin: 0;" :value="more.evaluate_attitude" step="10" block-size="16" block-color="#007aff" show-value/>
 							 </view>
 						 </view>
 						 <view v-if="more.status==2" class="cu-form-group">
 							 <view class="title">上门速度</view>
 							 <view class="title" style="width: 200px;">
-								 <slider :disabled="more.status == '2'" style="margin: 0;" :value="more.evaluate_speed" step="1" block-size="16" block-color="#007aff" show-value/>
+								 <slider :disabled="more.status == '2'" style="margin: 0;" :value="more.evaluate_speed" step="10" block-size="16" block-color="#007aff" show-value/>
 							 </view>
 						 </view>
 						<view v-if="more.status==2" class="cu-form-group">

@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<view class="flex justify-between top-bar">
-			<view><text class="my-icon" @tap="showModal" data-target="DrawerModalL">&#xe60d;</text></view>
+			<view><text class="my-icon" style="font-size: 30px;" @tap="showModal" data-target="DrawerModalL">&#xe6ec;</text></view>
 			<view style="text-align: center;font-size: 20px;font-weight: 700;">任务列表</view>
 			<view>
-				<text style="float:right" class="my-icon">&#xe626;</text>
+				<text style="float:right;font-size: 30px;" class="my-icon">&#xe6e4;</text>
 			</view>
 		</view>
 		<ul class="tab-title">
@@ -16,7 +16,7 @@
 				<div class="tab-item-box">
 					<waitingList v-if="index==0" :list="item.titleList" @waitingChange="waitingChange"></waitingList>
 					<ongoing v-if="index==1" :list="item.titleList" @showOperate="showOperate"></ongoing>
-					<finish v-if="index==2" :list="item.titleList"></finish>
+					<finish v-if="index==2" :list="item.titleList" @checkEvaluate="checkEvaluate"></finish>
 					<div style="height: 140px;text-align: center;">没有更多了~</div>
 				</div>
 			</swiper-item>
@@ -59,6 +59,50 @@
 				</view>
 			</view>
 		</view>
+		
+		<view @click="hideModal()" class="cu-modal bottom-modal" :class="modalName=='bottomModal1'?'show':''">
+			<view @click.stop="" class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-green">
+						<text>操作</text>
+					</view>
+					<view class="action text-blue">
+						<text @click="hideModal()" class="cuIcon-close text-red text-bold"></text>
+					</view>
+				</view>
+				<view>
+					<form class="form">
+						<view class="cu-form-group">
+							 <view class="title">服务态度</view>
+							 <view class="title" style="width: 250px;">
+								 <slider disabled style="margin: 0;" :value="operate.evaluate_attitude" block-size="16" block-color="#007aff" show-value/>
+							 </view>
+						 </view>
+						 <view class="cu-form-group">
+							 <view class="title">上门速度</view>
+							 <view class="title" style="width: 250px;">
+								 <slider disabled style="margin: 0;" :value="operate.evaluate_speed" block-size="16" block-color="#007aff" show-value/>
+							 </view>
+						 </view>
+						<view class="cu-form-group">
+							<view class="title">评价内容</view>
+							<textarea disabled style="text-align: left;height: 50px;" v-model="operate.evaluate_content" />
+							<view v-if="operate.evaluate_content != ''" class="title"><text @click="feedback(operate.belong_phone,operate._id)" class="text-green">回复</text></view>
+						</view>
+						<view v-if="operate.feedback != ''" class="cu-form-group">
+							<view class="title">回复内容</view>
+							<input disabled style="color: #39B54A;" name="name" v-model="operate.feedback"></input>
+						</view>
+						<view class="cu-form-group">
+							<view class="title">评价时间</view>
+							<input disabled style="color: #39B54A;" name="name" v-model="operate.evaluate_time"></input>
+						</view>
+					</form>
+					<p style="height: 30px;"></p>
+				</view>
+			</view>
+		</view>
+		
 		<view @touchstart="snapStart($event)" @touchend="snapEnd($event)" class="cu-modal drawer-modal justify-start" :class="modalName=='DrawerModalL'?'show':''">
 			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
 				<view class="cu-list menu text-left">
@@ -68,7 +112,7 @@
 						</p>
 						<view class="header">
 							 <view class="head">
-								<image @click="bigHead" src="../../static/11.png" mode=""></image>
+								<image @click="bigHead" :src="collector.portrait_url" mode=""></image>
 							 </view>
 							 <view class="text">
 								<p style="font-size: 20px;font-weight: 700;margin: 10px 20px;">{{collector.name}}</p>
@@ -93,11 +137,11 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action">账户余额</view>
-						<view class="action">{{collector.sign}}元</view>
+						<view class="action">{{collector.sign|| 0}}元</view>
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action">积分</view>
-						<view class="action">{{collector.credits}}</view>
+						<view class="action">{{collector.credits || 0}}</view>
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action">详细资料</view>
@@ -143,8 +187,8 @@
 				},
 				start:null,
 				collector:{},
-				operate:{}
-				
+				operate:{},
+				index:null
 			}
 		},
 		onShow() {
@@ -199,6 +243,7 @@
 					url:'../index/login',
 					success() {
 						uni.setStorageSync('phone',null);
+						uni.setStorageSync('role',null);
 						this.$store.commit('clean');
 					}
 				})
@@ -217,10 +262,37 @@
 				this.operate = this.tabTitle[1].titleList[e];
 				this.modalName = 'bottomModal';
 			},
+			checkEvaluate(e){
+				this.modalName = 'bottomModal1';
+				this.index = e;
+				this.operate = this.tabTitle[2].titleList[e];
+			},
 			phoneCall(number){
 				uni.makePhoneCall({
 				    phoneNumber: number 
 				});
+			},
+			feedback(phone,id){
+				plus.nativeUI.prompt("输入您的回复内容：", (e)=>{
+						if(e.index == 0){
+							uni.request({
+								url:this.base+'/order/user/update',
+								method:"POST",
+								data:{
+									belong_phone:phone,
+									order_id:id,
+									feedback:e.value
+								},
+								success: () => {
+									console.log(this.tabTitle);
+									this.tabTitle[2].titleList[this.index].feedback = e.value;
+								}
+							})
+						}else{
+							console.log("cancel");
+						}
+					}, "评论回复", "请输入内容...", ["确定","取消"]);
+				
 			},
 			seedMessage(number){
 				let msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
@@ -344,5 +416,8 @@
 	float: left;
 	height: 100px;
 	padding: 10px;
+}
+.form>.cu-form-group{
+	min-height: 42px;
 }
 </style>

@@ -208,6 +208,17 @@
 					})
 				}
 			}
+			if(uni.getStorageSync('role') == 'collector'){
+				uni.redirectTo({
+					url:'/pages/collector/home',
+					success: (res) => {
+						console.log(res);
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
+			}
 		},
 		methods: {
 			getLocation(){

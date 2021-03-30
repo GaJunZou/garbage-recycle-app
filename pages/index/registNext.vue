@@ -2,7 +2,7 @@
 	<view>
 		<p style="width: 100vw;font-size: 20px;text-align: center;font-weight: 700;margin: 60px auto;">还剩最后一步就可以注册成功了！</p>
 		<view class="form-log">
-		    <form @submit="formSubmit" @reset="formReset">
+		    <form @submit="formSubmit">
 				<view class="uni-form-item uni-column">
 				    <view class="title">你叫什么名字？</view>
 				    <input name="input" class="uni-input" maxlength="7" v-model="name"/>
@@ -42,9 +42,9 @@
 	export default{
 		data(){
 			return{
-				name:'淘气的皮蛋',
+				name:'小张',
 				gender:1,
-				sign:"无人生哲理能急救你唯独这歌赠你无人生哲理能急救你唯独这歌赠你",
+				sign:"保护环境，珍惜资源，是我们每一个地球人的责任！",
 				imgList:[],
 				phone:0,
 				img:''
@@ -52,7 +52,6 @@
 		},
 		created() {
 			this.phone = uni.getStorageSync('phone');
-			console.log(this.phone);
 		},
 		methods:{
 			formSubmit: function(e) {
@@ -89,9 +88,16 @@
 									title:"上传成功！",
 									duration:1000,
 									success: () => {
-										uni.reLaunch({
-											url: "/pages/index/index"
-										})
+										if(uni.getStorageSync('role') == 'user'){
+											uni.reLaunch({
+												url: "/pages/index/index"
+											});
+										}else{
+											uni.reLaunch({
+												url: "/pages/collector/home"
+											});
+										}
+
 									}
 								});
 							},

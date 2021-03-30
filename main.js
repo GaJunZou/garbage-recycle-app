@@ -42,6 +42,10 @@ const store = new Vuex.Store({
 	}
 })
 Vue.prototype.base = 'http://192.168.0.105:3000';
+String.prototype.time = function() {
+	let time = this.split(' ')[1].split(':');
+	return time[0] + ':' + time[1];
+}
 Date.prototype.format = function(fmt) { 
      var o = { 
         "M+" : this.getMonth()+1,                 //月份 

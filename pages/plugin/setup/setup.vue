@@ -104,7 +104,7 @@
 			<view class="action">
 				<image style="width: 70px;height: 70px;margin: 8px;border-radius: 5px;" :src="url" mode=""></image>
 				<text class="text-grey text-bold">
-					<i class="icon-next iconfont cuIcon-right"></i>
+					<i class="cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -116,7 +116,7 @@
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>{{globalUser.name}}</span>
-					<i class="icon-next iconfont cuIcon-right"></i>
+					<i class="cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -129,7 +129,7 @@
 				<text class="text-grey text-bold">
 					<span v-if="globalUser.user.gender == 1">男</span>
 					<span v-if="globalUser.user.gender != 1">女</span>
-					<i class="icon-next iconfont cuIcon-right"></i>
+					<i class="cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -141,7 +141,7 @@
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>{{globalUser.phone}}</span>
-					<i class="icon-next iconfont cuIcon-right"></i>
+					<i class="cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -155,7 +155,7 @@
 					{{globalUser.sign}}
 				</p>
 				<text class="text-grey text-bold">
-					<i class="icon-next iconfont cuIcon-right"></i>
+					<i class="cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
@@ -167,14 +167,14 @@
 			<view class="action">
 				<text class="text-grey text-bold">
 					<span>查看</span>
-					<i class="icon-next iconfont cuIcon-right"></i>
+					<i class="cuIcon-right"></i>
 				</text>
 			</view>
 		</view>
 		<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 		
 		<view class="quit">
-			<view class="cu-bar bg-blue">
+			<view class="cu-bar bg-blue" @click="modifyPassword(globalUser.phone,globalUser.password)">
 				<view class="action">
 					<text class="text-black text-bold"></text> 
 				</view>
@@ -311,11 +311,61 @@
 				})
 				this.hideModal();
 			},
+			modifyPassword(phone,password){
+				console.log(1);
+				let newPassword = null;
+				plus.nativeUI.prompt("请输入您的旧密码。", (e)=>{
+						if(e.index == 0){
+							if(e.value != password)  {
+								plus.nativeUI.toast('密码错误。')
+								return;
+							}else{
+								plus.nativeUI.prompt("请输入您的8位以上的新密码，由数字和至少一个字母组合。", (e)=>{
+										if(e.index == 0){
+											if(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/.test(e.index)==true){
+												newPassword = e.value;
+												plus.nativeUI.prompt("请在此确认您的密码。", (e)=>{
+													if(e.index == 0){
+														if(newPassword == e.value){
+															uni.request({
+																	url:this.base + '/account/postUserUpdateData',
+																	method:"POST",
+																	data:{
+																		phone:phone,
+																		password:newPassword
+																	},
+																	success: (res) => {
+																		if(res.data != false){
+																			console.log(res.data);
+																			this.globalUser = res.data.password;
+																			this.$store.commit("save",res.data);
+																			plus.nativeUI.toast('修改密码成功。');
+																		}
+																	}
+																})
+														}else{
+															plus.nativeUI.toast('两次密码不一致，修改密码失败。');
+														}
+													}
+												}, "修改密码", "输入你的新密码...", ["确定","取消"]);
+										}else{
+											plus.nativeUI.toast('密码格式不正确，请重新操作。');
+										}
+									}
+								}, "修改密码", "输入你的新密码...", ["确定","取消"]);
+							}
+						}
+					}, "修改密码", "输入你的旧密码...", ["确定","取消"]);
+
+
+
+			},
 			quit(){
 				uni.reLaunch({
 					url:'../../index/login',
 					success() {
 						uni.setStorageSync('phone',null);
+						uni.setStorageSync('role',null);
 						this.$store.commit('clean');
 					}
 				})

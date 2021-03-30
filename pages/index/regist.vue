@@ -23,7 +23,7 @@
 					<text :class="valid_3 == false ? 'valid' : 'no-valid'">两次密码不一致，请重新输入!</text>
 				</view>
                 <view class="uni-form-item uni-column">
-                    <view class="title">性别</view>
+                    <view class="title">选择角色</view>
 					<radio-group class="radio-group" name="radio">
 						<button @click="chooseRole(1)" :class="role ==1 ? 'bg-blue' : ''" class="cu-btn round" style="width: 30vw;height:50px;margin-top: 10px;" >
 							<text style="font-size: 25px;line-height: 50px;" class="my-icon">&#xe6ed;</text>普通用户</button>
@@ -74,15 +74,9 @@
 					},
 					success: (res) => {
 						uni.setStorageSync('phone',res.data.phone);
-						if(res.data.role == 'user'){
-							this.$store.commit('save',res.data);
-							this.toNext(res.data.phone);
-						}else if(res.data.role == 'collector'){
-							this.$store.commit('save',res.data);
-							uni.navigateTo({
-								url: "/pages/collector/home?phone="+res.data.phone,
-							})
-						}
+						uni.setStorageSync('role',res.data.role);
+						this.$store.commit('save',res.data);
+						this.toNext();
 					},
 					fail: (err) => {
 						console.log(err);
@@ -128,9 +122,9 @@
 				}
 				this.validForm();
 			},
-			toNext(value){
+			toNext(value,role){
 				uni.navigateTo({
-					url: "/pages/index/registNext?phone="+value,
+					url: "/pages/index/registNext",
 					fail(err) {
 						console.log(err)
 					}

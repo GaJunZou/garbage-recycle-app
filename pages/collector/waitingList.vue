@@ -5,7 +5,7 @@
 				<view style="margin-bottom: 15px;height: 25px;">
 					<p style="float: right;">上门时间:
 					<text style="color: #39B54A;font-weight: 700;font-size: 15px">
-						{{new Date(i.start_time).format("hh:mm")}} - {{new Date(i.end_time).format("hh:mm")}}
+						{{i.start_time.time()}} - {{i.end_time.time()}}
 					</text>
 				
 					</p>
