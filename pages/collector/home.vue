@@ -50,7 +50,7 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action"></view>
-						<view @click="appNotice" class="action text-bold text-blue">app通知</view>
+						<view @click="appNotice(operate.belong_phone)" class="action text-bold text-blue">app通知</view>
 						<view class="action">
 							<text class="text-blue text-bold"></text>
 						</view>
@@ -300,7 +300,9 @@
 				msg.body = '你好，我已到达';
 				plus.messaging.sendMessage(msg);
 			},
-			appNotice(){},
+			appNotice(phone){
+				this.notifyClient(phone);
+			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},

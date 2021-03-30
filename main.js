@@ -42,6 +42,26 @@ const store = new Vuex.Store({
 	}
 })
 Vue.prototype.base = 'http://192.168.0.105:3000';
+Vue.prototype.socket = 'ws://192.168.0.105:3000';
+
+const ws = new WebSocket('ws://192.168.0.105:3000/socket/notifyClient');
+	ws.onopen = e => {
+	  console.log(`WebSocket 连接状态： ${ws.readyState}`)
+	}
+	ws.onmessage = data => {
+		console.log(data);
+	}
+	ws.onclose = data => {
+	  console.log('WebSocket连接已关闭')
+	  console.log(data);
+	}
+Vue.prototype.notifyClient = function(params){
+	  ws.send("客户端请求socket");
+}
+
+
+
+
 String.prototype.time = function() {
 	let time = this.split(' ')[1].split(':');
 	return time[0] + ':' + time[1];
