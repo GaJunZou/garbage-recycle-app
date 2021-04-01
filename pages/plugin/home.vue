@@ -112,6 +112,9 @@
 				url:'123.jpg'
 			}
 		},
+		onShow() {
+			this.globalUser = this.$store.state.role;
+		},
 		created() {
 			if(JSON.stringify(this.globalUser)=="{}"){
 				if(uni.getStorageSync('phone') != null) {

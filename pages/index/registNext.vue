@@ -54,23 +54,28 @@
 			this.phone = uni.getStorageSync('phone');
 		},
 		methods:{
-			formSubmit: function(e) {
+			formSubmit(e) {
+				let img = {
+					name:'file',
+					uri:this.imgList[0]
+				}
+				plus.nativeUI.showWaiting("上传中...");
 				uni.uploadFile({
-					url:"http://127.0.0.1:8002/aliyun-service/upload-image",
-					filePath: this.imgList[0],
-					name: 'file',
+					url:"http://192.168.0.105:8002/aliyun-service/upload-image",
+					// filePath: this.imgList[0],
+					// name: 'file',
+					files:[img],
 					'content-type':"multipart/form-data",
 					success:(res)=> {
 						this.img = JSON.parse(res.data).data.url;
+						console.log(this.img);
 					},
 					fail:(err)=>{
 						console.log(err);
-						uni.showToast({
-							title:"头像上传失败！",
-							duration:1000
-						});
+						plus.nativeUI.toast('头像上传失败！');
 					},
 					complete: () => {
+						plus.nativeUI.closeWaiting();
 						// plus.nativeUI.toast("请填写必填项！");
 						uni.request({
 							url:this.base+'/account/postDetailData',
@@ -84,25 +89,22 @@
 							},
 							success: (res) => {
 								this.$store.commit('save',res.data);
-								uni.showToast({
-									title:"上传成功！",
-									duration:1000,
-									success: () => {
-										if(uni.getStorageSync('role') == 'user'){
-											uni.reLaunch({
-												url: "/pages/index/index"
-											});
-										}else{
-											uni.reLaunch({
-												url: "/pages/collector/home"
-											});
-										}
-
-									}
-								});
+								plus.nativeUI.toast('注册中...');
+								if(uni.getStorageSync('role') == 'user'){
+									uni.reLaunch({
+										url: "/pages/index/index"
+									});
+								}else{
+									uni.reLaunch({
+										url: "/pages/collector/home"
+									});
+								}
 							},
 							fail: (err) => {
 								console.log(err);
+							},
+							complete:()=>{
+								plus.nativeUI.closeWaiting();
 							}
 						});
 					}
@@ -122,6 +124,9 @@
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
 						this.imgList = res.tempFilePaths;
+					},
+					fail: (err) => {
+						console.log(err);
 					}
 				});
 			},

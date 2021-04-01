@@ -312,7 +312,6 @@
 				this.hideModal();
 			},
 			modifyPassword(phone,password){
-				console.log(1);
 				let newPassword = null;
 				plus.nativeUI.prompt("请输入您的旧密码。", (e)=>{
 						if(e.index == 0){
@@ -322,7 +321,7 @@
 							}else{
 								plus.nativeUI.prompt("请输入您的8位以上的新密码，由数字和至少一个字母组合。", (e)=>{
 										if(e.index == 0){
-											if(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/.test(e.index)==true){
+											if(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/.test(e.value)==true){
 												newPassword = e.value;
 												plus.nativeUI.prompt("请在此确认您的密码。", (e)=>{
 													if(e.index == 0){
@@ -356,9 +355,6 @@
 							}
 						}
 					}, "修改密码", "输入你的旧密码...", ["确定","取消"]);
-
-
-
 			},
 			quit(){
 				uni.reLaunch({

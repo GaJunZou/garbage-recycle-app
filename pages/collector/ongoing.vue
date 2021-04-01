@@ -10,7 +10,8 @@
 				<p style="font-size: 22px;font-weight: 700;margin-bottom: 15px;">{{i.address.area}}{{i.address.town}}{{i.address.street}}{{i.address.detail}}</p>
 				<view class="cu-bar bg-white">
 					<view class="action">
-						距离现在位置约<text style="color: #DD514C;font-weight: 700;font-size: 22px;">1.5km</text>
+						距离现在位置约<text style="color: #DD514C;font-weight: 700;font-size: 22px;">
+						{{getMesure(i.address.address_crood) > 1000 ? (getMesure(i.address.address_crood)/1000).toFixed(1)+'km' : getMesure(i.address.address_crood)+'m'}}</text>
 					</view>
 					<view class="action"><text style="font-size: 20px;font-weight: 700;color: #DD514C;" class="my-icon">&#xe61a;</text></view>
 				</view>
@@ -69,12 +70,22 @@
 		props:{
 			list:{
 				default:[]
+			},
+			crood:{
+				default:[]
 			}
 		},
 		created() {
 			// this.list = this.$store.state.ongoingList;
 		},
 		methods:{
+			getMesure(str){
+				let mesure;
+				let arr = str.split('/');
+				mesure = this.GetDistance(this.crood[0],this.crood[1],+arr[0],+arr[1]);
+				console.log(mesure);
+				return (mesure*1000).toFixed(1);
+			},
 			showDetail(index){
 				this.show = index;
 				this.detailBox = index;

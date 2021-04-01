@@ -62,8 +62,8 @@
 				<view class="cu-bar bg-white">
 					<view class="action text-green">
 						<text v-if="more.status == 0">
-							<text v-if="more.collector_name == ''">未接单</text>
-							<text v-if="more.collector_name != ''">已接单</text>
+							<text v-if="!more.collector_phone">未接单</text>
+							<text v-if="!!more.collector_phone">已接单</text>
 						</text>
 						<text v-if="more.status == 1">待评价</text>
 						<text v-if="more.status == 2">已完成</text>
@@ -256,26 +256,26 @@
 			moreInfo(item,index){
 				this.modalName='bottomModal';
 				this.more = item;
-				console.log(this.more);
-				if(index == 0){
-					
-				}
 			},
 			removeOrder(v){
 				this.cancelOrder(v);
 			},
 			cancelOrder(v){
-				uni.request({
-					url:this.base+"/order/user/delete",
-					method:"POST",
-					data:{
-						belong_phone:uni.getStorageSync('phone'),
-						id:v._id
-					},
-					success: (res) => {
-						this.getData()
+				plus.nativeUI.confirm("真的要删除此订单吗", (e)=>{
+					if(e.index == 0){
+						uni.request({
+							url:this.base+"/order/user/delete",
+							method:"POST",
+							data:{
+								belong_phone:uni.getStorageSync('phone'),
+								id:v._id
+							},
+							success: (res) => {
+								this.getData()
+							}
+						})
 					}
-				})
+				});
 			},
 			toEvaluate(v){
 				this.modalName = 'evaluate';
@@ -292,13 +292,8 @@
 			async sureEvaluate(){
 				this.evaluate.evaluate_time = new Date().format('yyyy-MM-dd hh:mm:ss');
 				await this.updateOrder(this.evaluate);
-				uni.showToast({
-					title:"评论成功！",
-					duration:1000,
-					success: () => {
-						this.hideModal();
-					}
-				})
+				plus.nativeUI.toast("评论成功！");
+				this.hideModal();
 			},
 			async sureComplete(v){
 				await this.updateOrder({
@@ -306,10 +301,7 @@
 					status:1,
 					complete_time:new Date().format('yyyy-MM-dd hh:mm:ss')
 				})
-				uni.showToast({
-					title:"已流转！",
-					duration:1000,
-				})
+				plus.nativeUI.toast("已流转！");
 			},
 			modifyTime(str,order){
 				if(order.status == 0 ){
@@ -358,13 +350,10 @@
 					},
 					success: (res) => {
 						this.getData();
-						uni.showToast({
-							title:'成功！',
-							duration:1000
-						});
-						this.hideModal();
+						plus.nativeUI.toast("更新成功！");
 					}
 				})
+				this.hideModal();
 			},
 			hideModal(){
 				this.modalName = ''

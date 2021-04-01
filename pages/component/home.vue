@@ -12,11 +12,11 @@
 			 interval="5000" duration="500" :current="currentTab" @change="changeSwiper($event)">
 				<swiper-item v-for="(item,index) in swiperList" :key="index" style="width: 100%;">
 					<div class="tab-item-box">
-						<div class="tab-item" v-for="(v,i) in item.titleList" :key="i">
+						<div class="tab-item" v-for="(v,i) in item.titleList"  @click="browseArticle(v._id)" :key="i">
 							<div class="content">
-								<div class="title">这款小程序UI太漂亮了（{{index}}）</div>
-								<div class="words">大家好大家好大家好大家好大家好大家好大家好大家好，我是为广大程序员兄弟操碎了心的小编，每天推荐一个小工具，希望大家喜欢</div>
-								<div style="color: #8799A3;"><text class="cuIcon-time" style="line-height: 30px;margin-right: 5px;"></text>2020-10-19</div>
+								<div class="title">{{v.title}}</div>
+								<div class="words">{{v.subtitle}}</div>
+								<div style="color: #8799A3;"><text class="cuIcon-time" style="line-height: 30px;margin-right: 5px;"></text>{{v.time}}</div>
 							</div>
 							<div class="img"><image src="../../static/11.png" style="width: 100%;height: 100%;" mode=""></image></div>
 						</div>
@@ -54,78 +54,30 @@
 				},
 				swiperList: [{
 					title: "环保动态",
-					titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+					titleList:[]
 				},{
 					title: "环保百科",
-					titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+					titleList:[]
 				},{
 					title: "生活达人",
-					titleList:[1,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+					titleList:[]
 				}],
-				elements: [{
-						title: '操作条',
-						name: 'bar',
-						color: 'purple',
-						cuIcon: 'vipcard'
-					},
-					{
-						title: '导航栏 ',
-						name: 'nav',
-						color: 'mauve',
-						cuIcon: 'formfill'
-					},
-					{
-						title: '列表',
-						name: 'list',
-						color: 'pink',
-						cuIcon: 'list'
-					},
-					{
-						title: '卡片',
-						name: 'card',
-						color: 'brown',
-						cuIcon: 'newsfill'
-					},
-					{
-						title: '表单',
-						name: 'form',
-						color: 'red',
-						cuIcon: 'formfill'
-					},
-					{
-						title: '时间轴',
-						name: 'timeline',
-						color: 'orange',
-						cuIcon: 'timefill'
-					},
-					{
-						title: '聊天',
-						name: 'chat',
-						color: 'green',
-						cuIcon: 'messagefill'
-					},
-					{
-						title: '轮播',
-						name: 'swiper',
-						color: 'olive',
-						cuIcon: 'album'
-					},
-					{
-						title: '模态框',
-						name: 'modal',
-						color: 'grey',
-						cuIcon: 'squarecheckfill'
-					},
-					{
-						title: '步骤条',
-						name: 'steps',
-						color: 'cyan',
-						cuIcon: 'roundcheckfill'
-					}
-				],
 			};
 		},
 		created(){
+			uni.request({
+				url:this.base + "/article/getAllArticle",
+				method:"GET",
+				success: (res) => {
+					this.data = res.data;
+					this.swiperList[0].titleList = res.data.filter( v => {return v.type == 0});
+					this.swiperList[1].titleList = res.data.filter( v => {return v.type == 1});
+					this.swiperList[2].titleList = res.data.filter( v => {return v.type == 2});
+				},
+				fail: (err) => {
+					console.log(err);
+				}
+			});
 			uni.getSystemInfo({
 				    success: (res)=> {
 						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 100 + 'px';
@@ -141,7 +93,11 @@
 			changeSwiper(e){
 				this.currentTab = e.detail.current;
 				e.detail.current = 2;
-				console.log(e);
+			},
+			browseArticle(id){
+				uni.navigateTo({
+					url:'/pages/component/article?id='+id,
+				})
 			},
 			publish(){
 				uni.navigateTo({
@@ -196,7 +152,7 @@
 	}
 	.content{
 		float: left;
-		width: 58vw;
+		width: 62vw;
 		height: 22vw;
 		margin-right: 2vw;
 	}
@@ -204,12 +160,20 @@
 		font-size: 15px;
 		font-weight: 700;
 		margin-bottom: 1vw;
+		overflow: hidden;
+		/* 3. 文字溢出的时候用省略号来显示 */
+		text-overflow: ellipsis;
+		 display: -webkit-box;
+		/* 限制在一个块元素显示的文本的行数 */
+		-webkit-line-clamp: 1;
+		/* 设置或检索伸缩盒对象的子元素的排列方式 */
+		-webkit-box-orient: vertical;
 	}
 	.content .words{
 		float: left;
 		font-size: 14px;
 		height: 40px;
-		width: 58vw;
+		width: 62vw;
 		overflow: hidden;
 		/* 3. 文字溢出的时候用省略号来显示 */
 		text-overflow: ellipsis;
@@ -221,7 +185,7 @@
 	}
 	.img{
 		float: right;
-		width: 30vw;
+		width: 26vw;
 		height: 22vw;
 	}
 	.img > image{

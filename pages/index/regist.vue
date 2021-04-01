@@ -61,9 +61,7 @@
 					plus.nativeUI.toast("请填写必填项！");
 					return;
 				}
-				uni.showToast({
-					title:"正在注册，请稍等~"
-				})
+				plus.nativeUI.toast('注册中...');
 				uni.request({
 					url:this.base+'/account/postRegist',
 					method:'POST',
@@ -80,11 +78,7 @@
 					},
 					fail: (err) => {
 						console.log(err);
-						uni.hideToast();
-						uni.showToast({
-							title:"注册失败~",
-							duration:1000
-						})
+						plus.nativeUI.toast('注册失败。');
 					}
 				})
 			},

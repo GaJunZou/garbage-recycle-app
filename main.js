@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-
 const store = new Vuex.Store({
     state: {
 		role:{},
@@ -44,23 +43,16 @@ const store = new Vuex.Store({
 Vue.prototype.base = 'http://192.168.0.105:3000';
 Vue.prototype.socket = 'ws://192.168.0.105:3000';
 
-const ws = new WebSocket('ws://192.168.0.105:3000/socket/notifyClient');
-	ws.onopen = e => {
-	  console.log(`WebSocket 连接状态： ${ws.readyState}`)
-	}
-	ws.onmessage = data => {
-		console.log(data);
-	}
-	ws.onclose = data => {
-	  console.log('WebSocket连接已关闭')
-	  console.log(data);
-	}
-Vue.prototype.notifyClient = function(params){
-	  ws.send("客户端请求socket");
-}
-
-
-
+Vue.prototype.GetDistance = function (lat1, lng1, lat2, lng2) {
+    var radLat1 = lat1 * Math.PI / 180.0;
+    var radLat2 = lat2 * Math.PI / 180.0;
+    var a = radLat1 - radLat2;
+    var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;
+    s = Math.round(s * 10000) / 10000;
+    return s
+};
 
 String.prototype.time = function() {
 	let time = this.split(' ')[1].split(':');
@@ -116,9 +108,6 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 
-Vue.prototype.syncData = function(store,data){
-	store = data;
-}
 Vue.prototype.$store = store;  
 const app = new Vue({
     ...App,

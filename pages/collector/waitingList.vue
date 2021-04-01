@@ -11,7 +11,7 @@
 					</p>
 					<p style="float: left;">
 						<text class="cuIcon-time" style="color: #39B54A;font-weight: 700;margin-right: 10rpx;"></text>预计
-						<text style="color: #39B54A;font-weight: 700;font-size: 15px">12分钟</text>
+						<text style="color: #39B54A;font-weight: 700;font-size: 15px">{{getArriveTime(i.address.address_crood)}}分钟</text>
 						内到达
 					</p>
 					
@@ -19,9 +19,10 @@
 				<p style="font-size: 22px;font-weight: 700;margin-bottom: 15px;">{{i.address.area}}{{i.address.town}}{{i.address.street}}{{i.address.detail}}</p>
 				<view class="cu-bar bg-white">
 					<view class="action">
-						距离现在位置约<text style="color: #DD514C;font-weight: 700;font-size: 22px;">1.5km</text>
+						距离现在位置约<text style="color: #DD514C;font-weight: 700;font-size: 22px;">
+						{{getMesure(i.address.address_crood) > 1000 ? (getMesure(i.address.address_crood)/1000).toFixed(1)+'km' : getMesure(i.address.address_crood)+'m'}}</text>
 					</view>
-					<view class="action"><text style="font-size: 20px;font-weight: 700;color: #DD514C;" class="my-icon">&#xe61a;</text></view>
+					<view class="action"><text @click="getMap(i.address.address_crood)" style="font-size: 20px;font-weight: 700;color: #DD514C;" class="my-icon">&#xe61a;</text></view>
 				</view>
 				<view class="cu-bar bg-white">
 					<view class="action">
@@ -64,15 +65,49 @@
 			return{
 				show:null,
 				detailBox:null,
-				collector:{},
+				collector:{}
 			}
 		},
 		props:{
 			list:{
 				default:[]
+			},
+			crood:{
+				default:[]
 			}
 		},
+		onLoad() {
+			// uni.getLocation({
+			// 	type: 'wgs84',
+			// 	geocode:true,
+			// 	success: (res)=> {
+			// 	},
+			// 	fail: (err) => {
+			// 		// plus.nativeUI.toast("定位发生错误。");
+			// 	}
+			// });
+		},
 		methods:{
+			getMesure(str){
+				let mesure;
+				let arr = str.split('/');
+				mesure = this.GetDistance(this.crood[0],this.crood[1],+arr[0],+arr[1]);
+				return (mesure*1000).toFixed(1);
+			},
+			getArriveTime(str){
+				let mesure = this.getMesure(str);
+				let time = (mesure/10).toFixed(2);
+				if(time < 60){
+					return "少于1"
+				}else{
+					if(time%60>30){
+						return (time - time%60)/60 + 1;
+					}
+					else {
+						return (time - time%60)/60
+					}
+				}
+			},
 			collectorAdd(value,index){
 				uni.request({
 					url: this.base+'/order/collector/add',
@@ -93,6 +128,21 @@
 					},
 					fail: () => {},
 					complete: () => {}
+				});
+			},
+			getMap(crood){
+				crood = crood.split('/');
+				console.log(crood);
+				  uni.openLocation({
+					latitude: +crood[1],
+					longitude: +crood[0],
+					success: (res)=> {
+						console.log(res);
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+					
 				});
 			},
 			showDetail(index){

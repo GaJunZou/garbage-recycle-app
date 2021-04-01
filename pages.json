@@ -189,7 +189,9 @@
 		},
 		{
 			"path": "pages/component/article",
-			"style": {}
+			"style": {
+				"backgroundColor":"#fff"
+			}
 		}
     ],
 	"globalStyle": {

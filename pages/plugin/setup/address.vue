@@ -56,7 +56,9 @@
 				</text>
 			</view>
 		</view>
-		<view class="cu-modal" :class="modalName=='DialogModal1'?'show':''">
+		
+		
+		<view class="cu-modal" style="z-index: 900;" :class="modalName=='DialogModal1'?'show':''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white justify-end">
 					<text v-if="opt=='add'" class="content">新增地址</text>
@@ -77,27 +79,33 @@
 						</view>
 						<view class="cu-form-group">
 							<view class="title">省</view>
-							<input placeholder="省份" name="province" @click="openPicker" v-model="form.province"></input>
+							<region-picker @change="region_change" :value="picker">
+								<input placeholder="省份" disabled name="province" v-model="form.province"></input>
+							</region-picker>
 							<text @click="autoLocation" class='cuIcon-locationfill text-orange'></text>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">市</view>
-							<input placeholder="市" name="city" @click="openPicker" v-model="form.city"></input>
-							<text class=''></text>
+							<region-picker @change="region_change" :value="picker">
+								<input placeholder="市" disabled name="city" v-model="form.city"></input>
+							</region-picker>
+							<text @click="autoLocation" class='cuIcon-locationfill text-orange'></text>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">区</view>
-							<input placeholder="区" name="town" @click="openPicker" v-model="form.area"></input>
-							<text class=''></text>
+							<region-picker @change="region_change" :value="picker">
+								<input placeholder="区" disabled name="town" v-model="form.area"></input>
+							</region-picker>
+							<text @click="autoLocation" class='cuIcon-locationfill text-orange'></text>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">县/镇</view>
-							<input placeholder="县/镇" name="street" @click="openPicker" v-model="form.town"></input>
+							<input placeholder="县/镇" name="street" @click="" v-model="form.town"></input>
 							<text class=''></text>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">街道/村</view>
-							<input placeholder="街道" name="input" @click="openPicker" v-model="form.street"></input>
+							<input placeholder="街道" name="input" @click="" v-model="form.street"></input>
 							<text class=''></text>
 						</view>
 						<view class="cu-form-group">
@@ -114,15 +122,22 @@
 				</view>
 			</view>
 		</view>
+		<div id="container"></div> 
 	</view>
 </template>
 
-<script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script> 
+<script>	
+	import regionPicker from "@/components/region-picker/region-picker.vue"
 	export default {
+		components: {  
+		    regionPicker
+		},
 		data() {
 			return {
 				modalName: null,
 				visible: false,
+				picker:'',
 				address:[],
 				form:{
 					name:'',
@@ -133,7 +148,8 @@
 					town:'',
 					street:'',
 					detail:'',
-					id:null
+					id:null,
+					address_crood:''
 				},
 				opt:'',
 				choose:false,
@@ -150,18 +166,10 @@
 			this.address = this.$store.state.role.user.address;
 		},
 		methods: {
-			async openPicker(){
-				// console.log(123)
-				// await uni.getLocation({
-				//     type: 'wgs84',
-				// 	geocode: true,
-				//     success: function (res) {
-				// 		console.log(res) 
-				//     },
-				// 	fail(err) {
-				// 		console.log(err)
-				// 	}
-				// })
+			region_change(e){
+				this.form.province = e.detail.value[0];
+				this.form.city = e.detail.value[1];
+				this.form.area = e.detail.value[2];
 			},
 			submit(){
 				if(this.opt == 'add'){
@@ -195,24 +203,34 @@
 				})
 			},
 			autoLocation(){
+				let crood = '';
 				plus.nativeUI.showWaiting("定位中...",{background : "#272822",padlock:true});
-				uni.getLocation({
-				    type: 'wgs84',
-					geocode:true,
+				uni.chooseLocation({
 				    success: (res)=> {
-						plus.nativeUI.closeWaiting("定位中...");
-				        this.form.province = res.address.province == null ? '' : res.address.province;
-						this.form.city = res.address.city == null ? '' : res.address.city;
-						this.form.area = res.address.district == null ? '' : res.address.district;
-						this.form.town = res.address.street == null ? '' : res.address.street;
-						this.form.street = res.address.poiName == null ? '' : res.address.poiName;
-						this.form.detail = ''; 
-						console.log(this.form);
-				    },
-					fail: (err) => {
-						console.log(err);
-					}
+						plus.nativeUI.closeWaiting();
+						crood = res.longitude + '/' + res.latitude;
+						uni.request({
+							url:"https://restapi.amap.com/v3/geocode/regeo?location="+res.longitude+","+res.latitude+"&key=dc5aa5d6e404b6b4d3ab16d0395f57a3&radius=1000&extensions=all",
+							method:"GET",
+							success: (res) => {
+								if(res.data.status != 1){
+									plus.nativeUI.showWaiting("获取失败...",{background : "#272822",padlock:true});
+								}else{
+									plus.nativeUI.closeWaiting();
+									this.form.province = res.data.regeocode.addressComponent.province;
+									this.form.city = res.data.regeocode.addressComponent.city;
+									this.form.area = res.data.regeocode.addressComponent.district;
+									this.form.town = res.data.regeocode.addressComponent.township;
+									this.form.street = res.data.regeocode.addressComponent.streetNumber.street;
+									this.form.detail = res.data.regeocode.aois[0].name; 
+									this.form.address_crood = crood;
+									console.log(this.form);
+								}
+							}
+						})
+				    }
 				});
+				plus.nativeUI.closeWaiting();
 			},
 			setDefault(id){
 				uni.request({
@@ -251,7 +269,6 @@
 						phone:uni.getStorageSync('phone')
 					},
 					success:(res)=> {
-						console.log(res.data);
 						this.$store.commit("save",res.data);
 						this.address = res.data.user.address;
 						uni.showToast({
@@ -305,18 +322,18 @@
 </script>
 
 <style>
+	#container {width:300px; height: 180px; }  
 	 .picker-view {
-		 
-	        width: 750rpx;
-	        height: 600rpx;
-	        margin-top: 20rpx;
-	    }
-	    .item {
-	        height: 50px;
-	        align-items: center;
-	        justify-content: center;
-	        text-align: center;
-	    }
+		width: 750rpx;
+		height: 600rpx;
+		margin-top: 20rpx;
+	}
+	.item {
+		height: 50px;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
 	.text-overhidden{
 		text-overflow: ellipsis;
 		overflow: hidden;

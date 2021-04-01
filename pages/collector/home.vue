@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<view class="flex justify-between top-bar">
-			<view><text class="my-icon" style="font-size: 30px;" @tap="showModal" data-target="DrawerModalL">&#xe6ec;</text></view>
+			<view><text class="my-icon" style="font-size: 30px;color: #faa125;" @tap="showModal" data-target="DrawerModalL">&#xe65a;</text></view>
 			<view style="text-align: center;font-size: 20px;font-weight: 700;">任务列表</view>
 			<view>
-				<text style="float:right;font-size: 30px;" class="my-icon">&#xe6e4;</text>
+				<text @click="scan" style="float:right;font-size: 30px;font-weight: 400;color: #faa125;" class="my-icon">&#xe6e4;</text>
 			</view>
 		</view>
 		<ul class="tab-title">
@@ -14,8 +14,8 @@
 		 interval="5000" duration="500"  indicator-active-color="orange" :current="currentTab" @change="changeSwiper($event)">
 			<swiper-item v-for="(item,index) in tabTitle" :key="index">
 				<div class="tab-item-box">
-					<waitingList v-if="index==0" :list="item.titleList" @waitingChange="waitingChange"></waitingList>
-					<ongoing v-if="index==1" :list="item.titleList" @showOperate="showOperate"></ongoing>
+					<waitingList v-if="index==0" :crood='crood' :list="item.titleList" @waitingChange="waitingChange"></waitingList>
+					<ongoing v-if="index==1" :crood="crood" :list="item.titleList" @showOperate="showOperate"></ongoing>
 					<finish v-if="index==2" :list="item.titleList" @checkEvaluate="checkEvaluate"></finish>
 					<div style="height: 140px;text-align: center;">没有更多了~</div>
 				</div>
@@ -87,7 +87,7 @@
 						<view class="cu-form-group">
 							<view class="title">评价内容</view>
 							<textarea disabled style="text-align: left;height: 50px;" v-model="operate.evaluate_content" />
-							<view v-if="operate.evaluate_content != ''" class="title"><text @click="feedback(operate.belong_phone,operate._id)" class="text-green">回复</text></view>
+							<view v-if="operate.evaluate_content != '' && operate.feedback == ''" class="title"><text @click="feedback(operate.belong_phone,operate._id)" class="text-green">回复</text></view>
 						</view>
 						<view v-if="operate.feedback != ''" class="cu-form-group">
 							<view class="title">回复内容</view>
@@ -117,7 +117,7 @@
 							 <view class="text">
 								<p style="font-size: 20px;font-weight: 700;margin: 10px 20px;">{{collector.name}}</p>
 								<p style="font-size: 17px;font-weight: 400;margin: 10px 20px;">{{collector.phone}}
-									<button class="cu-btn lines-orange round" style="padding: 0 20rpx;margin-left: 20px;height: 20px;">修改</button>
+									<button @click="modifyPhone" class="cu-btn lines-orange round" style="padding: 0 20rpx;margin-left: 20px;height: 20px;">修改</button>
 								</p>
 							 </view>
 						</view>
@@ -137,11 +137,15 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action">账户余额</view>
-						<view class="action">{{collector.sign|| 0}}元</view>
+						<view class="action">{{collector.money|| 0}}元</view>
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action">积分</view>
 						<view class="action">{{collector.credits || 0}}</view>
+					</view>
+					<view @click="modifyPassword(collector.phone,collector.password)" class="cu-bar bg-white">
+						<view class="action">修改密码</view>
+						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action">详细资料</view>
@@ -165,7 +169,7 @@
 	export default{
 		data(){
 			return{
-				phone:0,
+				phone:null,
 				modalName:null,
 				tabTitle:[
 					{
@@ -188,21 +192,31 @@
 				start:null,
 				collector:{},
 				operate:{},
-				index:null
+				index:null,
+				crood:[]
 			}
 		},
 		onShow() {
+			this.collector = this.$store.state.role;
+			this.getloca();
+			setInterval(()=>{
+				this.getloca();
+			},7000);
 		},
 		created(){
 			this.phone = uni.getStorageSync('phone');
-			uni.request({
-				url:this.base+"/account/getAllInfomation/"+this.phone,
-				method:"GET",
-				success: (res) => {
-					this.$store.commit('save',res.data)
+			if(JSON.stringify(this.collector)=="{}"){
+				if(uni.getStorageSync('phone') != null) {
+					uni.request({
+						url:this.base+"/account/getAllInfomation/"+uni.getStorageSync('phone'),
+						method:"GET",
+						success: (res) => {
+							this.$store.commit('save',res.data)
+							this.collector = this.$store.state.role;
+						}
+					})
 				}
-			})
-			this.collector = this.$store.state.role;
+			}	
 			uni.request({
 				url:this.base+"/order/user/getAllOrder",
 				method:"GET",
@@ -217,12 +231,25 @@
 				}
 			})
 			uni.getSystemInfo({
-				    success: (res)=> {
-						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';
-				    }
-				});
+				success: (res)=> {
+					this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';
+				}
+			});
 		},
 		methods:{
+			getloca(){
+				uni.getLocation({
+					type: 'wgs84',
+					geocode:true,
+					success: (res)=> {
+						this.crood = [res.longitude,res.latitude];
+					},
+					fail: (err) => {
+						console.log("定位发生错误。");
+						// plus.nativeUI.toast("定位发生错误。");
+					}
+				});
+			},
 			bigHead(){
 				uni.navigateTo({
 					url: "/pages/plugin/setup/bigHead",
@@ -234,9 +261,7 @@
 			waitingChange(e){
 				let res = this.tabTitle[0].titleList.splice(e,1);
 				this.tabTitle[1].titleList.push(res[0]);
-				uni.showToast({
-					title:"签单成功！请尽快处理。"
-				})
+				plus.nativeUI.toast("签单成功！请尽快处理。");
 			},
 			quit(){
 				uni.reLaunch({
@@ -263,9 +288,13 @@
 				this.modalName = 'bottomModal';
 			},
 			checkEvaluate(e){
+				this.operate = this.tabTitle[2].titleList[e];
+				if(!!this.operate.evaluate_time == false){
+					plus.nativeUI.toast("暂时还没有评价哦。")
+					return;
+				}
 				this.modalName = 'bottomModal1';
 				this.index = e;
-				this.operate = this.tabTitle[2].titleList[e];
 			},
 			phoneCall(number){
 				uni.makePhoneCall({
@@ -301,7 +330,8 @@
 				plus.messaging.sendMessage(msg);
 			},
 			appNotice(phone){
-				this.notifyClient(phone);
+				console.log(phone); 
+				plus.push.createMessage("asdasas"); 
 			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
@@ -318,7 +348,91 @@
 				if(start.clientX - end.clientX > 100 && start.clientY - end.clientY < 100){
 					this.hideModal();
 				}
-			}
+			},
+			scan(){
+				uni.scanCode({
+				    success: function (res) {
+				        console.log('条码类型：' + res.scanType);
+				        console.log('条码内容：' + res.result);
+						plus.nativeUI.toast("该功能还在完善中，敬请期待...")
+				    }
+				});
+			},
+			modifyPhone(){
+				plus.nativeUI.prompt("请输入名的新的手机号：", (e)=>{
+					if(e.index == 0){
+						if(/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/.test(e.value)==false){
+							plus.nativeUI.alert('手机号码不正确！');
+							return;
+						}
+						uni.request({
+							url:this.base + '/account/modifyPhone',
+							method:"POST",
+							data:{
+								phone:uni.getStorageSync("phone"),
+								modify_phone:e.value
+							},
+							success:(res)=> {
+								if(res.data != false){
+									this.$store.commit("save",res.data);
+									this.collector = this.$store.state.role;
+									plus.nativeUI.alert('修改成功！');
+								} else {
+									plus.nativeUI.alert('该手机号已被注册！');
+								}
+							},
+							fail: (err) => {
+								console.log(err);
+							}
+						})
+					}
+				}, "修改手机号", "请输入...", ["确定","取消"]);
+			},
+			modifyPassword(phone,password){
+				let newPassword = null;
+				plus.nativeUI.prompt("请输入您的旧密码。", (e)=>{
+						if(e.index == 0){
+							if(e.value != password)  {
+								plus.nativeUI.toast('密码错误。')
+								return;
+							}else{
+								plus.nativeUI.prompt("请输入您的8位以上的新密码，由数字和至少一个字母组合。", (e)=>{
+										if(e.index == 0){
+											if(/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/.test(e.value)==true){
+												newPassword = e.value;
+												plus.nativeUI.prompt("请在此确认您的密码。", (e)=>{
+													if(e.index == 0){
+														if(newPassword == e.value){
+															uni.request({
+																	url:this.base + '/account/postUserUpdateData',
+																	method:"POST",
+																	data:{
+																		phone:phone,
+																		password:newPassword
+																	},
+																	success: (res) => {
+																		if(res.data != false){
+																			console.log(res.data);
+																			this.collector = res.data;
+																			this.$store.commit("save",res.data);
+																			plus.nativeUI.toast('修改密码成功。');
+																		}
+																	}
+																})
+														}else{
+															plus.nativeUI.toast('两次密码不一致，修改密码失败。');
+														}
+													}
+												}, "修改密码", "输入你的新密码...", ["确定","取消"]);
+										}else{
+											plus.nativeUI.toast('密码格式不正确，请重新操作。');
+										}
+									}
+								}, "修改密码", "输入你的新密码...", ["确定","取消"]);
+							}
+						}
+					}, "修改密码", "输入你的旧密码...", ["确定","取消"]);
+			},
 		}
 	}
 </script>

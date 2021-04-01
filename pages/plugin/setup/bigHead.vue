@@ -63,14 +63,20 @@
 				});
 			},
 			saveImg(){
+				let img = {
+					name:'file',
+					uri:this.imgList[0]
+				}
 				let phone = uni.getStorageSync('phone');
 				uni.uploadFile({
-					url:"http://127.0.0.1:8002/aliyun-service/upload-image",
-					filePath: this.imgList[0],
-					name: 'file',
+					url:"http://192.168.0.105:8002/aliyun-service/upload-image",
+					// filePath: this.imgList[0],
+					// name: 'file',
+					files:[img],
 					'content-type':"multipart/form-data",
 					success:(res)=> {
 						this.img = JSON.parse(res.data).data.url;
+						this.$store.commit("saveImg",this.img);
 						uni.request({
 							url:this.base+'/account/postDetailData',
 							method:'POST',

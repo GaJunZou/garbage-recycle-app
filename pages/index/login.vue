@@ -89,7 +89,6 @@
 							})
 						return;
 						}
-						
 						uni.setStorageSync('phone',res.data.phone);
 						uni.setStorageSync('role',res.data.role);
 						if(res.data.role == 'user'){

@@ -62,7 +62,7 @@
 								@click.stop="" class="cu-btn round margin-tb-sm btn">{{item.title}}</button>
 						</view>
 					</view>
-					<view class="search-result" style="position: absolute;">
+					<view style="position: absolute;width: 100%;">
 							<!-- 垃圾分类知识区 -->
 							<view class="knownledge" :class="load == 1 ? 'show-more' : 'hide-more'" @click.stop="" v-if="rublishData">
 								<view style="width: 22vw;height: 22vw;float: left;">
@@ -89,20 +89,22 @@
 									</view>
 								</view>
 							</view>
-								<view @click.stop="" class="flex justify-around box-content">
-									<view class="bg-white item radius" v-for="(v,i) in data" :key="i">
-										<view>
-											<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
-										</view>
-										<p style="text-align: center;font-size: 16px;">塑料瓶</p>
-										<view>
-											<text style="float: left;margin:5px 10px;">2毛/个</text>
-											<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
-												<span class="cuIcon-add"></span>
-											</text>
-										</view>
-									</view>
+							<view @click.stop="" class="flex justify-around box-content">
+								
+							<view class="bg-white item radius" v-for="(v,i) in searchResult" :key="i">
+								<view>
+									<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
 								</view>
+								<p style="text-align: center;font-size: 16px;">{{v.waste_name}}</p>
+								<view>
+									<text style="float: left;margin:5px 10px;">{{v.price}}毛/个</text>
+									<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
+										<span @click="addList(v)" class="cuIcon-add"></span>
+									</text>
+								</view>
+							</view>
+								
+							</view>
 						</view>
 					</view>
 				</view>
@@ -130,7 +132,7 @@
 					</view>
 					<view  @touchmove.stop="" class="padding" style="text-align: left;overflow: hidden;">
 						<div v-for="v in orderList" style="padding: 5px 10px;height: 40px;">
-							<i class="cuIcon-close" style="float: left;font-size: 20px;color: red;line-height: 40px;"></i>
+							<i class="cuIcon-close" @click="remove(v._id)" style="float: left;font-size: 20px;color: red;line-height: 40px;"></i>
 							<div style="float: left;width: 40px;height: 40px;margin-right: 10px;margin-left: 5px;">
 								<image style="width: 100%;height: 100%;" src="../../static/11.png" mode=""></image>
 							</div>
@@ -163,12 +165,13 @@
 				TabCur: 0,
 				scrollLeft: 0,
 				isShowBackUp:false,
-				searchValue:'塑料瓶',
+				searchValue:'',
 				site:'未定位',
 				rublishData:'',
 				isScroll:true,
 				modalName: null,
-				data:[1,2,3,4,5,6,1,1],
+				data:[],
+				searchResult:[],
 				orderList:[],
 				load:2, //不显示
 				text:"更多",
@@ -181,8 +184,7 @@
 					id: 1,
 					type: 'image',
 					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
-				}],
-				buttonList:[1,2,3,4,5,6,7,8]
+				}]
 			};
 		},
 		onShow() {
@@ -193,7 +195,6 @@
 				url:this.base + "/waste/getAllWaste",
 				method:"GET",
 				success: (res) => {
-					console.log(res);
 					this.data = res.data;
 				}
 			})
@@ -248,6 +249,17 @@
 						number:1
 					})
 				}
+				console.log(this.orderList);
+			},
+			remove(id){
+				this.orderList.forEach((v,i) => {
+					if(v._id == id){
+						this.orderList.splice(i,1);
+					}
+				})
+				if(this.orderList.length == 0){
+					this.hideModal();
+				}
 			},
 			add(id){
 				this.orderList.forEach((v,i)=>{
@@ -265,6 +277,9 @@
 						}
 					}
 				})
+				if(this.orderList.length == 0){
+					this.hideModal();
+				}
 			},
 			showModal(e) {
 				this.isScroll=false;
@@ -304,6 +319,13 @@
 							this.rublishData = '';
 						}
 						
+					}
+				});
+				uni.request({
+					url:this.base + '/waste/find/'+this.searchValue,
+					method:"GET",
+					success:(res)=> {
+						this.searchResult = res.data;
 					}
 				})
 			},
