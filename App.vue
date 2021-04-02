@@ -4,16 +4,6 @@
 		data:{
 			test:1
 		},
-		globalData:{
-			globalUser:{},
-			globalCollector:{}
-		},
-		watch: {
-			// 如果 `question` 发生改变，这个函数就会运行
-			test: function () {
-				console.log("变了");
-			},
-		},
 		onLaunch: function() {
 			uni.getSystemInfo({
 				success: function(e) {
@@ -118,8 +108,9 @@
 			]
 
 		},
-		onShow: function() {
-			console.log('App Show')
+		onShow(){
+			console.log('App Show');
+			this.connect();
 		},
 		onHide: function() {
 			console.log('App Hide')

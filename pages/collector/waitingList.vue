@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<view class="box" v-for="(i,v) in list" :key="v">
 			<view :class="show == i ? 'show-detail' : 'hide-detail'">
 				<view style="margin-bottom: 15px;height: 25px;">
@@ -125,6 +125,19 @@
 						this.$store.commit('saveWaitingList',this.list);
 						this.$emit("waitingChange",index);
 						// 然后想办法 同步数据到ongoingList
+						this.goEasy.publish({
+							channel: value.belong_phone,
+							message: JSON.stringify({
+								key:"collector_add",
+								data:value._id
+							}),
+							onSuccess:function(){
+							   console.log("消息发布成功。");
+							},
+							onFailed: function (error) {
+							   console.log("错误信息："+error.content);
+							}
+						});
 					},
 					fail: () => {},
 					complete: () => {}
@@ -157,6 +170,9 @@
 	}
 </script>
 <style>
+/* 	.page{
+		min-height: 700px;
+	} */
 	.box{
 		width: 100%;
 		padding: 10px;

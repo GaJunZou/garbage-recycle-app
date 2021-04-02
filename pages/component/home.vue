@@ -3,7 +3,7 @@
 		<scroll-view scroll-y class="page">
 			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 40px 20px 0px;font-weight: 700;color: #e2e2e2;">
 				<p style="float: left;">探索 <i class="cuIcon-discoverfill" style="color: #EB2;"></i> 发现</p> 
-				<p style="float: right;padding-right: 40px;"><button @click="publish" class="cu-btn round">添加</button></p>
+				<p style="float: right;padding-right: 40px;"><button @click="seedNotify" class="cu-btn round">添加</button></p>
 			</div>
 			<ul class="tab-title">
 				<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v}}</li>
@@ -86,6 +86,9 @@
 				});
 			},
 		methods:{
+			seedNotify(){
+				this.send('test',"测试内容")
+			},
 			tabChange:function(e){
 				var index = e.target.dataset.current || e.currentTarget.dataset.current;
 				this.currentTab=index;	
@@ -99,11 +102,11 @@
 					url:'/pages/component/article?id='+id,
 				})
 			},
-			publish(){
-				uni.navigateTo({
-					url:'/pages/component/article'
-				})
-			}
+			// publish(){
+			// 	uni.navigateTo({
+			// 		url:'/pages/component/article'
+			// 	})
+			// }
 		}
 	}
 </script>

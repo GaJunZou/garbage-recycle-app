@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<view class="box" v-for="(i,v) in list" :key="v">
 			<view>
 				<view style="margin-bottom: 15px;height: 25px;">
@@ -39,8 +39,9 @@
 				</view>
 			</view>
 			<view style="text-align: right;">
-				<a @click="checkEvaluate(v)" style="display: inline;font-weight: 700;background-color: none;color: #faa125;">
-				查看评价<text class="cuIcon-right"></text></a>
+				<a v-if="!!i.evaluate_time" @click="checkEvaluate(v)" style="display: inline;font-weight: 700;background-color: none;color: #faa125;">
+				查看评价<text class="cuIcon-right"></text>
+				</a>
 			</view>
 		</view>
 		<view style="margin-bottom: 50px;">
@@ -68,6 +69,9 @@
 	}
 </script>
 <style>
+/* 	.page{
+		min-height: 70vh;
+	} */
 	.box{
 		width: 100%;
 		padding: 10px;

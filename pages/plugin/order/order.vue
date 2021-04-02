@@ -213,6 +213,22 @@
 						this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';
 				    }
 				});
+			this.goEasy.subscribe({
+				channel:uni.getStorageSync("phone"),
+				onMessage: (message)=> {
+					let content = JSON.parse(message.content);
+					if(content.key == "collector_add"){
+						console.log("接收内容：" + content.data);
+						this.getData();
+					}
+				},
+				onSuccess: function () {
+					console.log("Channel订阅成功。");
+				},
+				onFailed: function (error) {
+					console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
+				}
+				});
 		},
 		methods:{
 			getData(){
@@ -293,6 +309,7 @@
 				this.evaluate.evaluate_time = new Date().format('yyyy-MM-dd hh:mm:ss');
 				await this.updateOrder(this.evaluate);
 				plus.nativeUI.toast("评论成功！");
+				
 				this.hideModal();
 			},
 			async sureComplete(v){
@@ -301,6 +318,19 @@
 					status:1,
 					complete_time:new Date().format('yyyy-MM-dd hh:mm:ss')
 				})
+				this.goEasy.publish({
+					channel: v.collector_phone,
+					message: JSON.stringify({
+						key:"complete_order",
+						data:v._id
+					}),
+					onSuccess:function(){
+					   console.log("消息发布成功。");
+					},
+					onFailed: function (error) {
+					   console.log("错误信息："+error.content);
+					}
+				});
 				plus.nativeUI.toast("已流转！");
 			},
 			modifyTime(str,order){

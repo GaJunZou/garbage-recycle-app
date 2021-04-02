@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import Vuex from 'vuex'
+import GoEasy from 'static/goeasy-1.2.1.js'
 
 Vue.use(Vuex);
 
@@ -40,19 +41,67 @@ const store = new Vuex.Store({
 		// 修改state值(异步)
 	}
 })
+
+
+let goEasy = GoEasy.getInstance({
+  host:'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
+  appkey: "BC-ff421cb0cf3a457a89a008e595023261" ,//替换为您的应用appkey
+  allowNotification:true
+});
+
+Vue.prototype.goEasy = goEasy
+
+Vue.prototype.connect = function(){
+	   goEasy.connect({
+			onSuccess: function () {  //连接成功
+				console.log("GoEasy connect successfully.") //连接成功
+			},
+			onFailed: function (error) { //连接失败
+				console.log("Failed to connect GoEasy, code:"+error.code+ ",error:"+error.content);
+			},
+			onProgress:function(attempts) { //连接或自动重连中
+				console.log("GoEasy is connecting", attempts);
+			}
+		});
+}
+
+Vue.prototype.receive = function(channel){
+	goEasy.subscribe({
+		channel: channel,
+		onMessage: (message)=> {
+			console.log("接收内容：" + message.content);
+			plus.nativeUI.alert(message.content, function(){
+				console.log("User pressed!");
+			}, "回收员 "+channel+" 的通知", "我知道了");
+		},
+		onSuccess: function () {
+			console.log("Channel订阅成功。");
+		},
+		onFailed: function (error) {
+			console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
+		}
+	});
+} 
+
+Vue.prototype.send = function(channel,message,body){
+	goEasy.publish({
+		channel: channel,
+		message: message,
+		notification: { 
+			title: '您有一条新消息', //通知栏提醒标题，仅显示于通知栏
+			body: body || '点击前往。', //通知栏提醒内容，仅显示于通知栏
+		},
+		onSuccess:function(){
+		   console.log("消息发布成功。");
+		},
+		onFailed: function (error) {
+		   console.log("错误信息："+error.content);
+		}
+	});
+} 
+
 Vue.prototype.base = 'http://192.168.0.105:3000';
 Vue.prototype.socket = 'ws://192.168.0.105:3000';
-
-Vue.prototype.GetDistance = function (lat1, lng1, lat2, lng2) {
-    var radLat1 = lat1 * Math.PI / 180.0;
-    var radLat2 = lat2 * Math.PI / 180.0;
-    var a = radLat1 - radLat2;
-    var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-    s = s * 6378.137;
-    s = Math.round(s * 10000) / 10000;
-    return s
-};
 
 String.prototype.time = function() {
 	let time = this.split(' ')[1].split(':');
@@ -78,6 +127,17 @@ Date.prototype.format = function(fmt) {
      }
     return fmt; 
 }
+
+Vue.prototype.GetDistance = function (lat1, lng1, lat2, lng2) {
+    var radLat1 = lat1 * Math.PI / 180.0;
+    var radLat2 = lat2 * Math.PI / 180.0;
+    var a = radLat1 - radLat2;
+    var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378.137;
+    s = Math.round(s * 10000) / 10000;
+    return s
+};
 
 import basics from './pages/basics/home.vue'
 Vue.component('basics',basics)

@@ -40,6 +40,24 @@
 		},
 		created() {	
 			this.phone = uni.getStorageSync('phone');
+			this.goEasy.subscribe({
+				channel: this.phone,
+				onMessage: (message)=> {
+					let content = JSON.parse(message.content);
+					if(content.key == "app_notice"){
+						console.log("接收内容：" + content.data);
+						plus.nativeUI.alert(content.data, function(){
+							console.log("User pressed!");
+						}, "回收员 "+channel+" 的通知", "我知道了");
+					}
+				},
+				onSuccess: function () {
+					console.log("Channel订阅成功。");
+				},
+				onFailed: function (error) {
+					console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
+				}
+			});
 		},
 		onShow() {
 			this.phone = uni.getStorageSync('phone');

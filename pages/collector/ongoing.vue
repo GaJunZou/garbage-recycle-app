@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view  class="page">
 		<view class="box" v-for="(i,v) in list" :key="v">
 			<view :class="show == i ? 'show-detail' : 'hide-detail'">
 				<view style="margin-bottom: 15px;height: 25px;">
@@ -101,6 +101,9 @@
 	}
 </script>
 <style>
+/* 	.page{
+		min-height: 700px;
+	} */
 	.box{
 		width: 100%;
 		padding: 10px;

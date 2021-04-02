@@ -79,23 +79,17 @@
 						</view>
 						<view class="cu-form-group">
 							<view class="title">省</view>
-							<region-picker @change="region_change" :value="picker">
-								<input placeholder="省份" disabled name="province" v-model="form.province"></input>
-							</region-picker>
+							<input placeholder="省份" disabled name="province" v-model="form.province"></input>
 							<text @click="autoLocation" class='cuIcon-locationfill text-orange'></text>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">市</view>
-							<region-picker @change="region_change" :value="picker">
-								<input placeholder="市" disabled name="city" v-model="form.city"></input>
-							</region-picker>
+							<input placeholder="市" disabled name="city" v-model="form.city"></input>
 							<text @click="autoLocation" class='cuIcon-locationfill text-orange'></text>
 						</view>
 						<view class="cu-form-group">
 							<view class="title">区</view>
-							<region-picker @change="region_change" :value="picker">
-								<input placeholder="区" disabled name="town" v-model="form.area"></input>
-							</region-picker>
+							<input placeholder="区" disabled name="town" v-model="form.area"></input>
 							<text @click="autoLocation" class='cuIcon-locationfill text-orange'></text>
 						</view>
 						<view class="cu-form-group">
@@ -126,7 +120,6 @@
 	</view>
 </template>
 
-<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script> 
 <script>	
 	import regionPicker from "@/components/region-picker/region-picker.vue"
 	export default {
@@ -166,11 +159,6 @@
 			this.address = this.$store.state.role.user.address;
 		},
 		methods: {
-			region_change(e){
-				this.form.province = e.detail.value[0];
-				this.form.city = e.detail.value[1];
-				this.form.area = e.detail.value[2];
-			},
 			submit(){
 				if(this.opt == 'add'){
 					this.updateAddress(this.base + '/account/postUserAddAddress')

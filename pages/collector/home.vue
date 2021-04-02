@@ -17,7 +17,9 @@
 					<waitingList v-if="index==0" :crood='crood' :list="item.titleList" @waitingChange="waitingChange"></waitingList>
 					<ongoing v-if="index==1" :crood="crood" :list="item.titleList" @showOperate="showOperate"></ongoing>
 					<finish v-if="index==2" :list="item.titleList" @checkEvaluate="checkEvaluate"></finish>
-					<div style="height: 140px;text-align: center;">没有更多了~</div>
+					<div style="height: 140px;text-align: center;">
+						没有更多了~ <text @click="reloading" style="color: #0081FF;" v-if="index==0">点击加载 <text class="cuIcon-loading2"></text> </text> 
+					</div>
 				</div>
 			</swiper-item>
 		</swiper>
@@ -103,7 +105,7 @@
 			</view>
 		</view>
 		
-		<view @touchstart="snapStart($event)" @touchend="snapEnd($event)" class="cu-modal drawer-modal justify-start" :class="modalName=='DrawerModalL'?'show':''">
+		<view @touchstart="snapStart($event)" @touchend="snapEnd($event)" class="cu-modal drawer-modal justify-start left-drawer" :class="modalName=='DrawerModalL'?'show':''">
 			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
 				<view class="cu-list menu text-left">
 					<view class="bg">
@@ -131,7 +133,11 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action">工作城市/地区</view>
-						<view class="action">广州/白云<text class="cuIcon-location"></text></view>
+						<view class="action">		
+							<region-picker style="z-index: 9999;" @change="region_change" value="">
+								<text>{{picker.city}}{{picker.area}}<text style="font-size: 16px;font-weight: 700;color: #faa12e;" class="cuIcon-location"></text></text>
+							</region-picker>
+						</view>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
@@ -166,7 +172,11 @@
 </template>
 
 <script>
+	import regionPicker from "@/components/region-picker/region-picker.vue"
 	export default{
+		components: {
+		    regionPicker
+		},
 		data(){
 			return{
 				phone:null,
@@ -193,7 +203,11 @@
 				collector:{},
 				operate:{},
 				index:null,
-				crood:[]
+				crood:[],
+				picker:{
+					city:'',
+					area:''
+				}
 			}
 		},
 		onShow() {
@@ -204,39 +218,82 @@
 			},7000);
 		},
 		created(){
-			this.phone = uni.getStorageSync('phone');
-			if(JSON.stringify(this.collector)=="{}"){
-				if(uni.getStorageSync('phone') != null) {
-					uni.request({
-						url:this.base+"/account/getAllInfomation/"+uni.getStorageSync('phone'),
-						method:"GET",
-						success: (res) => {
-							this.$store.commit('save',res.data)
-							this.collector = this.$store.state.role;
-						}
-					})
-				}
-			}	
-			uni.request({
-				url:this.base+"/order/user/getAllOrder",
-				method:"GET",
-				success: (res) => {
-					this.tabTitle[0].titleList = res.data[0];
-					this.tabTitle[1].titleList = res.data[1];
-					this.tabTitle[2].titleList = res.data[2];
-					this.$store.commit('saveWaitingList',res.data[0]);
-					this.$store.commit('saveOngoingList',res.data[1]);
-					this.$store.commit('saveFinishList',res.data[2]);
-					// this.$store.commit('save',res.data)
-				}
-			})
+			this.loadingData();
 			uni.getSystemInfo({
 				success: (res)=> {
 					this.tabStyle.minHeight = res.screenHeight - res.statusBarHeight - 60 + 'px';
 				}
 			});
+			this.goEasy.subscribe({
+				channel: this.collector.phone,
+				onMessage: (message)=> {
+					let content = JSON.parse(message.content);
+					if(content.key == "complete_order"){
+						let res = null;
+						console.log("接收内容：" + content.data);
+						this.tabTitle[1].titleList.forEach((v,i)=>{
+							if(v._id == content.data){
+								res = this.tabTitle[1].titleList.splice(i,1);
+							}
+						})
+						this.tabTitle[2].titleList.unshift(res[0]);
+					}
+				},
+				onSuccess: function () {
+					console.log("Channel订阅成功。");
+				},
+				onFailed: function (error) {
+					console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
+				}
+			});
+			// this.openSocket()
 		},
 		methods:{
+			reloading(){
+				this.loadingData();
+			},
+			loadingData(){
+				this.phone = uni.getStorageSync('phone');
+				if(JSON.stringify(this.collector)=="{}"){
+					if(uni.getStorageSync('phone') != null) {
+						uni.request({
+							url:this.base+"/account/getAllInfomation/"+uni.getStorageSync('phone'),
+							method:"GET",
+							success: (res) => {
+								this.$store.commit('save',res.data)
+								this.collector = this.$store.state.role;
+							}
+						})
+					}
+				}	
+				uni.request({
+					url:this.base+"/order/user/getAllOrder",
+					method:"GET",
+					success: (res) => {
+						this.tabTitle[0].titleList = res.data[0];
+						this.tabTitle[1].titleList = res.data[1];
+						this.tabTitle[2].titleList = res.data[2];
+						this.$store.commit('saveWaitingList',res.data[0]);
+						this.$store.commit('saveOngoingList',res.data[1]);
+						this.$store.commit('saveFinishList',res.data[2]);
+						// this.$store.commit('save',res.data)
+					}
+				})
+			},
+			openSocket(){
+				uni.connectSocket({
+				  url: 'ws://192.168.0.105:3000/socket/notify'
+				});
+				uni.onSocketOpen((res)=> {
+						uni.sendSocketMessage({
+						  data: "stupid"
+						});
+					})
+				uni.onSocketMessage((res)=> {
+				  console.log(res);
+				});
+			},
+			
 			getloca(){
 				uni.getLocation({
 					type: 'wgs84',
@@ -330,8 +387,27 @@
 				plus.messaging.sendMessage(msg);
 			},
 			appNotice(phone){
-				console.log(phone); 
-				plus.push.createMessage("asdasas"); 
+					// plus.nativeUI.prompt("输入要发送的内容", (e)=>{
+					// 	if(e.index == 0){
+							this.goEasy.publish({
+								channel: phone,
+								message: JSON.stringify({
+									key:"app_notice",
+									data:"你好，我已到达，请尽快处理。"
+								}),
+								notification: { 
+									title: '您有一条新消息', //通知栏提醒标题，仅显示于通知栏
+									body: "你好，我已到达，请尽快处理。", //通知栏提醒内容，仅显示于通知栏
+								},
+								onSuccess:function(){
+								   console.log("消息发布成功。");
+								},
+								onFailed: function (error) {
+								   console.log("错误信息："+error.content);
+								}
+							});
+					// 	}
+					// }, "App推送", "你好，我已到达，请尽快处理。", ["确定","取消"]);
 			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
@@ -433,6 +509,11 @@
 						}
 					}, "修改密码", "输入你的旧密码...", ["确定","取消"]);
 			},
+			region_change(e){
+				console.log(e.detail.value[0]);
+				this.picker.city = e.detail.value[1];
+				this.picker.area = e.detail.value[2];
+			}
 		}
 	}
 </script>
@@ -535,5 +616,8 @@
 }
 .form>.cu-form-group{
 	min-height: 42px;
+}
+.left-drawer{
+	z-index: 888;
 }
 </style>
