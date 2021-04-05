@@ -192,6 +192,18 @@
 			"style": {
 				"backgroundColor":"#fff"
 			}
+		},
+		{
+			"path": "pages/collector/orderDetail",
+			"style": {
+				"backgroundColor":"#fff"
+			}
+		},
+		{
+			"path": "pages/collector/orderList",
+			"style": {
+				"backgroundColor":"#fff"
+			}
 		}
     ],
 	"globalStyle": {

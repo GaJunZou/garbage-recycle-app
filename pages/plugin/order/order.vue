@@ -190,6 +190,7 @@
 				more:{},
 				evaluate:{
 					order_id:'',
+					collector_phone:'',
 					evaluate_attitude:'80',
 					evaluate_speed:'80',
 					evaluate_content:'',
@@ -296,6 +297,7 @@
 			toEvaluate(v){
 				this.modalName = 'evaluate';
 				this.evaluate = {
+					collector_phone:v.collector_phone,
 					order_id:'',
 					evaluate_attitude:'80',
 					evaluate_speed:'80',
@@ -308,8 +310,20 @@
 			async sureEvaluate(){
 				this.evaluate.evaluate_time = new Date().format('yyyy-MM-dd hh:mm:ss');
 				await this.updateOrder(this.evaluate);
+				this.goEasy.publish({
+					channel: this.evaluate.collector_phone,
+					message: JSON.stringify({
+						key:"evaluate_order",
+						data:this.evaluate.order_id
+					}),
+					onSuccess:function(){
+					   console.log("消息发布成功。");
+					},
+					onFailed: function (error) {
+					   console.log("错误信息："+error.content);
+					}
+				});
 				plus.nativeUI.toast("评论成功！");
-				
 				this.hideModal();
 			},
 			async sureComplete(v){

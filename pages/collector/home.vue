@@ -4,8 +4,12 @@
 			<view><text class="my-icon" style="font-size: 30px;color: #faa125;" @tap="showModal" data-target="DrawerModalL">&#xe65a;</text></view>
 			<view style="text-align: center;font-size: 20px;font-weight: 700;">任务列表</view>
 			<view>
-				<text @click="scan" style="float:right;font-size: 30px;font-weight: 400;color: #faa125;" class="my-icon">&#xe6e4;</text>
+				<text @click="orderList" style="float:right;font-size: 30px;font-weight: 400;color: #faa125;display: block;" class="cuIcon-message"></text>
+				<text class='bag' v-if="messageValue.length != 0">{{messageValue.length}}</text>
 			</view>
+			<!-- <view>
+				<text @click="scan" style="float:right;font-size: 30px;font-weight: 400;color: #faa125;" class="my-icon">&#xe6e4;</text>
+			</view> -->
 		</view>
 		<ul class="tab-title">
 			<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v.title}}</li>
@@ -153,8 +157,8 @@
 						<view class="action">修改密码</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
-					<view class="cu-bar bg-white">
-						<view class="action">详细资料</view>
+					<view @click="allOrder" class="cu-bar bg-white">
+						<view class="action">全部订单</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
@@ -207,7 +211,10 @@
 				picker:{
 					city:'',
 					area:''
-				}
+				},
+				messageLabel:0,
+				messageValue:[]
+				
 			}
 		},
 		onShow() {
@@ -237,6 +244,10 @@
 							}
 						})
 						this.tabTitle[2].titleList.unshift(res[0]);
+					} else if (content.key == "evaluate_order"){
+						console.log("订单评价");
+						this.messageLabel++;
+						this.messageValue.push(content.data);
 					}
 				},
 				onSuccess: function () {
@@ -249,6 +260,11 @@
 			// this.openSocket()
 		},
 		methods:{
+			orderList(){
+				uni.navigateTo({
+					url:"/pages/collector/orderList?list="+this.messageValue
+				})
+			},
 			reloading(){
 				this.loadingData();
 			},
@@ -619,5 +635,15 @@
 }
 .left-drawer{
 	z-index: 888;
+}
+.bag{
+	background-color: #f9484b;
+	position: absolute;
+	font-size: 12px !important;
+	right: 6px;
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	text-align: center;
 }
 </style>
