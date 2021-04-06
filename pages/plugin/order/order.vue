@@ -332,6 +332,32 @@
 					status:1,
 					complete_time:new Date().format('yyyy-MM-dd hh:mm:ss')
 				})
+				uni.request({
+					url:this.base + '/order/user/complete',
+					method:"POST",
+					data:{
+						belong_phone:v.belong_phone,
+						order_id:v._id
+					},
+					success: (res) => {
+						this.goEasy.publish({
+							channel: v.collector_phone,
+							message: JSON.stringify({
+								key:"complete_order",
+								data:v._id
+							}),
+							onSuccess:function(){
+							   console.log("消息发布成功。");
+							},
+							onFailed: function (error) {
+							   console.log("错误信息："+error.content);
+							}
+						});
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+				})
 				this.goEasy.publish({
 					channel: v.collector_phone,
 					message: JSON.stringify({

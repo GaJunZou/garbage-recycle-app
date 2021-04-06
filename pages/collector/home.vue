@@ -130,9 +130,9 @@
 						<p style="text-align: center;margin: 10px;padding-bottom: 50rpx;">{{collector.sign || "保护环境，从废品回收做起！"}}</p>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-					<view class="cu-bar bg-white">
-						<view class="action">我的收款码</view>
-						<view class="action"><text class="cuIcon-qr_code"></text></view>
+					<view @click="scan" class="cu-bar bg-white">
+						<view class="action">扫码</view>
+						<view class="action"><text style="font-size: 20px;color: #faa12e;" class="my-icon">&#xe6e4;</text></view>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
@@ -157,7 +157,7 @@
 						<view class="action">修改密码</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
-					<view @click="allOrder" class="cu-bar bg-white">
+					<view @click="orderList" class="cu-bar bg-white">
 						<view class="action">全部订单</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
@@ -224,7 +224,7 @@
 				this.getloca();
 			},7000);
 		},
-		created(){
+		async created(){
 			this.loadingData();
 			uni.getSystemInfo({
 				success: (res)=> {
@@ -232,7 +232,7 @@
 				}
 			});
 			this.goEasy.subscribe({
-				channel: this.collector.phone,
+				channel: this.phone,
 				onMessage: (message)=> {
 					let content = JSON.parse(message.content);
 					if(content.key == "complete_order"){
@@ -262,7 +262,11 @@
 		methods:{
 			orderList(){
 				uni.navigateTo({
-					url:"/pages/collector/orderList?list="+this.messageValue
+					url:"/pages/collector/orderList?list="+this.messageValue,
+					success: () => {
+						this.messageValue = [];
+						this.messageLabel = 0;
+					}
 				})
 			},
 			reloading(){
@@ -426,7 +430,8 @@
 					// }, "App推送", "你好，我已到达，请尽快处理。", ["确定","取消"]);
 			},
 			showModal(e) {
-				this.modalName = e.currentTarget.dataset.target
+				this.modalName = e.currentTarget.dataset.target;
+				this.reloading();
 			},
 			hideModal(e) {
 				this.modalName = null
