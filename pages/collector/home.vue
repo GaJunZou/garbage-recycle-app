@@ -531,9 +531,15 @@
 					}, "修改密码", "输入你的旧密码...", ["确定","取消"]);
 			},
 			region_change(e){
-				console.log(e.detail.value[0]);
 				this.picker.city = e.detail.value[1];
 				this.picker.area = e.detail.value[2];
+				uni.request({
+					url:this.base + '/account/postWorkPlace',
+					method:"POST",
+					success: (res) => {
+						console.log(res.data);
+					}
+				})
 			}
 		}
 	}
