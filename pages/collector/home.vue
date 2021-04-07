@@ -139,7 +139,7 @@
 						<view class="action">工作城市/地区</view>
 						<view class="action">		
 							<region-picker style="z-index: 9999;" @change="region_change" value="">
-								<text>{{picker.city}}{{picker.area}}<text style="font-size: 16px;font-weight: 700;color: #faa12e;" class="cuIcon-location"></text></text>
+								<text>{{picker.city}}/{{picker.area}}<text style="font-size: 16px;font-weight: 700;color: #faa12e;" class="cuIcon-location"></text></text>
 							</region-picker>
 						</view>
 					</view>
@@ -158,7 +158,7 @@
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<view @click="orderList" class="cu-bar bg-white">
-						<view class="action">全部订单</view>
+						<view class="action">已完成订单</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
@@ -282,15 +282,18 @@
 							success: (res) => {
 								this.$store.commit('save',res.data)
 								this.collector = this.$store.state.role;
+								this.picker.city = this.collector.collector.work_city;
+								this.picker.area = this.collector.collector.work_area;
+								
 							}
 						})
 					}
 				}	
 				uni.request({
-					url:this.base+"/order/user/getAllOrder",
+					url:this.base+"/order/user/getAllOrder/"+uni.getStorageSync("phone"),
 					method:"GET",
 					success: (res) => {
-						this.tabTitle[0].titleList = res.data[0];
+						this.tabTitle[0].titleList = res.data[0];	
 						this.tabTitle[1].titleList = res.data[1];
 						this.tabTitle[2].titleList = res.data[2];
 						this.$store.commit('saveWaitingList',res.data[0]);
@@ -302,7 +305,7 @@
 			},
 			openSocket(){
 				uni.connectSocket({
-				  url: 'ws://192.168.0.105:3000/socket/notify'
+				  url: 'ws://192.168.0.101:3000/socket/notify'
 				});
 				uni.onSocketOpen((res)=> {
 						uni.sendSocketMessage({
@@ -413,7 +416,10 @@
 								channel: phone,
 								message: JSON.stringify({
 									key:"app_notice",
-									data:"你好，我已到达，请尽快处理。"
+									data:{
+										msg:"你好，我已到达，请尽快处理。",
+										phone:uni.getStorageSync("phone")
+									}
 								}),
 								notification: { 
 									title: '您有一条新消息', //通知栏提醒标题，仅显示于通知栏
@@ -434,7 +440,8 @@
 				this.reloading();
 			},
 			hideModal(e) {
-				this.modalName = null
+				this.modalName = null;
+				this.reloading();
 			},
 			snapStart(e){
 				this.start = e.changedTouches[0];
@@ -536,6 +543,11 @@
 				uni.request({
 					url:this.base + '/account/postWorkPlace',
 					method:"POST",
+					data:{
+						work_city:this.picker.city,
+						work_area:this.picker.area,
+						phone:uni.getStorageSync("phone")
+					},
 					success: (res) => {
 						console.log(res.data);
 					}

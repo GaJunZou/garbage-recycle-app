@@ -101,7 +101,7 @@ Vue.prototype.send = function(channel,message,body){
 } 
 
 Vue.prototype.base = 'http://192.168.0.101:3000';
-Vue.prototype.socket = 'ws://192.168.0.105:3000';
+Vue.prototype.socket = 'ws://192.168.0.101:3000';
 
 String.prototype.time = function() {
 	let time = this.split(' ')[1].split(':');

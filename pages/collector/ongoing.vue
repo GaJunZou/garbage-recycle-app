@@ -81,9 +81,9 @@
 		methods:{
 			getMesure(str){
 				let mesure;
+				console.log(str);
 				let arr = str.split('/');
 				mesure = this.GetDistance(this.crood[0],this.crood[1],+arr[0],+arr[1]);
-				console.log(mesure);
 				return (mesure*1000).toFixed(1);
 			},
 			showDetail(index){

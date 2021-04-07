@@ -205,15 +205,17 @@
 									plus.nativeUI.showWaiting("获取失败...",{background : "#272822",padlock:true});
 								}else{
 									plus.nativeUI.closeWaiting();
+									this.form.address_crood = crood;
 									this.form.province = res.data.regeocode.addressComponent.province;
 									this.form.city = res.data.regeocode.addressComponent.city;
 									this.form.area = res.data.regeocode.addressComponent.district;
 									this.form.town = res.data.regeocode.addressComponent.township;
 									this.form.street = res.data.regeocode.addressComponent.streetNumber.street;
 									this.form.detail = res.data.regeocode.aois[0].name; 
-									this.form.address_crood = crood;
-									console.log(this.form);
 								}
+							},
+							fail: (err) => {
+								console.log(err);
 							}
 						})
 				    }
