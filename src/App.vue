@@ -1,13 +1,19 @@
 <template>
   <div id="app">
     <div id="nav">
-      <!-- <router-link to="/">Home</router-link> -->
-      <!-- <router-link to="/about">About</router-link> -->
+      <router-view/>
     </div>
-    <router-view/>
+    <div id="content">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <style>
-
+#nav{
+  float: left;
+}
+#content{
+  float: left;
+}
 </style>
