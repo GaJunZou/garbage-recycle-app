@@ -305,7 +305,7 @@
 			},
 			openSocket(){
 				uni.connectSocket({
-				  url: 'ws://192.168.0.101:3000/socket/notify'
+				  url: 'ws://192.168.0.105:3000/socket/notify'
 				});
 				uni.onSocketOpen((res)=> {
 						uni.sendSocketMessage({

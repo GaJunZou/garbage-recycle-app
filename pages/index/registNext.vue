@@ -61,7 +61,7 @@
 				}
 				plus.nativeUI.showWaiting("上传中...");
 				uni.uploadFile({
-					url:"http://192.168.0.101:8002/aliyun-service/upload-image",
+					url:"http://192.168.0.105:8002/aliyun-service/upload-image",
 					// filePath: this.imgList[0],
 					// name: 'file',
 					files:[img],
