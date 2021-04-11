@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-<p style="font-size:26px;font-weight:700;color:#409eff;text-align:center;width:100px;margin:10px">
+<p style="font-size:26px;font-weight:700;color:#409eff;text-align:center;margin:10px">
   <i @click="changeCollapse(isCollapse)" :class="isCollapse == true ? 'el-icon-arrow-right' : 'el-icon-arrow-left'"></i>
 </p>
 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @select="handleSelect" :collapse="isCollapse">
@@ -35,8 +35,9 @@ export default {
       changeCollapse(flag){
         this.isCollapse = !flag;
       },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+      handleSelect(key) {
+        console.log(key);
+        this.$emit("content",key);
       }
     }
 }
