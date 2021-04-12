@@ -39,7 +39,7 @@
 				<view class="flex justify-around box-content">
 					<view class="bg-white item radius" v-for="(v,i) in data" :key="i">
 						<view>
-							<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
+							<image :src="v.waste_url" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
 						</view>
 						<p style="text-align: center;font-size: 16px;">{{v.waste_name}}</p>
 						<view>
@@ -134,7 +134,7 @@
 						<div v-for="v in orderList" style="padding: 5px 10px;height: 40px;">
 							<i class="cuIcon-close" @click="remove(v._id)" style="float: left;font-size: 20px;color: red;line-height: 40px;"></i>
 							<div style="float: left;width: 40px;height: 40px;margin-right: 10px;margin-left: 5px;">
-								<image style="width: 100%;height: 100%;" src="../../static/11.png" mode=""></image>
+								<image style="width: 100%;height: 100%;" :src="v.waste_url" mode=""></image>
 							</div>
 							<p style="float: left;line-height: 20px;">
 								<strong style="font-size: 14px;">{{v.waste_name}}</strong><br>

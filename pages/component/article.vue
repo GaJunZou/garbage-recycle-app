@@ -10,7 +10,7 @@
 		<view class="content">
 			<p style="text-align: left;font-weight: 700;font-size: 22px;margin:20px auto;">{{article.title}}</p>
 			<p style="text-align: left;font-weight: 400;font-size: 14px;margin-bottom:20px;color: #999;" >{{article.subtitle}}</p>
-			<image style="width: 100%;margin-bottom:20px;" src="../../static/123.png" mode=""></image>
+			<image style="width: 100%;margin-bottom:20px;" :src="article.head_img" mode=""></image>
 			<p  style="margin-bottom: 20px;">{{article.content}}</p>
 			<view>
 				<p style="float: left;color: #39B54A;font-weight: 700;">{{article.time}}</p>

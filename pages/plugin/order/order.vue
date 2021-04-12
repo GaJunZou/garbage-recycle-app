@@ -16,7 +16,7 @@
 					<div class="tab-item" v-for="(v,i) in item.titleList" :key="i">
 						<view style="float: left;width: 100%;margin: 5px auto;" v-for="(vv,ii) in v.wastes" :key="ii">
 							<view style="float: left;width: 81px;height: 81px;">
-								<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../../static/11.png" mode=""></image>
+								<image style="width: 100%;height: 100%;border-radius: 6px;" :src="vv.waste_url" mode=""></image>
 							</view>
 							<view style="float: left;height: 66px;margin-left: 10px;">
 								<big><strong>{{vv.waste_name}}</strong></big>

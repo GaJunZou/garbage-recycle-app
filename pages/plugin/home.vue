@@ -43,21 +43,7 @@
 			 		</view>
 			 	</view>
 				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-			 	<view class="cu-bar bg-white">
-			 		<view class="action">
-			 			<text class="text-black">我的礼券</text> 
-			 		</view>
-			 		<view class="content text-bold">
-			 			
-			 		</view>
-			 		<view class="action">
-			 			<text class="text-grey">
-			 				<i class="icon-next iconfont icon-right"></i>
-			 			</text>
-			 		</view>
-			 	</view>
-				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-			 	<view class="cu-bar bg-white">
+			 	<view @click="toHelp" class="cu-bar bg-white">
 			 		<view class="action">
 			 			<text class="text-black">使用帮助</text> 
 			 		</view>
@@ -71,7 +57,7 @@
 			 		</view>
 			 	</view>
 				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-			 	<view class="cu-bar bg-white">
+			 	<view @click="gotoFeedback" class="cu-bar bg-white">
 			 		<view class="action">
 			 			<text class="text-black">问题反馈</text> 
 			 		</view>
@@ -85,7 +71,7 @@
 			 		</view>
 			 	</view>
 				<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-			 	<view class="cu-bar bg-white">
+			 	<view @click="toAbout" class="cu-bar bg-white">
 			 		<view class="action">
 			 			<text class="text-black">关于易收购</text> 
 			 		</view>
@@ -153,6 +139,21 @@
 				}
 				uni.navigateTo({
 					url: "/pages/plugin/order/order"
+				})
+			},
+			toHelp(){
+				uni.navigateTo({
+					url: "/pages/plugin/help?img="+this.url
+				})
+			},
+			toAbout(){
+				uni.navigateTo({
+					url: "/pages/plugin/about"
+				})
+			},
+			gotoFeedback(){
+				uni.navigateTo({
+					url: "/pages/plugin/feedback?phone="+this.globalUser.phone
 				})
 			},
 			setup(){

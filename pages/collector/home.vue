@@ -162,7 +162,7 @@
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
-					<view class="cu-bar bg-white">
+					<view @click="toAbout" class="cu-bar bg-white">
 						<view class="action">关于易回收</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
@@ -536,6 +536,11 @@
 							}
 						}
 					}, "修改密码", "输入你的旧密码...", ["确定","取消"]);
+			},
+			toAbout(){
+				uni.navigateTo({
+					url: "/pages/plugin/about"
+				})
 			},
 			region_change(e){
 				this.picker.city = e.detail.value[1];

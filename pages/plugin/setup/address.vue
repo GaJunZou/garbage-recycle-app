@@ -198,11 +198,8 @@
 								if(res.data.status != 1){
 									plus.nativeUI.toast('获取地址信息失败！');
 								}else{
-<<<<<<< HEAD
-=======
 									plus.nativeUI.closeWaiting();
 									this.form.address_crood = crood;
->>>>>>> f4f50d96acaf52a5886728790fbcf72f4da75740
 									this.form.province = res.data.regeocode.addressComponent.province;
 									this.form.city = res.data.regeocode.addressComponent.city;
 									this.form.area = res.data.regeocode.addressComponent.district;

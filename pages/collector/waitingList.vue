@@ -35,7 +35,7 @@
 					<!-- <div style="width: 100%;height: 1rpx;padding: 0;margin:3px auto;border: 0px;background-color: #a5a5a5;"></div> -->
 					<view style="float: left;width: 100%;margin: 5px auto;" v-for="(ii,vv) in i.wastes" :key="vv">
 						<view style="float: left;width: 81px;height: 81px;">
-							<image style="width: 100%;height: 100%;border-radius: 6px;" src="../../static/11.png" mode=""></image>
+							<image style="width: 100%;height: 100%;border-radius: 6px;" :src="ii.waste_url" mode=""></image>
 						</view>
 						<view style="float: left;height: 66px;margin-left: 10px;">
 							<big><strong>{{ii.name}}</strong></big>

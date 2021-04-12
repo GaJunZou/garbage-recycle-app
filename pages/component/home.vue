@@ -18,7 +18,7 @@
 								<div class="words">{{v.subtitle}}</div>
 								<div style="color: #8799A3;"><text class="cuIcon-time" style="line-height: 30px;margin-right: 5px;"></text>{{v.time}}</div>
 							</div>
-							<div class="img"><image src="../../static/11.png" style="width: 100%;height: 100%;" mode=""></image></div>
+							<div class="img"><image :src="v.head_img" style="width: 100%;height: 100%;" mode=""></image></div>
 						</div>
 						<div style="height: 140px;text-align: center;">没有更多了~</div>
 					</div>

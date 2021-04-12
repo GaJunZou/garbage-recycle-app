@@ -204,6 +204,24 @@
 			"style": {
 				"backgroundColor":"#fff"
 			}
+		},
+		{
+			"path": "pages/plugin/help",
+			"style": {
+				"backgroundColor":"#fff"
+			}
+		},
+		{
+			"path": "pages/plugin/feedback",
+			"style": {
+				"backgroundColor":"#fff"
+			}
+		},
+		{
+			"path": "pages/plugin/about",
+			"style": {
+				"backgroundColor":"#fff"
+			}
 		}
     ],
 	"globalStyle": {
