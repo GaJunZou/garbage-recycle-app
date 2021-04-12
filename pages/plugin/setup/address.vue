@@ -176,16 +176,10 @@
 						console.log(res);
 						this.$store.commit("save",res.data);
 						this.address = res.data.user.address;
-						uni.showToast({
-							title:"删除成功！",
-							duration:1000
-						})
+						plus.nativeUI.toast('删除成功！');
 					},
 					fail:(res)=> {
-						uni.showToast({
-							title:"删除失败！",
-							duration:1000
-						})
+						plus.nativeUI.toast('删除失败！');
 					}
 					
 				})
@@ -202,9 +196,8 @@
 							method:"GET",
 							success: (res) => {
 								if(res.data.status != 1){
-									plus.nativeUI.showWaiting("获取失败...",{background : "#272822",padlock:true});
+									plus.nativeUI.toast('获取地址信息失败！');
 								}else{
-									plus.nativeUI.closeWaiting();
 									this.form.province = res.data.regeocode.addressComponent.province;
 									this.form.city = res.data.regeocode.addressComponent.city;
 									this.form.area = res.data.regeocode.addressComponent.district;
@@ -227,16 +220,10 @@
 					success:(res)=> {
 						this.$store.commit("save",res.data);
 						this.address = res.data.user.address;
-						uni.showToast({
-							title:"设置成功！",
-							duration:1000
-						})
+						plus.nativeUI.toast('修改成功！');
 					},
 					fail:(res)=> {
-						uni.showToast({
-							title:"设置失败！",
-							duration:1000
-						})
+						plus.nativeUI.toast('修改失败！');
 					}
 				})
 			},
@@ -259,16 +246,10 @@
 					success:(res)=> {
 						this.$store.commit("save",res.data);
 						this.address = res.data.user.address;
-						uni.showToast({
-							title:"设置成功！",
-							duration:1000
-						})
+						plus.nativeUI.toast('修改成功！');
 					},
 					fail:(res)=> {
-						uni.showToast({
-							title:"设置失败！",
-							duration:1000
-						})
+						plus.nativeUI.toast('修改失败！');
 					}
 				})
 			},

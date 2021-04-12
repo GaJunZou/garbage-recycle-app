@@ -82,23 +82,21 @@
 						role: this.role == 1 ? 'user' : 'collector'
 					},
 					success: (res) => {
-						if(res.data === false){
-							uni.showToast({
-								title:"密码错误或账号不存在。",
-								duration:1000
-							})
-						return;
-						}
-						uni.setStorageSync('phone',res.data.phone);
-						uni.setStorageSync('role',res.data.role);
-						if(res.data.role == 'user'){
-							this.$store.commit('save',res.data);
-							uni.reLaunch({
-								url: "/pages/index/index",
-							})
-						}else if(res.data.role == 'collector'){
-							this.$store.commit('save',res.data);
-							this.gotoCollect();
+						if(res.data.phone){
+							uni.setStorageSync('phone',res.data.phone);
+							uni.setStorageSync('role',res.data.role);
+							if(res.data.role == 'user'){
+								this.$store.commit('save',res.data);
+								uni.reLaunch({
+									url: "/pages/index/index",
+								})
+							}else if(res.data.role == 'collector'){
+								this.$store.commit('save',res.data);
+								this.gotoCollect();
+							}
+						}else{
+							plus.nativeUI.toast("密码错误或账号不存在。");
+							return;
 						}
 					},
 					fail: (err) => {

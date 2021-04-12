@@ -275,6 +275,8 @@
 						console.log(res);
 						this.$store.commit("save",res.data);
 						this.globalUser = this.$store.state.role;
+						plus.nativeUI.toast('信息修改成功。');
+						
 					},
 					fail: (err) => {
 						console.log(err);

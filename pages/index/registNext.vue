@@ -59,7 +59,6 @@
 					name:'file',
 					uri:this.imgList[0]
 				}
-				plus.nativeUI.showWaiting("上传中...");
 				uni.uploadFile({
 					url:"http://192.168.0.105:8002/aliyun-service/upload-image",
 					// filePath: this.imgList[0],
@@ -69,13 +68,13 @@
 					success:(res)=> {
 						this.img = JSON.parse(res.data).data.url;
 						console.log(this.img);
+						plus.nativeUI.toast("头像上传成功");
 					},
 					fail:(err)=>{
 						console.log(err);
 						plus.nativeUI.toast('头像上传失败！');
 					},
 					complete: () => {
-						plus.nativeUI.closeWaiting();
 						// plus.nativeUI.toast("请填写必填项！");
 						uni.request({
 							url:this.base+'/account/postDetailData',
@@ -89,7 +88,7 @@
 							},
 							success: (res) => {
 								this.$store.commit('save',res.data);
-								plus.nativeUI.toast('注册中...');
+								plus.nativeUI.toast('提交成功。');
 								if(uni.getStorageSync('role') == 'user'){
 									uni.reLaunch({
 										url: "/pages/index/index"
@@ -102,9 +101,6 @@
 							},
 							fail: (err) => {
 								console.log(err);
-							},
-							complete:()=>{
-								plus.nativeUI.closeWaiting();
 							}
 						});
 					}

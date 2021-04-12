@@ -86,26 +86,17 @@
 							},
 							success: (res) => {
 								this.$store.commit('save',res.data);
-								uni.showToast({
-									title:"上传成功！",
-									duration:1000
-								});
+								plus.nativeUI.toast('头像保存成功！');
 							},
 							fail: (err) => {
 								console.log(err);
-								uni.showToast({
-									title:"上传成功！",
-									duration:1000
-								});
+								plus.nativeUI.toast('头像保存失败！');
 							}
 						});
 					},
 					fail:(err)=>{
 						console.log(err);
-						uni.showToast({
-							title:"上传失败！",
-							duration:1000
-						})
+						plus.nativeUI.toast('头像上传失败！');
 					},
 					complete: () => {
 						this.hideModal();

@@ -71,10 +71,14 @@
 						role: this.role == 1 ? 'user' : 'collector'
 					},
 					success: (res) => {
-						uni.setStorageSync('phone',res.data.phone);
-						uni.setStorageSync('role',res.data.role);
-						this.$store.commit('save',res.data);
-						this.toNext();
+						if(res.data==false){
+							plus.nativeUI.toast('注册失败,原因是此号码已注册。');
+						}else{
+							uni.setStorageSync('phone',res.data.phone);
+							uni.setStorageSync('role',res.data.role);
+							this.$store.commit('save',res.data);
+							this.toNext();
+						}
 					},
 					fail: (err) => {
 						console.log(err);
