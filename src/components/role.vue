@@ -1,6 +1,8 @@
 <template>
     <div>
-    <el-form class="demo-form-inline" inline>
+      <div style="float:left;padding-left:20px">
+        <h2>用户管理</h2>
+        <el-form class="demo-form-inline" inline>
       <el-form-item>
         <el-input size="small" placeholder="请输入内容" @keydown.enter="search" v-model="searchValue" prefix-icon="el-icon-search"></el-input>
       </el-form-item>
@@ -9,50 +11,82 @@
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="searchResult" tooltip-effect="dark" style="height:80%">
-      <el-table-column label="用户名" width="150">
+      <el-table-column label="用户名" width="120">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.waste_name" placeholder="请输入内容"></el-input>
+          {{scope.row.name}}
         </template>
       </el-table-column>
-      <el-table-column label="账号" width="120">
+      <el-table-column label="账号" width="150">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.price" placeholder="请输入内容"></el-input>
+          {{scope.row.phone}}
         </template>
       </el-table-column>
-      <el-table-column label="性别" width="120">
-          <template slot-scope="scope">
-            <el-select size="small" v-model="scope.row.compute_mode" placeholder="请选择">
-              <el-option size="small" label="按重量" value="by_weight"></el-option>
-              <el-option size="small" label="按数量" value="by_quantity"></el-option>
-              <el-option size="small" label="按物品" value="by_material"></el-option>
-            </el-select>
+      <el-table-column label="性别" width="90">
+        <template slot-scope="scope">
+          {{scope.row.gender == 1 ? '男' : '女'}}
         </template>
       </el-table-column>
       <el-table-column label="头像" width="120">
           <template slot-scope="scope">
-            <div class="avatar" @click.stop="showDialog(scope.row.waste_url,scope.$index,scope.row._id)">
-              <el-avatar shape="square" size="large" :src="scope.row.waste_url"></el-avatar>
-            </div>
+              <el-avatar shape="square" size="large" :src="scope.row.portrait_url"></el-avatar>
         </template>
       </el-table-column>
       <el-table-column label="角色" width="120">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.species" placeholder="请输入内容"></el-input>
+          {{scope.row.role == 'user' ? '普通用户' : '回收员'}}
         </template>
       </el-table-column>
       <el-table-column label="冻结账户" width="120">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.is_recycle" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+            <el-switch v-model="scope.row.frozen" active-color="#13ce66" inactive-color="#aaa"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="saveWaste(scope.$index)">保存</el-button>
+            <el-button size="mini" type="primary" @click="saveRole(scope.$index)">保存</el-button>
           </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="waste.length"></el-pagination>
+    <el-pagination layout="prev, pager, next" :total="role.length"></el-pagination>
+      </div>
+      <div style="float:left;margin-left:20px">
+        <h2>系统管理</h2>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="APP管理" name="first">
+            <div style="width:800px">
+              <div style="width:400px;margin:auto">
+              <el-form  class="demo-form-inline">
+                <el-form-item label="版本号">
+                  <el-input size="small" v-model="system.version.number" placeholder="请填写"></el-input>
+                </el-form-item>
+                <el-form-item label="作者">
+                  <el-input size="small" v-model="system.version.author" placeholder="请填写"></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮箱">
+                  <el-input size="small" v-model="system.version.email" type="email" placeholder="请填写"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号">
+                  <el-input size="small" v-model="system.version.phone" type="phone" placeholder="请填写"></el-input>
+                </el-form-item>
+                <el-form-item label="联系地址">
+                  <el-input size="small" v-model="system.version.address" placeholder="请填写"></el-input>
+                </el-form-item>
+                <el-form-item label="app说明">
+                  <el-input size="small" v-model="system.version.introduction" type="textarea" rows="5" placeholder="请填写"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button size="small" type="primary" @click="saveVersion">保存</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+            </div>
 
+          </el-tab-pane>
+          <el-tab-pane label="app反馈" name="second">
+
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
 </template>
 
@@ -61,19 +95,16 @@ export default {
     data(){
         return {
         activeName: 'second',
-        waste:'',
+        role:'',
         searchResult:"",
         searchValue:"",
-        dialogVisible:false,
-        currImg:'',
-        dialogAdd:false,
-        newWaste:{},
-        index:'',
-        id:''
+        version:{},
+        system:{}
         }
     },
     created () {
-        this.getWaste();
+        this.getRole();
+        this.getSystemInfo();
     },
     methods:{
         handleClick(tab, event) {
@@ -81,15 +112,17 @@ export default {
       },
       search(){
         if(this.searchValue ==''){
-          this.searchResult = this.waste;
+          this.searchResult = this.role;
         }else{
           this.searchResult = this.searchResult.filter( v => {
-            return v.waste_name.includes(this.searchValue)
+            return v.name.includes(this.searchValue) || v.phone.includes(this.searchValue)
           })
         }
       },
-      save(){
-        this.axios.post(this.base+"/waste/batchUpdate",{waste:this.waste})
+
+      saveVersion(){
+        console.log(this.system);
+        this.axios.post("http://localhost:3000/system/updateSystemInfo",this.system)
         .then(res => {
           console.log(res)
           if(res.data){
@@ -102,24 +135,9 @@ export default {
           console.error(err); 
         })
       },
-      removeWaste(index,id){
-        this.axios.get(this.base+"/waste/delete/"+id)
-        .then(res => {
-          console.log(res)
-          if(res.data.success == "true"){
-            this.$notify({ title: '成功', message: '删除成功', type: 'success'});
-            this.searchResult.splice(index,1);
-          }else{
-            this.$notify({ title: '失败', message: res.data.data, type: 'err'});
-          }
-        })
-        .catch(err => {
-          console.error(err); 
-        })
-      },
-      saveWaste(index){
+      saveRole(index){
           console.log(this.searchResult[index]);
-          this.axios.post(this.base+"/waste/update/"+this.searchResult[index]._id,this.searchResult[index])
+          this.axios.post(this.base+"/account/postUserUpdateData",this.searchResult[index])
           .then(res => {
               console.log(res)
             if(res.data.data){
@@ -132,62 +150,24 @@ export default {
               console.error(err); 
           })
       },
-      showDialog(url,index,id){
-        this.dialogVisible = true;
-        this.currImg = url;
-        this.index = index;
-        this.id = id;
-      },
-      addWaste(){
-        this.dialogAdd = true;
-      },
-      addSubmit(){
-        this.$refs.add.submit();
-        this.dialogAdd = false;
-      },
-      addSuccess(res){
-        this.newWaste.waste_url = res.data.url
-        this.axios.post(this.base+"/waste/add",this.newWaste)
+      getRole(){
+        console.log(this.axios.get(this.base + "/account/getAllUser")
         .then(res => {
-          if(res.data.success == "true"){
-              this.$notify({ title: '成功', message: '添加成功', type: 'success'});
-              this.getWaste();
-          }else{
-              this.$notify({ title: '失败', message: '添加失败', type: 'error'});
-          }
-        })
-        .catch(err => {
-          console.error(err); 
-        })
-      },
-     modifySubmit(){
-        this.$refs.modify.submit();
-      },
-      modifySuccess(res){
-        this.searchResult[this.index].waste_url = res.data.url;
-        this.axios.post(this.base+"/waste/update/"+this.id,{waste_url:res.data.url})
-        .then(res => {
-          console.log(res)
-          if(res.data.data){
-            this.$notify({ title: '成功', message: '保存成功', type: 'success'});
-          }else{
-            this.$notify({ title: '失败', message: '保存失败', type: 'error'});
-          }
-        })
-        .catch(err => {
-          console.error(err); 
-        })
-        this.dialogVisible = false
-      },
-      getWaste(){
-        console.log(this.axios.get(this.base + "/waste/getAllWaste")
-        .then(res => {
-          this.waste=res.data;
+          this.role=res.data;
           this.searchResult=res.data;
         })
         .catch(err => {
           console.error(err); 
         }));
+      },
+      getSystemInfo(){
+        this.axios.get(this.base + "/system/getSystemInfo")
+        .then(res => {
+          this.system=res.data[0];
+        })
+        .catch(err => {
+          console.error(err); 
+        });
         
       }
     }

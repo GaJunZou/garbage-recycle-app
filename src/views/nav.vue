@@ -14,7 +14,7 @@
   </el-menu-item>
     <el-menu-item index="2">
     <i class="el-icon-user"></i>
-    <span slot="title">用户管理</span>
+    <span slot="title">系统管理</span>
   </el-menu-item>
 </el-menu>
   </div>
@@ -46,7 +46,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    width: 150px;
     min-height: 400px;
   }
 </style>
