@@ -45,10 +45,20 @@
 				onMessage: (message)=> {
 					let content = JSON.parse(message.content);
 					if(content.key == "app_notice"){
-						console.log("接收内容：" + content.data);
-						plus.nativeUI.alert(content.data, function(){
-							console.log("User pressed!");
-						}, "回收员 "+channel+" 的通知", "我知道了");
+						plus.nativeUI.actionSheet(
+								{title:"到达通知："+content.data.msg,
+								cancel:"好的",
+								buttons:[{
+											title:"拨打电话",
+										}],
+								},(e)=>{
+									if(e.index == 1){
+										uni.makePhoneCall({
+										    phoneNumber: content.data.phone
+										});
+									}
+								}
+							);
 					}
 				},
 				onSuccess: function () {
