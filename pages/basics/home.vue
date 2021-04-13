@@ -26,8 +26,7 @@
 				<swiper class="screen-swiper square-dot" style="margin-top: 83px;" :indicator-dots="true" :circular="true"
 				 :autoplay="true" interval="5000" duration="500">
 					<swiper-item v-for="(item,index) in swiperList" :key="index">
-						<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
-						<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
+						<image :src="item" mode="aspectFill"></image>
 					</swiper-item>
 				</swiper>
 				<p style="width: 100%;height: 40px;text-align: center;line-height: 60px;font-size: 20px;">
@@ -175,16 +174,8 @@
 				orderList:[],
 				load:2, //不显示
 				text:"更多",
-				swiperList: [
-				{
-					id: 0,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
-				}, {
-					id: 1,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
-				}]
+				swiperList: ['https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
+				'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg']
 			};
 		},
 		onShow() {
@@ -198,6 +189,14 @@
 					this.data = res.data;
 				}
 			})
+			uni.request({
+				url:this.base + "/system/getSystemInfo",
+				method:"GET",
+				success: (res) => {
+					this.swiperList = res.data[0].swiper_img
+				}
+			})
+			
 			if(JSON.stringify(this.$store.state.role)=='{}'){
 				if(uni.getStorageSync('phone') != null) {
 					uni.request({
