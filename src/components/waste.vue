@@ -25,7 +25,7 @@
           <el-input size="mini" v-model="scope.row.price" placeholder="请输入内容"></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="waste_url" label="图片" width="120">
+      <el-table-column prop="waste_url" label="图片" width="90">
           <template slot-scope="scope">
             <div class="avatar" @click.stop="showDialog(scope.row.waste_url,scope.$index,scope.row._id)">
               <el-avatar shape="square" size="large" :src="scope.row.waste_url"></el-avatar>
@@ -47,12 +47,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="是否可回收" width="120">
+      <el-table-column label="是否可回收" width="100">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.is_recycle" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="removeWaste(scope.$index,scope.row._id)">删除</el-button>
             <el-button size="mini" type="primary" @click="saveWaste(scope.$index)">保存</el-button>
@@ -62,8 +62,8 @@
     <el-pagination layout="prev, pager, next" :total="waste.length"></el-pagination>
 
 <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-   <div style="margin:auto;">
-     <el-avatar shape="square" :size="300" fit="contain" :src="currImg"></el-avatar>
+   <div style="margin:auto;text-align:center">
+     <el-image fit="cover" :src="currImg"></el-image>
    </div>
    <div style="text-align:center">
     <el-upload action="http://192.168.1.105:8002/aliyun-service/upload-image" 

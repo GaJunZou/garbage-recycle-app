@@ -82,8 +82,8 @@
         </el-tab-pane>
         <el-tab-pane label="APP信息" name="second">
           <div style="width: 800px">
-            <div style="width: 400px; margin: auto">
-              <el-form class="demo-form-inline">
+            <div style="width: 500px; margin:auto">
+              <el-form label-width="100px">
                 <el-form-item label="版本号">
                   <el-input
                     size="small"
@@ -126,7 +126,7 @@
                     size="small"
                     v-model="system.version.introduction"
                     type="textarea"
-                    rows="5"
+                    rows="8"
                     placeholder="请填写"
                   ></el-input>
                 </el-form-item>
@@ -140,9 +140,10 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="使用幫助" name="third">
+            <el-button size="small" @click="addHelp" type="success">添加</el-button>
             <el-table
               ref="multipleTable"
-              :data="system"
+              :data="system.help"
               tooltip-effect="dark"
               style="height: 80%"
             >
@@ -151,7 +152,7 @@
                   <el-input
                     type="textarea"
                     size="small"
-                    v-model="scope.row.help[0]"
+                    v-model="scope.row[0]"
                   ></el-input>
                 </template>
               </el-table-column>
@@ -160,22 +161,23 @@
                   <el-input
                     type="textarea"
                     size="small"
-                    v-model="scope.row.help[1]"
+                    v-model="scope.row[1]"
                   ></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="100">
+              <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="primary" @click="saveRole(scope.$index)">保存</el-button>
-                  <el-button size="mini" type="danger" @click="saveRole(scope.$index)">刪除</el-button>
+                  <el-button size="mini" type="primary" @click="saveHelp()">保存</el-button>
+                  <el-button size="mini" type="danger" @click="removeHelp(scope.$index)">刪除</el-button>
                 </template>
               </el-table-column>
             </el-table>
         </el-tab-pane>
         <el-tab-pane label="用戶反饋" name="fourth">
+            <el-button size="small" @click="addFeedback" type="success">添加</el-button>
             <el-table
               ref="multipleTable"
-              :data="system"
+              :data="system.feedback"
               tooltip-effect="dark"
               style="height: 80%"
             >
@@ -184,7 +186,7 @@
                   <el-input
                     type="textarea"
                     size="small"
-                    v-model="scope.row.feedback[0]"
+                    v-model="scope.row[0]"
                   ></el-input>
                 </template>
               </el-table-column>
@@ -193,32 +195,35 @@
                   <el-input
                     type="textarea"
                     size="small"
-                    v-model="scope.row.feedback[1]"
+                    v-model="scope.row[1]"
                   ></el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="100">
+              <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="primary" @click="saveRole(scope.$index)">保存</el-button>
-                  <el-button size="mini" type="danger" @click="saveRole(scope.$index)">刪除</el-button>
+                  <el-button size="mini" type="primary" @click="saveFeedback()">保存</el-button>
+                  <el-button size="mini" type="danger" @click="removeFeedback(scope.$index)">刪除</el-button>
                 </template>
               </el-table-column>
             </el-table>
         </el-tab-pane>
         <el-tab-pane label="輪播圖資源" name="fifth">
-          <div style="width:500px;padding:50px">
-            <el-carousel autoplay="false" trigger="click" height="300px" @change="changeSwiper">
-              <el-carousel-item v-for="item in 4" :key="item">
-                <el-badge value="3" class="item">
-                  <img src="../assets/logo.png" alt="">
-                </el-badge>
+          <div style="width:700px;padding:50px">
+            <el-carousel :autoplay="false" trigger="click" height="400px" @change="changeSwiper">
+              <el-carousel-item v-for="item in system.swiper_img" :key="item">
+                <el-image :src="item" fit="cover"></el-image>
               </el-carousel-item>
+              <p v-if="system.swiper_img.length == 0" class="no-img">暂无图片，快去添加吧~</p>
             </el-carousel>
-            <el-button size="small" @click="removeImg" type="danger">刪除這張圖片</el-button>
-            <el-upload style="margin-left:20px;display:inline-block"
-            action="http://192.168.1.105:8002/aliyun-service/upload-image">
-              <el-button size="small" type="primary">添加一張圖片</el-button>
-            </el-upload>
+            <div style="width:100%;margin:20px auto;text-align:center">
+              <el-button size="small" @click="removeImg" type="danger">刪除這張圖片</el-button>
+              <el-upload style="margin-left:20px;display:inline-block"
+              :show-file-list="false"
+              :on-success="addImg"
+              action="http://192.168.1.105:8002/aliyun-service/upload-image">
+                <el-button size="small" type="primary">添加一張圖片</el-button>
+              </el-upload>
+            </div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -259,11 +264,46 @@ export default {
       }
     },
     changeSwiper(curIndex,nextIndex){
-      this.index = nextIndex
+      this.index = curIndex
     },
     removeImg(){
       console.log(this.index);
     },
+    addHelp(){
+      this.system.help.push([[]]);
+    },
+    saveHelp(){
+      this.saveVersion();
+    },
+    removeHelp(index){
+      this.system.help.splice(index,1);
+      this.saveVersion();
+    },
+
+    addFeedback(){
+      this.system.feedback.push([[]]);
+    },
+    saveFeedback(){
+      this.saveVersion();
+    },
+    removeFeedback(index){
+      this.system.feedback.splice(index,1);
+      this.saveVersion();
+    },
+
+    removeImg(){
+      console.log(this.index);
+      this.system.swiper_img.splice(this.index,1);
+    },
+    addImg(res){
+      if(res.success){
+        this.system.swiper_img.push(res.data.url);
+        this.saveVersion();
+      }else{
+        this.$notify({ title: "失败", message: "上传失败", type: "error" });
+      }
+    },
+
     saveVersion() {
       console.log(this.system);
       this.axios
@@ -337,5 +377,14 @@ export default {
 <style scoped>
 .avatar :hover {
   cursor: pointer;
+}
+.no-img{
+  width:100%;
+  height:400px;
+  background-color:#bbb;
+  text-align:center;
+  line-height:400px;
+  margin:0;
+  font-size:30px
 }
 </style>

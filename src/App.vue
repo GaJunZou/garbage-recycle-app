@@ -1,12 +1,13 @@
 <template>
   <div id="app">
+    <div style="padding:0 150px">
     <h1 style="width:100%;height:50px;margin-left:52px;font-size:30px">废物回收系统管理</h1>
-
     <div id="nav">
       <Nav @content="content"/>
     </div>
     <div id="content">
       <Content :index="index" />
+    </div>
     </div>
   </div>
 </template>
