@@ -23,7 +23,7 @@
 						<p style="text-align: center;font-size: 22px;font-weight: 700;margin: 5px;">{{globalUser.credits || 0}}</p>
 					 </view>
 					 <view class="title">
-						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px 0 0 10px;">我的称号</p>
+						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px;">我的称号</p>
 						<p style="text-align: center;font-size: 18px;font-weight: 700;margin: 5px;">{{honor}}</p>
 					 </view>
 				  </view>

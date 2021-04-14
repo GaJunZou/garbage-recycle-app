@@ -42,7 +42,7 @@
 						</view>
 						<p style="text-align: center;font-size: 16px;">{{v.waste_name}}</p>
 						<view>
-							<text style="float: left;margin:5px 10px;">{{v.price}}/个</text>
+							<text style="float: left;margin:5px 10px;">{{v.price}}元/{{''+computed_mode(v.compute_mode)+''}}</text>
 							<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
 								<span class="cuIcon-add" @click="addList(v)"></span>
 							</text>
@@ -57,15 +57,15 @@
 					<!-- 备选 -->
 					<view class="padding">
 						<view class="col-4 padding-sm">
-								<button v-for="(item,index) in 5" :key="index" 
-								@click.stop="" class="cu-btn round margin-tb-sm btn">{{item.title}}</button>
+								<button v-for="(item,index) in backup" :key="index" 
+								@click.stop="searchBackup(item)" class="cu-btn round margin-tb-sm btn">{{item}}</button>
 						</view>
 					</view>
 					<view style="position: absolute;width: 100%;">
 							<!-- 垃圾分类知识区 -->
 							<view class="knownledge" :class="load == 1 ? 'show-more' : 'hide-more'" @click.stop="" v-if="rublishData">
 								<view style="width: 22vw;height: 22vw;float: left;">
-									<image src="../../static/11.png" mode="" style="width: 100%;height: 100%;border-radius: 10px;"></image>
+									<image src="../../static/logo.jpg" mode="" style="width: 100%;height: 100%;border-radius: 10px;"></image>
 								</view>
 								<view style="width: 55vw;height: 22vw;float: left;margin: 0 2vw;font-size: 15px;line-height: 11vw;"> 
 									<p><strong>名称：</strong>{{rublishData.name}}</p>
@@ -79,7 +79,7 @@
 								</view>
 								<view>
 									<view>
-										<view style="width: 82vw;height: auto;font-size: 15px;color: #424242;" v-if="load==1">
+										<view style="width: 82vw;height: auto;font-size: 15px;color:#fff" v-if="load==1">
 											<p>解释：{{rublishData.explain}}</p>
 											<p>详细：{{rublishData.contain}}</p>
 											<p>建议：{{rublishData.tip}}</p>
@@ -92,11 +92,11 @@
 								
 							<view class="bg-white item radius" v-for="(v,i) in searchResult" :key="i">
 								<view>
-									<image src="../../static/componentBg.png" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
+									<image :src="v.waste_url" mode="" style="width: 45vw;height: 45vw;border-radius: 8px;"></image>
 								</view>
 								<p style="text-align: center;font-size: 16px;">{{v.waste_name}}</p>
 								<view>
-									<text style="float: left;margin:5px 10px;">{{v.price}}毛/个</text>
+									<text style="float: left;margin:5px 10px;">{{v.price}}元/{{''+computed_mode(v.compute_mode)+''}}</text>
 									<text style="float: right;margin:0 10px;font-size: 20px;font-weight: 900; color: #39B54A;">
 										<span @click="addList(v)" class="cuIcon-add"></span>
 									</text>
@@ -137,7 +137,7 @@
 							</div>
 							<p style="float: left;line-height: 20px;">
 								<strong style="font-size: 14px;">{{v.waste_name}}</strong><br>
-								{{v.price}}元/个
+								{{v.price}}元/{{''+computed_mode(v.compute_mode)+''}}
 							</p>
 							<div style="float: right;line-height: 40px;font-size: 16px;font-weight: 700;text-align: center;">
 								<i class="cuIcon-move" style="color:  #fe0707;" @click="sub(v._id)"></i>
@@ -174,6 +174,7 @@
 				orderList:[],
 				load:2, //不显示
 				text:"更多",
+				backup:'',
 				swiperList: ['https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg',
 				'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg']
 			};
@@ -187,6 +188,8 @@
 				method:"GET",
 				success: (res) => {
 					this.data = res.data;
+					this.backup = this.data.map(v=>{return v.waste_name});
+					this.backup.length = 6;
 				}
 			})
 			uni.request({
@@ -221,6 +224,20 @@
 			}
 		},
 		methods: {
+			computed_mode(val){
+				console.log(val);
+				if(val == "by_weight"){
+					return '斤'
+				}else if(val == "by_quantity"){
+					return "个"
+				}else if(val == "by_material"){
+					return "件"
+				}
+			},
+			searchBackup(val){
+				this.searchValue = val;
+				this.getRublishData();
+			},
 			getLocation(){
 				let value = null;
 				plus.nativeUI.showWaiting("定位中...",{background : "#272822",padlock:true});
@@ -416,6 +433,7 @@
 	.knownledge{
 		position: relative;
 		/* left: calc(50vw - 42.5vw); */
+		color: #ffffff;
 		width: 85vw;
 		max-height: 33vw;
 		background-color: white;
@@ -423,14 +441,18 @@
 		border-radius: 10px;
 		padding: 2vw;
 		overflow: hidden;
+		backdrop-filter:blur(1rem);
+		background: rgba(35, 35, 35, 0.1);
 	}
 	.load-more{
 /* 		position: relative;
 		bottom: 0; */
+		
 		margin: 2vw auto;
 		text-align: center;
 		font-size: 14px;
-		color: #6596c1;
+		font-weight: 700;
+		color: #07bdff;
 	}
 	.cart{
 		position: fixed;
@@ -441,6 +463,8 @@
 		border-radius: 30px;
 		height: 42px;
 		z-index: 1024;
+		backdrop-filter:blur(1rem);
+		background: rgba(49, 49, 49, 0.3);
 	}
 	.my-bottom-modal{
 		z-index: 1020;

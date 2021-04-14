@@ -1,6 +1,6 @@
 {
-    "name" : "project",
-    "appid" : "",
+    "name" : "废品回收",
+    "appid" : "__UNI__CE809D1",
     "description" : "",
     "versionName" : "ColorUi for UniApp 2.1.4",
     "versionCode" : 214,
@@ -54,6 +54,21 @@
                 },
                 "push" : {
                     "unipush" : {}
+                }
+            },
+            "icons" : {
+                "ios" : {
+                    "appstore" : "C:/Users/admin/Desktop/logo.png",
+                    "iphone" : {
+                        "app@2x" : "C:/Users/admin/Desktop/logo.png",
+                        "app@3x" : "C:/Users/admin/Desktop/logo.png",
+                        "spotlight@2x" : "C:/Users/admin/Desktop/logo.png",
+                        "spotlight@3x" : "C:/Users/admin/Desktop/logo.png",
+                        "settings@2x" : "C:/Users/admin/Desktop/logo.png",
+                        "settings@3x" : "C:/Users/admin/Desktop/logo.png",
+                        "notification@2x" : "C:/Users/admin/Desktop/logo.png",
+                        "notification@3x" : "C:/Users/admin/Desktop/logo.png"
+                    }
                 }
             }
         }

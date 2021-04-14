@@ -9,31 +9,31 @@
 		</view>
 		<view class="box">
 			<view class="rows">
-				<p class="head">邮箱</p>
+				<p class="head"><text class="my-icon">&#xe631;</text>邮箱</p>
 				<p>{{version.email}}</p>
 			</view>
 			<view class="rows">
-				<p class="head">电话</p>
+				<p class="head"><text class="my-icon">&#xe603;</text>电话</p>
 				<p style="text-decoration: underline;" @click="call()">{{version.phone}}</p>
 			</view>
 			<view style="display: flex;justify-content: center;">
 				<view class="col">
-					<p class="head">版本号</p>
+					<p class="head">版本号<text class="my-icon">&#xe60a;</text></p>
 					<p>{{version.number}}</p>
 
 				</view>
 				<view class="col">
 
-					<p class="head">作者</p>
+					<p class="head">作者<text class="my-icon">&#xe67b;</text></p>
 					<p>{{version.author}}</p>
 				</view>
 			</view>
 			<view class="rows-plus">
-				<p class="head">联系地址</p>
-				<p>{{version.address}}</p>
+				<p class="head"><text class="my-icon">&#xe63b;</text>联系地址</p>
+				<p style="font-size: 16px;">{{version.address}}</p>
 			</view>
 			<view class="rows-plus-plus">
-				<p class="head">app说明</p>
+				<p class="head"><text class="my-icon">&#xe739;</text>app说明</p>
 				<p style="line-height: 25px;text-align: left;margin:auto 10px;">{{version.introduction}}</p>
 			</view>
 		</view>
@@ -76,6 +76,11 @@
 </script>
 
 <style>
+	.my-icon{
+		color: #000;
+		font-weight: 400;
+		font-size: 20px
+	}
 	.bar{
 		position: fixed;
 		top: 0;
@@ -100,6 +105,7 @@
 		width: 100%;
 		padding-top: 120px;
 		height: 100vh;
+		color: #d3d3d3;
 		background:url(https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg);
 		background-size: cover;
 	}
