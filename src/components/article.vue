@@ -66,8 +66,8 @@
 
 <!-- 修改 -->
 <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-   <div style="margin:auto;">
-     <el-avatar shape="square" :size="300" fit="contain" :src="currImg"></el-avatar>
+      <div style="margin:auto;text-align:center">
+     <el-image fit="cover" :src="currImg"></el-image>
    </div>
    <div style="text-align:center">
     <el-upload action="http://192.168.1.105:8002/aliyun-service/upload-image" 
@@ -196,10 +196,9 @@ export default {
         this.newArticle.time = new Date().format("yyyy-MM-dd hh:mm:ss");
         this.axios.post(this.base+"/article/add",this.newArticle)
         .then(res => {
-          console.log(res)
           if(res.data){
-            this.$notify({ title: '成功', message: '添加成功', type: 'success'});
             this.getArticle();
+            this.$notify({ title: '成功', message: '添加成功', type: 'success'});
           }else{
             this.$notify({ title: '失败', message: '添加失败', type: 'error'});
           }
@@ -217,6 +216,7 @@ export default {
         .then(res => {
           console.log(res)
           if(res.data.data){
+            this.getArticle();
             this.$notify({ title: '成功', message: '保存成功', type: 'success'});
           }else{
             this.$notify({ title: '失败', message: '保存失败', type: 'error'});
@@ -232,7 +232,7 @@ export default {
         this.axios.get(this.base+"/article/delete/"+id)
         .then(res => {
           console.log(res)
-          if(res.data.success == "true"){no
+          if(res.data.success == "true"){
             this.$notify({ title: '成功', message: '删除成功', type: 'success'});
             this.searchResult.splice(index,1);
           }else{
@@ -309,7 +309,7 @@ export default {
           console.error(err); 
         })
       },
-      getArticle(){
+      async getArticle(){
         this.axios.get("http://localhost:3000/article/getAllArticle")
         .then(res => {
           console.log(res);
