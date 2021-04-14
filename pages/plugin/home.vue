@@ -24,7 +24,7 @@
 					 </view>
 					 <view class="title">
 						<p style="text-align: center;font-size: 18px;font-weight: 400;margin: 5px 0 0 10px;">我的称号</p>
-						<p style="text-align: center;font-size: 18px;font-weight: 700;margin: 5px;">{{globalUser.data || "未拥有"}}</p>
+						<p style="text-align: center;font-size: 18px;font-weight: 700;margin: 5px;">{{honor}}</p>
 					 </view>
 				  </view>
 			 </view>
@@ -96,6 +96,24 @@
 			return {
 				globalUser:{},
 				url:'123.jpg'
+			}
+		},
+		computed:{
+			honor(){
+				let credit = this.globalUser.credit;
+				if(credit<100){
+					return "环保标兵"
+				}else if(100<credit<500){
+					return "环保卫士"
+				}else if(500<credit<1000){
+					return "环保使者"
+				}else if(1000<credit<5000){
+					return "环保骑士"
+				}else if(5000<credit){
+					return "环保大使"
+				}else{
+					return "暂无称号"
+				}
 			}
 		},
 		onShow() {

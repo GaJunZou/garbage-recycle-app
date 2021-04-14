@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="bg-white bar">
+		<view class="bar text-white">
 			<view style="position: relative;display: flex;justify-content: space-between;">
 				<p><text @click="back" class="cuIcon-back"></text></p>
 				<p style="width: 80px;">关于app</p>
@@ -84,14 +84,11 @@
 		height: 100px;
 		line-height: 50px;
 		width: 100vw;
-		opacity: 0.1;
-		/* background-color: #ffffff; */
 	}
 	.bar p{
 		text-align: center;
 		font-weight: 700;
 		font-size: 18px;
-		color: #666;	
 		width: 40px;
 	}
 	.item{
@@ -100,6 +97,7 @@
 	.box{
 		position: fixed;
 		top: 0px;
+		width: 100%;
 		padding-top: 120px;
 		height: 100vh;
 		background:url(https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg);
