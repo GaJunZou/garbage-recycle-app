@@ -19,7 +19,7 @@
 					  <textarea 
 					  maxlength="30"
 					  class="uni-input" 
-					  style="height: 70px;width: 100%;line-height: 25px;font-size: 15px;padding:10px 5px;background-color: #fff;" 
+					  style="height: 90px;width: 100%;line-height: 25px;font-size: 15px;padding:10px 5px;background-color: #e2e2e2;border:0;border-radius: 10px;" 
 					  v-model="sign"/>
 				</view>
 		        <view class="uni-form-item uni-column">
@@ -60,7 +60,7 @@
 					uri:this.imgList[0]
 				}
 				uni.uploadFile({
-					url:"http://192.168.0.105:8002/aliyun-service/upload-image",
+					url:"http://192.168.1.105:8002/aliyun-service/upload-image",
 					// filePath: this.imgList[0],
 					// name: 'file',
 					files:[img],

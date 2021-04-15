@@ -33,7 +33,7 @@
 		        </view>
 		    </form>
 		</view>
-		<button type="default" @click="gotoCollect">go to collector</button>
+		<!-- <button type="default" @click="gotoCollect">go to collector</button> -->
 		<button @click="gotoRegist" style="position: fixed;bottom: 0;right: 0;font-size: 18px;margin: 30px 20px;" class="cu-btn">注册<text class="cuIcon-right"></text></button>
 	</view>
 </template>

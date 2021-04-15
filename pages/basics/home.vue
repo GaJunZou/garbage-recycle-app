@@ -463,8 +463,8 @@
 		border-radius: 30px;
 		height: 42px;
 		z-index: 1024;
-		backdrop-filter:blur(1rem);
-		background: rgba(49, 49, 49, 0.3);
+/* 		backdrop-filter:blur(1rem);
+		background: rgba(49, 49, 49, 0.3); */
 	}
 	.my-bottom-modal{
 		z-index: 1020;

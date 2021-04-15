@@ -147,11 +147,11 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action">账户余额</view>
-						<view class="action">{{collector.money|| 0}}元</view>
+						<view class="action">{{(collector.money).toFixed(2)|| 0}}元</view>
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action">积分</view>
-						<view class="action">{{collector.credits || 0}}</view>
+						<view class="action">{{(collector.credits).toFixed(2) || 0}}</view>
 					</view>
 					<view @click="modifyPassword(collector.phone,collector.password)" class="cu-bar bg-white">
 						<view class="action">修改密码</view>
