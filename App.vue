@@ -2,7 +2,7 @@
 	import Vue from 'vue'
 	export default {
 		data:{
-			test:1
+			base:''
 		},
 		onLaunch: function() {
 			uni.getSystemInfo({
@@ -114,6 +114,9 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
+		},
+		created() {
+			this.base = "ahahaha"
 		}
 	}
 </script>

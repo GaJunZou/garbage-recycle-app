@@ -100,7 +100,6 @@ Vue.prototype.send = function(channel,message,body){
 	});
 } 
 
-
 Vue.prototype.base = 'http://192.168.1.105:3000';
 Vue.prototype.socket = 'ws://192.168.1.105:3000';
 Vue.prototype.uploadImg = "http://192.168.1.105:8002/aliyun-service/upload-image";
