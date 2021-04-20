@@ -83,7 +83,8 @@
 				</view>
 				<view class="padding bg-white">
 					 <textarea 
-					 style="height: 50px;"
+					 style="height: 50px;text-align:center;"
+					 
 					 maxlength="60"
 					 placeholder="请输入..." 
 					 v-model="newSign"/>

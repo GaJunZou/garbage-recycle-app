@@ -2,7 +2,7 @@
 	<view>
 		 <scroll-view scroll-y="true" class="page">
 			 <view style="padding-top: 0px;color: white;" class="padding radius shadow-blur bg">
-				 <view class="top-set" >
+				 <view class="top-set">
 				 	 <i @click="setup()" class="iconfont icon-setting icon-set" style="color: #FFFFFF;"></i>
 				  </view>
 				  <view class="header">
@@ -15,7 +15,7 @@
 				 	 </view>
 				  </view>
 				  <p style="margin: 15px 20px;font-size: 13px;">
-				 	{{globalUser.sign || "qwertyuiop"}}
+				 	{{globalUser.sign || "保护环境，人人有责！"}}
 				  </p>
 				  <view class="honor">
 					 <view class="score">

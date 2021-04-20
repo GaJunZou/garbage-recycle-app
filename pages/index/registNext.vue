@@ -60,7 +60,7 @@
 					uri:this.imgList[0]
 				}
 				uni.uploadFile({
-					url:"http://192.168.1.105:8002/aliyun-service/upload-image",
+					url:this.uploadImg,
 					// filePath: this.imgList[0],
 					// name: 'file',
 					files:[img],
