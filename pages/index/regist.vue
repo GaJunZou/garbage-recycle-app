@@ -26,7 +26,7 @@
                     <view class="title">选择角色</view>
 					<radio-group class="radio-group" name="radio">
 						<button @click="chooseRole(1)" :class="role ==1 ? 'bg-blue' : ''" class="cu-btn round" style="width: 30vw;height:50px;margin-top: 10px;" >
-							<text style="font-size: 25px;line-height: 50px;" class="my-icon">&#xe6ed;</text>普通用户</button>
+							<text style="font-size: 25px;line-height: 50px;" class="my-icon">&#xe6ed;</text>市民</button>
 						<button @click="chooseRole(0)" :class="role ==0 ? 'bg-orange' : ''" class="cu-btn round"  style="width: 30vw;height:50px;margin-top: 10px;">
 							<text style="font-size: 25px;line-height: 50px;" class="my-icon">&#xe655;</text>回收员</button>
 					</radio-group>

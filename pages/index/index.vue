@@ -45,6 +45,7 @@
 				onMessage: (message)=> {
 					let content = JSON.parse(message.content);
 					if(content.key == "app_notice"){
+						console.log("app_notice");
 						plus.nativeUI.actionSheet(
 								{title:"到达通知："+content.data.msg,
 								cancel:"好的",

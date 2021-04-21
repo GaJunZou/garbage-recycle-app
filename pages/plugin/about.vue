@@ -85,7 +85,9 @@
 		position: fixed;
 		top: 0;
 		z-index: 999;
-		padding-top: 50px;
+		/* iphone 6s */
+		/* padding-top: 50px; */
+		padding-top: 20px;
 		height: 100px;
 		line-height: 50px;
 		width: 100vw;
@@ -103,7 +105,9 @@
 		position: fixed;
 		top: 0px;
 		width: 100%;
-		padding-top: 120px;
+		/* iphone 6s */
+		/* padding-top: 120px; */
+		padding-top: 60px;
 		height: 100vh;
 		color: #d3d3d3;
 		background:url(https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg);
@@ -128,7 +132,7 @@
 	.col{
 		width: 35%;
 		background-color: #fff;
-		height: 100px;
+		height: 70px;
 		margin: 2% 5%;
 		border-radius: 10px;
 		display: flex;

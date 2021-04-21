@@ -7,9 +7,6 @@
 				<text @click="orderList" style="float:right;font-size: 30px;font-weight: 400;color: #faa125;display: block;" class="cuIcon-message"></text>
 				<text class='bag' v-if="messageValue.length != 0">{{messageValue.length}}</text>
 			</view>
-			<!-- <view>
-				<text @click="scan" style="float:right;font-size: 30px;font-weight: 400;color: #faa125;" class="my-icon">&#xe6e4;</text>
-			</view> -->
 		</view>
 		<ul class="tab-title">
 			<li v-for="(v,i) in tabTitle" :key="i" :data-current="i" @tap="tabChange" :class="currentTab == i ? 'current-tab' : ''">{{v.title}}</li>
@@ -113,7 +110,9 @@
 			<view @tap.stop="" class="cu-dialog basis-lg" style="height:100vh;min-width: 100vw;">
 				<view class="cu-list menu text-left">
 					<view class="bg">
-						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;">
+						<!-- iphone 6s -->
+						<!-- <p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;"> -->
+						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 10px;">
 							<text @tap.stop="hideModal" class="cuIcon-back">收起</text>
 						</p>
 						<view class="header">
@@ -147,11 +146,11 @@
 					<div style="width: 100%;height: 2rpx;padding: 0;margin: 0;border: 0px;color: #878787;"></div>
 					<view class="cu-bar bg-white">
 						<view class="action">账户余额</view>
-						<view class="action">{{(collector.money).toFixed(2)|| 0}}元</view>
+						<view class="action">{{getToFixed(collector.money) || 0}}元</view>
 					</view>
 					<view class="cu-bar bg-white">
 						<view class="action">积分</view>
-						<view class="action">{{(collector.credits).toFixed(2) || 0}}</view>
+						<view class="action">{{getToFixed(collector.credits) || 0}}</view>
 					</view>
 					<view @click="modifyPassword(collector.phone,collector.password)" class="cu-bar bg-white">
 						<view class="action">修改密码</view>
@@ -166,8 +165,11 @@
 						<view class="action">关于易回收</view>
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
+					<!-- iphone 6s -->
+<!-- 					<button @click="quit()" class="cu-btn bg-gradual-red round"
+					style="position: absolute;bottom: 30px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;"> -->
 					<button @click="quit()" class="cu-btn bg-gradual-red round" 
-					style="position: absolute;bottom: 40px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;">
+					style="position: absolute;bottom: 30px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;">
 					退出</button>
 				</view>
 			</view>
@@ -260,6 +262,13 @@
 			// this.openSocket()
 		},
 		methods:{
+			getToFixed(val){
+				if(isNaN(val)){
+					return null
+				}else{
+					return val.toFixed(2);
+				}
+			},
 			orderList(){
 				uni.navigateTo({
 					url:"/pages/collector/orderList?list="+this.messageValue,
@@ -566,8 +575,11 @@
 .top-bar{
 	width: 100%;
 	padding: 0 10px;
-	padding-top:60px;
-	padding-bottom:20px;
+	/* iPhone 6s */
+	/* padding-top:60px; */
+	/* padding-bottom:20px; */
+	padding-top:30px;
+	padding-bottom:10px;
 	margin: 0;
 	border: 0;
 	color: #eee;

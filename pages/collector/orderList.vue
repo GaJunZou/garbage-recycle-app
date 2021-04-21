@@ -8,7 +8,9 @@
 			</view>
 		</view>
 		<p v-if="list.length == 0" style="width: 100vw;	text-align: center;margin-top: 200px;">这里空空如也~</p>
-		<view class="cu-bar bg-blue search" style="position: fixed;top: 100px;z-index: 2000;padding-top: 10px;padding-bottom:10px;padding-left: 10px;width: 100vw;">
+		<!-- iphone 6s -->
+		<!-- <view class="cu-bar bg-blue search" style="position: fixed;top: 100px;z-index: 2000;padding-top: 10px;padding-bottom:10px;padding-left: 10px;width: 100vw;"> -->
+		<view class="cu-bar bg-blue search" style="position: fixed;top: 60px;z-index: 2000;padding-top: 10px;padding-bottom:10px;padding-left: 10px;width: 100vw;">
 			<view class="search-form radius" style="border-radius: 20px;margin-left: 0;">
 				<text class="cuIcon-search"></text>
 				<input 
@@ -23,7 +25,9 @@
 				<text>搜索</text>
 			</view>
 		</view>
-		<p style="margin-top: 160px;"></p>
+		<!-- iphone 6s -->
+		<!-- <p style="margin-top: 160px;"></p> -->
+		<p style="margin-top: 120px;"></p>
 		<view v-for="(v,i) in list" @click="orderDetail(v)" class="cu-bar bg-white">
 			<view class="action">订单id:{{v}}</view>
 			<view class="action"><text class="cuIcon-right"></text></view>
@@ -90,11 +94,12 @@
 		position: fixed;
 		top: 0;
 		z-index: 999;
-		padding-top: 50px;
-		height: 100px;
+		/* iphone 6s */
+		/* padding-top: 50px; */
+		/* height: 100px; */
+		padding-top: 20px;
 		line-height: 50px;
 		width: 100vw;
-		/* background-color: #ffffff; */
 	}
 	.bar p{
 		color: #FFFDEF;

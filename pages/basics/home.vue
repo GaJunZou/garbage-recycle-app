@@ -3,7 +3,9 @@
 		<view class="page">
 			<scroll-view :class="isScroll == true ? '' : 'isScroll'">
 				<!-- 搜索 -->
-				<view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px;width: 100vw;">
+				<!-- iphone 6s -->
+				<!-- <view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px;width: 100vw;"> -->
+				<view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 20px;padding-bottom:10px;width: 100vw;">
 					<view class="action" style="width: 70px;">
 						<text @click="getLocation()">{{site}}</text>
 						<text class="cuIcon-triangledownfill"></text>
@@ -23,7 +25,8 @@
 					</view>
 				</view>
 				<!-- 轮播图 -->
-				<swiper class="screen-swiper square-dot" style="margin-top: 83px;" :indicator-dots="true" :circular="true"
+				<!-- <swiper class="screen-swiper square-dot" style="margin-top: 83px;" :indicator-dots="true" :circular="true" -->
+				<swiper class="screen-swiper square-dot" style="margin-top: 60px;" :indicator-dots="true" :circular="true"
 				 :autoplay="true" interval="5000" duration="500">
 					<swiper-item v-for="(item,index) in swiperList" :key="index">
 						<image :src="item" mode="aspectFill"></image>
