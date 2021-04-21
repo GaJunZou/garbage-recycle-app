@@ -111,8 +111,8 @@
 				<view class="cu-list menu text-left">
 					<view class="bg">
 						<!-- iphone 6s -->
-						<!-- <p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;"> -->
-						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 10px;">
+						<p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 60px;">
+						<!-- <p style="height: 60px;line-height: 60px;font-size: 20px;padding-left: 20px;font-weight: 700;padding-top: 10px;"> -->
 							<text @tap.stop="hideModal" class="cuIcon-back">收起</text>
 						</p>
 						<view class="header">
@@ -166,10 +166,10 @@
 						<view class="action"><text class="cuIcon-right"></text></view>
 					</view>
 					<!-- iphone 6s -->
-<!-- 					<button @click="quit()" class="cu-btn bg-gradual-red round"
-					style="position: absolute;bottom: 30px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;"> -->
-					<button @click="quit()" class="cu-btn bg-gradual-red round" 
+					<button @click="quit()" class="cu-btn bg-gradual-red round"
 					style="position: absolute;bottom: 30px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;">
+<!-- 					<button @click="quit()" class="cu-btn bg-gradual-red round" 
+					style="position: absolute;bottom: 30px;left: 15vw;line-height: 40px;width: 70vw;height: 40px;"> -->
 					退出</button>
 				</view>
 			</view>
@@ -576,10 +576,10 @@
 	width: 100%;
 	padding: 0 10px;
 	/* iPhone 6s */
-	/* padding-top:60px; */
-	/* padding-bottom:20px; */
-	padding-top:30px;
-	padding-bottom:10px;
+	padding-top:60px;
+	padding-bottom:20px;
+	/* padding-top:30px; */
+	/* padding-bottom:10px; */
 	margin: 0;
 	border: 0;
 	color: #eee;

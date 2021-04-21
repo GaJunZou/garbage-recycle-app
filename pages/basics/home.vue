@@ -4,8 +4,8 @@
 			<scroll-view :class="isScroll == true ? '' : 'isScroll'">
 				<!-- 搜索 -->
 				<!-- iphone 6s -->
-				<!-- <view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px;width: 100vw;"> -->
-				<view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 20px;padding-bottom:10px;width: 100vw;">
+				<view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 40px;padding-bottom:10px;width: 100vw;">
+				<!-- <view class="cu-bar bg-gradual-blue search" style="position: fixed;top: 0;z-index: 2000;padding-top: 20px;padding-bottom:10px;width: 100vw;"> -->
 					<view class="action" style="width: 70px;">
 						<text @click="getLocation()">{{site}}</text>
 						<text class="cuIcon-triangledownfill"></text>

@@ -219,8 +219,8 @@
 		width: 100vw;
 		height: 30px;
 		/* iphone 6s */
-		/* top: 40px; */
-		top: 20px;
+		top: 40px;
+		/* top: 20px; */
 	}
 	.top-set .icon-set{
 		color: #333;

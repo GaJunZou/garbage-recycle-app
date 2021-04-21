@@ -127,8 +127,8 @@
 		top: 0;
 		z-index: 999;
 		/* iphone 6s */
-		/* padding-top: 50px; */
-		padding-top: 20px;
+		padding-top: 50px;
+		/* padding-top: 20px; */
 		height: 100px;
 		line-height: 50px;
 		width: 100vw;
