@@ -2,8 +2,8 @@
 	<view>
 		<scroll-view scroll-y class="page">
 			<!-- iphone 6s -->
-			<!-- <div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 40px 20px 0px;font-weight: 700;color: #e2e2e2;"> -->
-			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 10px 20px 0px;font-weight: 700;color: #e2e2e2;">
+			<div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 40px 20px 0px;font-weight: 700;color: #e2e2e2;">
+			<!-- <div class="bg-gradual-red" style="width: 100%;height: 50px;font-size: 25px;line-height: 50px;padding: 10px 20px 0px;font-weight: 700;color: #e2e2e2;"> -->
 				<p style="float: left;">探索 <i class="cuIcon-discoverfill" style="color: #EB2;"></i> 发现</p> 
 			</div>
 			<ul class="tab-title">

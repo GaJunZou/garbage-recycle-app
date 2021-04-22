@@ -86,8 +86,8 @@
 		top: 0;
 		z-index: 999;
 		/* iphone 6s */
-		/* padding-top: 50px; */
-		padding-top: 20px;
+		padding-top: 50px;
+		/* padding-top: 20px; */
 		height: 100px;
 		line-height: 50px;
 		width: 100vw;
@@ -106,8 +106,8 @@
 		top: 0px;
 		width: 100%;
 		/* iphone 6s */
-		/* padding-top: 120px; */
-		padding-top: 60px;
+		padding-top: 120px;
+		/* padding-top: 60px; */
 		height: 100vh;
 		color: #d3d3d3;
 		background:url(https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg);
