@@ -8,7 +8,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
 
-Vue.prototype.base = "http://192.168.1.105:3000"
+Vue.prototype.base = "http://localhost:3000"
 Date.prototype.format = function(fmt) { 
   var o = { 
      "M+" : this.getMonth()+1,                 //月份 
