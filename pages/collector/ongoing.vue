@@ -13,7 +13,7 @@
 						距离现在位置约<text style="color: #DD514C;font-weight: 700;font-size: 22px;">
 						{{getMesure(i.address.address_crood) > 1000 ? (getMesure(i.address.address_crood)/1000).toFixed(1)+'km' : getMesure(i.address.address_crood)+'m'}}</text>
 					</view>
-					<view class="action"><text style="font-size: 20px;font-weight: 700;color: #DD514C;" class="my-icon">&#xe61a;</text></view>
+					<view class="action"><text @click="getMap(i.address.address_crood)" style="font-size: 20px;font-weight: 700;color: #DD514C;" class="my-icon">&#xe61a;</text></view>
 				</view>
 				<p style="margin-bottom: 15px;">
 					可上门时间段：
@@ -85,6 +85,21 @@
 				let arr = str.split('/');
 				mesure = this.GetDistance(this.crood[0],this.crood[1],+arr[0],+arr[1]);
 				return (mesure*1000).toFixed(1);
+			},
+			getMap(crood){
+				crood = crood.split('/');
+				console.log(crood);
+				  uni.openLocation({
+					latitude: +crood[1],
+					longitude: +crood[0],
+					success: (res)=> {
+						console.log(res);
+					},
+					fail: (err) => {
+						console.log(err);
+					}
+					
+				});
 			},
 			showDetail(index){
 				this.show = index;

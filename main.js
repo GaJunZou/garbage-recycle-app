@@ -100,9 +100,9 @@ Vue.prototype.send = function(channel,message,body){
 	});
 } 
 
-Vue.prototype.base = 'http://192.168.191.1:3000';
-Vue.prototype.socket = 'ws://192.168.191.1:3000';
-Vue.prototype.uploadImg = "http://192.168.191.1:8002/aliyun-service/upload-image";
+Vue.prototype.base = 'http://192.168.1.123:3000';
+Vue.prototype.socket = 'ws://192.168.1.123:3000';
+Vue.prototype.uploadImg = "http://192.168.1.123:8002/aliyun-service/upload-image";
 
 String.prototype.time = function() {
 	let time = this.split(' ')[1].split(':');
